@@ -13,6 +13,10 @@ module.exports = app => {
   app.set('pg_db', process.env.pg_db || 'postgres')
   app.set('pg_port', process.env.pg_port || '5432')
 
+  // TODO: JWT things
+  app.set('JWT_SECRET', '')
+  app.set('JWT_COOKIE_NAME', '')
+
   app.use(cookieParser())
 
   if (process.env.NODE_ENV === 'production') {
@@ -23,7 +27,6 @@ module.exports = app => {
   }
 
   if (process.env.NODE_ENV === 'development') {
-    // allow requests from dev server
     const corsConfig = {
       origin: 'http://localhost:3000',
       credentials: true,
