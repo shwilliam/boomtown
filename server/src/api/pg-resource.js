@@ -3,7 +3,7 @@ module.exports = postgres => {
     async createUser({fullname, email, password}) {
       const newUserInsert = {
         text:
-          'INSERT INTO public.users ("fullname", "email", "password") VALUES ($1, $2, $3)',
+          'INSERT INTO users(fullname, email, password) VALUES($1, $2, $3) RETURNING *',
         values: [fullname, email, password],
       }
       try {
@@ -38,7 +38,7 @@ module.exports = postgres => {
         text: 'SELECT * FROM public.users WHERE id=$1',
         values: [id],
       }
-      // TODO: refactor to catch e
+      // TODO: catch e
 
       const user = await postgres.query(findUserQuery)
       return user
@@ -84,25 +84,32 @@ module.exports = postgres => {
       return tags.rows
     },
     async saveNewItem({item, user}) {
-      // TODO: handle w 2 inserts?
-
       return new Promise((resolve, reject) => {
         postgres.connect((err, client, done) => {
           try {
             client.query('BEGIN', async err => {
               const {title, description, tags} = item
 
-              // TODO: new item query
-              // TODO: insert item
               // TODO: generate tag relationships query
               // TODO: insert tags
 
-              client.query('COMMIT', err => {
-                if (err) {
-                  throw err
-                }
+              const newItemQuery = {
+                text:
+                  'INSERT INTO public.items ("title", "desc", "owner_id") VALUES ($1, $2, $3) RETURNING *',
+                values: [title, description, user],
+              }
+
+              let newItem
+              try {
+                newItem = await postgres.query(newItemQuery)
+              } catch (e) {
+                throw e
+              }
+
+              client.query('COMMIT', e => {
+                if (e) throw e
                 done()
-                // resolve(newItem.rows[0])
+                resolve(newItem.rows[0])
               })
             })
           } catch (e) {

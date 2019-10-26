@@ -1,13 +1,11 @@
 const {gql} = require('apollo-server-express')
 
-// TODO: Date scalar
-
 module.exports = gql`
-  # scalar Date
+  scalar Date
 
   type Item {
     id: ID!
-    # createdAt: Date!
+    createdAt: Date!
     title: String!
     description: String!
     owner: User!
@@ -38,9 +36,6 @@ module.exports = gql`
     itemId: ID!
   }
 
-  # type AuthPayload {
-  # }
-
   input AssignedTag {
     id: ID!
     title: String!
@@ -56,6 +51,22 @@ module.exports = gql`
     tags: [AssignedTag]
   }
 
+  input NewUserInput {
+    fullname: String!
+    email: String!
+    password: String!
+  }
+
+  input LoginUserInput {
+    email: String!
+    password: String!
+  }
+
+  type AuthPayload {
+    user: User!
+    token: String!
+  }
+
   type Query {
     user(id: ID!): User
     viewer: User
@@ -65,5 +76,8 @@ module.exports = gql`
 
   type Mutation {
     addItem(item: NewItemInput!): Item
+    signup(user: NewUserInput!): AuthPayload
+    login(user: LoginUserInput!): AuthPayload
+    logout: Boolean
   }
 `

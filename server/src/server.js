@@ -13,9 +13,8 @@ module.exports = app => {
   app.set('pg_db', process.env.pg_db || 'postgres')
   app.set('pg_port', process.env.pg_port || '5432')
 
-  // TODO: JWT things
-  app.set('JWT_SECRET', '')
-  app.set('JWT_COOKIE_NAME', '')
+  app.set('JWT_SECRET', 'shhh')
+  app.set('JWT_COOKIE_NAME', 'monster')
 
   app.use(cookieParser())
 
