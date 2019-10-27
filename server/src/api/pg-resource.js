@@ -89,6 +89,7 @@ module.exports = postgres => {
           try {
             client.query('BEGIN', async err => {
               const {title, description, tags} = item
+              const userId = user && user.id
 
               // TODO: generate tag relationships query
               // TODO: insert tags
@@ -96,7 +97,7 @@ module.exports = postgres => {
               const newItemQuery = {
                 text:
                   'INSERT INTO public.items ("title", "desc", "owner_id") VALUES ($1, $2, $3) RETURNING *',
-                values: [title, description, user],
+                values: [title, description, userId],
               }
 
               let newItem

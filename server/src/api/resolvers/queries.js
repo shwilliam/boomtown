@@ -2,7 +2,7 @@ const {ApolloError} = require('apollo-server')
 
 module.exports = app => ({
   viewer(parent, args, {user}, info) {
-    return null
+    return user
   },
   async user(parent, {id}, {pgResource}, info) {
     try {

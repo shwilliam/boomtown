@@ -8,7 +8,7 @@ const bcrypt = require('bcryptjs')
 function setCookie({tokenName, token, res}) {
   res.cookie(tokenName, token, {
     // httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    secure: Boolean(process.env.NODE_ENV === 'production'),
     maxAge: 7200000, // 2 hrs
   })
 }
