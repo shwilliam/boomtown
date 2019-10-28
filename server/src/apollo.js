@@ -20,11 +20,16 @@ module.exports = ({app, pgResource}) => {
   const apolloServer = new ApolloServer({
     context: ({req}) => {
       const tokenName = app.get('JWT_COOKIE_NAME')
-      const token = req ? req.cookies[tokenName] : undefined
+      let token = req ? req.cookies[tokenName] : undefined
       let user = null
+
+      // HACK: use token in playground
+      if (process.env.NODE_ENV === 'development')
+        token = app.get('TOKEN')
 
       try {
         if (token) user = jwt.decode(token, app.get('JWT_SECRET'))
+
         return {user, token, pgResource, req}
       } catch (e) {
         // TODO: throw

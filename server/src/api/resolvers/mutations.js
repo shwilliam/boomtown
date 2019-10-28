@@ -34,6 +34,10 @@ module.exports = app => ({
 
       const token = generateToken(user, app.get('JWT_SECRET'))
 
+      // HACK: use token in graphql playground
+      if (process.env.NODE_ENV === 'development')
+        app.set('TOKEN', token)
+
       setCookie({
         tokenName: app.get('JWT_COOKIE_NAME'),
         token,
@@ -66,6 +70,10 @@ module.exports = app => ({
 
       const token = generateToken(user, app.get('JWT_SECRET'))
 
+      // HACK: use token in graphql playground
+      if (process.env.NODE_ENV === 'development')
+        app.set('TOKEN', token)
+
       setCookie({
         tokenName: app.get('JWT_COOKIE_NAME'),
         token,
@@ -83,6 +91,10 @@ module.exports = app => ({
 
   logout(parent, args, context) {
     context.req.res.clearCookie(app.get('JWT_COOKIE_NAME'))
+
+    // HACK: use token in graphql playground
+    if (process.env.NODE_ENV === 'development') app.set('TOKEN', null)
+
     return true
   },
 
