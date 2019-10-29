@@ -120,7 +120,7 @@ module.exports = postgres => ({
             client.query('COMMIT', e => {
               if (e) throw e
               done()
-              resolve(newItem.rows[0])
+              resolve(newItem)
             })
           })
         } catch (e) {
