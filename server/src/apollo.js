@@ -27,13 +27,8 @@ module.exports = ({app, pgResource}) => {
       if (process.env.NODE_ENV === 'development')
         token = app.get('TOKEN')
 
-      try {
-        if (token) user = jwt.decode(token, app.get('JWT_SECRET'))
-
-        return {user, token, pgResource, req}
-      } catch (e) {
-        // TODO: throw
-      }
+      if (token) user = jwt.decode(token, app.get('JWT_SECRET'))
+      return {user, token, pgResource, req}
     },
     schema,
   })
