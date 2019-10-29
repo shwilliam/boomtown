@@ -4,6 +4,7 @@ module.exports = app => ({
   viewer(_, args, {user}) {
     return user
   },
+
   async user(_, {id}, {pgResource}) {
     try {
       const user = await pgResource.getUserById(id)
@@ -12,6 +13,7 @@ module.exports = app => ({
       throw new ApolloError(e)
     }
   },
+
   async items(_, {filter}, {pgResource}) {
     try {
       const items = await pgResource.getItems(filter)
@@ -20,6 +22,7 @@ module.exports = app => ({
       throw new ApolloError(e)
     }
   },
+
   async tags(_, args, {pgResource}) {
     try {
       const tags = await pgResource.getTags()

@@ -10,6 +10,7 @@ module.exports = {
         throw new ApolloError(e)
       }
     },
+
     async borrowed({borrower_id}, _, {pgResource}) {
       try {
         const items = await pgResource.getBorrowedItemsForUser(
@@ -31,6 +32,7 @@ module.exports = {
         throw new ApolloError(e)
       }
     },
+
     async tags({id}, _, {pgResource}) {
       try {
         const tags = await pgResource.getTagsForItem(id)
@@ -39,6 +41,7 @@ module.exports = {
         throw new ApolloError(e)
       }
     },
+
     async borrower({borrower_id}, _, {pgResource}) {
       if (!borrower_id) return
 
