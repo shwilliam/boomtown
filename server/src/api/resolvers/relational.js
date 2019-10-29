@@ -2,7 +2,7 @@ const {ApolloError} = require('apollo-server')
 
 module.exports = {
   User: {
-    async items(parent, {id}, {pgResource}, info) {
+    async items({id}, _, {pgResource}) {
       try {
         const items = await pgResource.getItemsForUser(id)
         return items
@@ -10,9 +10,11 @@ module.exports = {
         throw new ApolloError(e)
       }
     },
-    async borrowed(parent, {id}, {pgResource}, info) {
+    async borrowed({borrower_id}, _, {pgResource}) {
       try {
-        const items = await pgResource.getBorrowedItemsForUser(id)
+        const items = await pgResource.getBorrowedItemsForUser(
+          borrower_id,
+        )
         return items
       } catch (e) {
         throw new ApolloError(e)
@@ -21,15 +23,15 @@ module.exports = {
   },
 
   Item: {
-    async owner(parent, {id}, {pgResource}, info) {
+    async owner({owner_id}, _, {pgResource}) {
       try {
-        const user = await pgResource.getUserById(id)
+        const user = await pgResource.getUserById(owner_id)
         return user
       } catch (e) {
         throw new ApolloError(e)
       }
     },
-    async tags(parent, {id}, {pgResource}, info) {
+    async tags({id}, _, {pgResource}) {
       try {
         const tags = await pgResource.getTagsForItem(id)
         return tags
@@ -37,9 +39,11 @@ module.exports = {
         throw new ApolloError(e)
       }
     },
-    async borrower(parent, {id}, {pgResource}, info) {
+    async borrower({borrower_id}, _, {pgResource}) {
+      if (!borrower_id) return
+
       try {
-        const user = await pgResource.getUserById(id)
+        const user = await pgResource.getUserById(borrower_id)
         return user
       } catch (e) {
         throw new ApolloError(e)

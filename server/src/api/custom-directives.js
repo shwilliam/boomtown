@@ -20,19 +20,16 @@ class AuthDirective extends SchemaDirectiveVisitor {
     Object.keys(fields).forEach(fieldName => {
       const field = fields[fieldName]
       const {resolve = defaultFieldResolver} = field
-      field.resolve = async function(
-        parent,
-        args,
-        {req, token},
-        info,
-      ) {
+      field.resolve = async function(parent, args, context, info) {
         if (
-          !token &&
-          !['login', 'signup'].includes(req.body.operationName)
+          !context.token &&
+          !['login', 'signup'].includes(
+            context.req.body.operationName,
+          )
         )
           throw new ForbiddenError('No authentication token found')
 
-        return resolve.apply(this, [parent, args, {req, token}, info])
+        return resolve.apply(this, [parent, args, context, info])
       }
     })
   }

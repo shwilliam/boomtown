@@ -6,19 +6,19 @@ module.exports = gql`
 
   type Item @auth {
     id: ID!
-    createdAt: Date!
+    created_at: Date!
     title: String!
     description: String!
     owner: User!
     tags: [Tag]
-    imageUrl: String
+    image_url: String
     borrower: User
   }
 
   type User @auth {
     id: ID!
     email: String!
-    name: String!
+    fullname: String!
     bio: String
     items: [Item]
     borrowed: [Item]
@@ -29,21 +29,9 @@ module.exports = gql`
     title: String!
   }
 
-  type File {
-    id: ID!
-    filename: String!
-    mimetype: String!
-    encoding: String!
-    itemId: ID!
-  }
-
   input AssignedTag {
     id: ID!
     title: String!
-  }
-
-  input AssignedBorrower {
-    id: ID!
   }
 
   input NewItemInput {
