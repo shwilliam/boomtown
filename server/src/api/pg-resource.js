@@ -19,6 +19,7 @@ module.exports = postgres => ({
       }
     }
   },
+
   async getUserAndPasswordForVerification(email) {
     const findUserQuery = {
       text: 'SELECT * FROM public.users WHERE email=$1',
@@ -32,13 +33,13 @@ module.exports = postgres => ({
       throw e
     }
   },
+
   async getUserById(id) {
     const findUserQuery = {
       text: 'SELECT * FROM public.users WHERE id=$1',
       values: [id],
     }
 
-    // TODO: handle e w query 500
     try {
       const results = await postgres.query(findUserQuery)
       const user = results.rows[0]
@@ -62,6 +63,7 @@ module.exports = postgres => ({
 
     return items.rows
   },
+
   async getItemsForUser(id) {
     const items = await postgres.query({
       text: `SELECT * FROM public.items WHERE owner_id=$1`,
@@ -69,6 +71,7 @@ module.exports = postgres => ({
     })
     return items.rows
   },
+
   async getBorrowedItemsForUser(id) {
     const items = await postgres.query({
       text: `SELECT * FROM public.items WHERE borrower_id=$1`,
@@ -76,12 +79,14 @@ module.exports = postgres => ({
     })
     return items.rows
   },
+
   async getTags() {
     const tags = await postgres.query({
       text: `SELECT * FROM public.tags`,
     })
     return tags.rows
   },
+
   async getTagsForItem(id) {
     const tagsQuery = {
       text: `SELECT * FROM public.item_tags INNER JOIN public.tags ON public.item_tags.tag_id=public.tags.id WHERE item_id=$1`,
@@ -91,6 +96,7 @@ module.exports = postgres => ({
     const tags = await postgres.query(tagsQuery)
     return tags.rows
   },
+
   async saveNewItem({item, user}) {
     return new Promise((resolve, reject) => {
       postgres.connect((err, client, done) => {
@@ -99,20 +105,26 @@ module.exports = postgres => ({
             const {title, description, tags} = item
             const userId = user && user.id
 
-            const newItemQuery = {
-              text:
-                'INSERT INTO public.items ("title", "desc", "owner_id") VALUES ($1, $2, $3) RETURNING *',
-              values: [title, description, userId],
-            }
-
             let newItem
             try {
-              const queryResult = await postgres.query(newItemQuery)
+              const queryResult = await postgres.query({
+                text:
+                  'INSERT INTO public.items ("title", "desc", "owner_id") VALUES ($1, $2, $3) RETURNING *',
+                values: [title, description, userId],
+              })
               const newItem = queryResult.rows[0]
               if (!newItem) throw 'Error adding new item'
               const newItemId = newItem.id
-              // TODO: generate tag relationships query
-              // TODO: insert tags
+
+              if (tags.length)
+                tags.forEach(
+                  async t =>
+                    await postgres.query({
+                      text:
+                        'INSERT INTO public.item_tags ("item_id", "tag_id") VALUES ($1, $2) RETURNING *',
+                      values: [newItemId, t],
+                    }),
+                )
             } catch (e) {
               throw e
             }
@@ -128,10 +140,6 @@ module.exports = postgres => ({
             if (e) throw e
             done()
           })
-          switch (true) {
-            default:
-              throw e
-          }
         }
       })
     })

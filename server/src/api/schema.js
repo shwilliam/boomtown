@@ -29,15 +29,10 @@ module.exports = gql`
     title: String!
   }
 
-  input AssignedTag {
-    id: ID!
-    title: String!
-  }
-
   input NewItemInput {
     title: String!
     description: String!
-    tags: [AssignedTag]
+    tags: [ID]
   }
 
   input NewUserInput {
