@@ -21,13 +21,14 @@ module.exports = ({app, pgResource}) => {
     context: ({req}) => {
       const tokenName = app.get('JWT_COOKIE_NAME')
       let token = req ? req.cookies[tokenName] : undefined
-      let user = null
+      let user
 
       // HACK: use token in playground
       if (process.env.NODE_ENV === 'development')
-        token = app.get('TOKEN')
+        token = req.headers.token
 
       if (token) user = jwt.decode(token, app.get('JWT_SECRET'))
+
       return {user, token, pgResource, req}
     },
     schema,

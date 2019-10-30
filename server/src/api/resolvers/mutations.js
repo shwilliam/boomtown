@@ -32,11 +32,7 @@ module.exports = app => ({
         password: bcrypt.hashSync(password, 10),
       })
 
-      const token = generateToken(user, app.get('JWT_SECRET'))
-
-      // HACK: use token in graphql playground
-      if (process.env.NODE_ENV === 'development')
-        app.set('TOKEN', token)
+      let token = generateToken(user, app.get('JWT_SECRET'))
 
       setCookie({
         tokenName: app.get('JWT_COOKIE_NAME'),
@@ -68,11 +64,7 @@ module.exports = app => ({
       if (!bcrypt.compareSync(password, user.password))
         throw 'Invalid Password'
 
-      const token = generateToken(user, app.get('JWT_SECRET'))
-
-      // HACK: use token in graphql playground
-      if (process.env.NODE_ENV === 'development')
-        app.set('TOKEN', token)
+      let token = generateToken(user, app.get('JWT_SECRET'))
 
       setCookie({
         tokenName: app.get('JWT_COOKIE_NAME'),
@@ -91,9 +83,6 @@ module.exports = app => ({
 
   logout(parent, args, context) {
     context.req.res.clearCookie(app.get('JWT_COOKIE_NAME'))
-
-    // HACK: use token in graphql playground
-    if (process.env.NODE_ENV === 'development') app.set('TOKEN', null)
 
     return true
   },
