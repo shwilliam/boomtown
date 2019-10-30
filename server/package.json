@@ -5,7 +5,9 @@
   "main": "src/index.js",
   "scripts": {
     "start": "NODE_ENV=production node src/index.js",
-    "dev": "NODE_ENV=development nodemon src/index.js "
+    "dev": "NODE_ENV=development nodemon src/index.js",
+    "test": "NODE_ENV=development jest --verbose",
+    "test:watch": "npm run test -- --watch"
   },
   "repository": {
     "type": "git",
@@ -31,7 +33,15 @@
   },
   "devDependencies": {
     "eslint": "^6.5.1",
+    "graphql": "^14.5.8",
+    "jest-cli": "^24.9.0",
     "nodemon": "^1.19.4",
     "prettier": "^1.18.2"
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/resolvers"
+    ]
   }
 }
