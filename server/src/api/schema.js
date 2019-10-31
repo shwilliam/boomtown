@@ -4,7 +4,7 @@ module.exports = gql`
   directive @auth on OBJECT
   scalar Date
 
-  type Item @auth {
+  type Item {
     id: ID!
     created_at: Date!
     title: String!
@@ -15,7 +15,7 @@ module.exports = gql`
     borrower: User
   }
 
-  type User @auth {
+  type User {
     id: ID!
     email: String!
     fullname: String!
@@ -58,7 +58,7 @@ module.exports = gql`
     tags: [Tag]
   }
 
-  type Mutation {
+  type Mutation @auth {
     addItem(item: NewItemInput!): Item
     signup(user: NewUserInput!): AuthPayload
     login(user: LoginUserInput!): AuthPayload
