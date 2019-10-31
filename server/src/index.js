@@ -2,11 +2,12 @@ const express = require('express')
 const initServer = require('./server')
 const initDB = require('./db')
 const initApollo = require('./apollo')
+const initPgHelpers = require('./api/pg-resource')
 
 const app = express()
 const PORT = initServer(app)
 const db = initDB(app)
-const pgResource = require('./api/pg-resource')(db)
+const pgResource = initPgHelpers(db)
 
 initApollo({app, pgResource})
 
