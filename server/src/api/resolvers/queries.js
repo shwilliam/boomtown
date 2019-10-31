@@ -1,11 +1,11 @@
 const {ApolloError} = require('apollo-server')
 
 module.exports = app => ({
-  viewer(_, args, {user}) {
+  viewer: (_, args, {user}) => {
     return user
   },
 
-  async user(_, {id}, {pgResource}) {
+  user: async (_, {id}, {pgResource}) => {
     try {
       const user = await pgResource.getUserById(id)
       return user
@@ -14,7 +14,7 @@ module.exports = app => ({
     }
   },
 
-  async items(_, {filter}, {pgResource}) {
+  items: async (_, {filter}, {pgResource}) => {
     try {
       const items = await pgResource.getItems(filter)
       return items
@@ -23,7 +23,7 @@ module.exports = app => ({
     }
   },
 
-  async tags(_, args, {pgResource}) {
+  tags: async (_, args, {pgResource}) => {
     try {
       const tags = await pgResource.getTags()
       return tags

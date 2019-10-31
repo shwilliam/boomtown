@@ -2,7 +2,7 @@ const {ApolloError} = require('apollo-server')
 
 module.exports = {
   User: {
-    async items({id}, _, {pgResource}) {
+    items: async ({id}, _, {pgResource}) => {
       try {
         const items = await pgResource.getItemsForUser(id)
         return items
@@ -11,7 +11,7 @@ module.exports = {
       }
     },
 
-    async borrowed({borrower_id}, _, {pgResource}) {
+    borrowed: async ({borrower_id}, _, {pgResource}) => {
       try {
         const items = await pgResource.getBorrowedItemsForUser(
           borrower_id,
@@ -24,7 +24,7 @@ module.exports = {
   },
 
   Item: {
-    async owner({owner_id}, _, {pgResource}) {
+    owner: async ({owner_id}, _, {pgResource}) => {
       try {
         const user = await pgResource.getUserById(owner_id)
         return user

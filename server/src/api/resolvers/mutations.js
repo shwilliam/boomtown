@@ -18,13 +18,11 @@ function generateToken(user, secret) {
 }
 
 module.exports = app => ({
-  async signup(
+  signup: async (
     parent,
-    {
-      user: {fullname, email, password},
-    },
+    {user: {fullname, email, password}},
     {pgResource, req},
-  ) {
+  ) => {
     try {
       const user = await pgResource.createUser({
         fullname,
@@ -49,13 +47,11 @@ module.exports = app => ({
     }
   },
 
-  async login(
+  login: async (
     parent,
-    {
-      user: {email, password},
-    },
+    {user: {email, password}},
     {pgResource, req},
-  ) {
+  ) => {
     try {
       const user = await pgResource.getUserAndPasswordForVerification(
         email,
@@ -81,13 +77,13 @@ module.exports = app => ({
     }
   },
 
-  logout(parent, args, context) {
+  logout: (parent, args, context) => {
     context.req.res.clearCookie(app.get('JWT_COOKIE_NAME'))
 
     return true
   },
 
-  async addItem(parent, {item}, {token, pgResource}, info) {
+  addItem: async (parent, {item}, {token, pgResource}, info) => {
     const user = await jwt.decode(token, app.get('JWT_SECRET'))
     const newItem = await pgResource.saveNewItem({
       item,
