@@ -51,7 +51,7 @@ module.exports = gql`
     token: String!
   }
 
-  type Query {
+  type Query @auth {
     user(id: ID!): User
     viewer: User
     items(filter: ID): [Item]
