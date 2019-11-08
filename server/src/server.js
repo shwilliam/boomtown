@@ -19,7 +19,7 @@ module.exports = app => {
   app.use(cookieParser())
 
   if (process.env.NODE_ENV === 'production') {
-    const root = path.resolve(__dirname, '../../public')
+    const root = path.resolve(__dirname, '../public')
 
     app.use(express.static(root))
     app.use(fallback('index.html', {root}))
