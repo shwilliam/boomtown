@@ -8,7 +8,7 @@ module.exports = gql`
     id: ID!
     created_at: Date!
     title: String!
-    description: String!
+    desc: String!
     owner: User!
     tags: [Tag]
     image_url: String
