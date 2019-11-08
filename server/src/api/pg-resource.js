@@ -112,19 +112,23 @@ module.exports = postgres => ({
                   'INSERT INTO items ("title", "desc", "owner_id") VALUES ($1, $2, $3) RETURNING *',
                 values: [title, description, userId],
               })
-              const newItem = queryResult.rows[0]
+              newItem = queryResult.rows[0]
               if (!newItem) throw 'Error adding new item'
               const newItemId = newItem.id
 
-              if (tags.length)
-                tags.forEach(
-                  async t =>
-                    await postgres.query({
-                      text:
-                        'INSERT INTO item_tags ("item_id", "tag_id") VALUES ($1, $2) RETURNING *',
-                      values: [newItemId, t],
-                    }),
-                )
+              if (Array.isArray(tags) && tags.length) {
+                await postgres.query({
+                  text:
+                    tags
+                      .reduce(
+                        (acc, val) =>
+                          `${acc}(${newItemId}, $${val}),`,
+                        'INSERT INTO item_tags ("item_id", "tag_id") VALUES ',
+                      )
+                      .slice(0, -1) + ';',
+                  values: tags,
+                })
+              }
             } catch (e) {
               throw e
             }
