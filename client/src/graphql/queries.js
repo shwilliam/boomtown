@@ -1,6 +1,19 @@
 import gql from 'graphql-tag'
 
-// export const ALL_ITEMS_QUERY = gql``
+export const ALL_ITEMS_QUERY = gql`
+  query items {
+    items {
+      id
+      title
+      created_at
+      desc
+      tags {
+        id
+        title
+      }
+    }
+  }
+`
 
 // export const ALL_USER_ITEMS_QUERY = gql``
 
