@@ -48,7 +48,7 @@ const AccountForm = ({classes, ...props}) => {
   return (
     <Form
       onSubmit={onSubmit}
-      validate={validate}
+      validate={values => validate({isSignUp, ...values})}
       render={({handleSubmit}) => (
         <form
           onSubmit={handleSubmit}

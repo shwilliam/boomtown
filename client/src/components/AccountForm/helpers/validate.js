@@ -1,4 +1,4 @@
-export default function validate(values) {
+export default function validate({isSignUp, ...values}) {
   const errors = {}
   if (!values.email) {
     // TODO: email regex
@@ -8,6 +8,9 @@ export default function validate(values) {
     // TODO: min length
     errors.password = 'Required'
   }
-  // TODO: validate fullname
+  if (isSignUp && !values.fullname) {
+    // TODO: min length?
+    errors.fullname = 'Required'
+  }
   return errors
 }
