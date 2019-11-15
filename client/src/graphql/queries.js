@@ -23,7 +23,13 @@ export const ALL_ITEMS_QUERY = gql`
 
 // export const ALL_TAGS_QUERY = gql``
 
-// export const ADD_ITEM_MUTATION = gql``
+export const ADD_ITEM_MUTATION = gql`
+  mutation addItem($item: NewItemInput!) {
+    addItem(item: $item) {
+      id
+    }
+  }
+`
 
 // export const VIEWER_QUERY = gql``
 
