@@ -17,6 +17,7 @@ const ItemCard = ({
   owner,
   classes,
   children,
+  disabled = false,
   ...props
 }) => {
   return (
@@ -45,7 +46,11 @@ const ItemCard = ({
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <Button aria-label="Borrow" variant="outlined">
+        <Button
+          aria-label="Borrow"
+          variant="outlined"
+          disabled={disabled}
+        >
           Borrow
         </Button>
       </CardActions>

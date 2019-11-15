@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useContext} from 'react'
 import {useHistory} from 'react-router-dom'
 import {Form, Field} from 'react-final-form'
 import {useMutation} from '@apollo/react-hooks'
@@ -17,15 +17,25 @@ import {
   Checkbox,
   ListItemText,
 } from '@material-ui/core'
+import {ShareItemContext} from '../../context'
 
 const TAGS = {1: 'Fun', 2: 'Gardening'}
 
 const ShareItemForm = ({classes, ...props}) => {
+  const {setFormFieldValue} = useContext(ShareItemContext)
   const [addItem, {data: newItem}] = useMutation(ADD_ITEM_MUTATION)
   const history = useHistory()
 
   const onSubmit = ({title, desc, tags}) =>
-    addItem({variables: {item: {title, description: desc, tags}}})
+    addItem({
+      variables: {
+        item: {
+          title,
+          description: desc,
+          tags: tags.map(d => Number(d)),
+        },
+      },
+    })
 
   useEffect(() => {
     if (newItem) history.push('/')
@@ -39,6 +49,9 @@ const ShareItemForm = ({classes, ...props}) => {
         <form
           onSubmit={handleSubmit}
           className={classes.form}
+          onChange={e =>
+            setFormFieldValue(e.target.name, e.target.value)
+          }
           {...props}
         >
           <FormControl fullWidth className={classes.formControl}>
@@ -94,22 +107,30 @@ const ShareItemForm = ({classes, ...props}) => {
                         },
                       },
                     }}
-                    {...input}
                     inputProps={inputProps}
+                    {...input}
                     renderValue={values =>
                       values.map(id => TAGS[id]).join(', ')
                     }
-                    value={input.value || []}
+                    value={value || []}
                     name={name}
-                    onChange={onChange}
+                    onChange={e =>
+                      setFormFieldValue(
+                        'tags',
+                        e.target.value.map(id => ({
+                          id,
+                          title: TAGS[id],
+                        })),
+                      ) || onChange(e)
+                    }
                   >
                     {Object.keys(TAGS).map(id => (
                       <MenuItem key={id} value={id}>
                         <Checkbox
                           checked={
                             !!(
-                              input.value &&
-                              input.value.some(
+                              value &&
+                              value.some(
                                 selectedId => selectedId === id,
                               )
                             )
