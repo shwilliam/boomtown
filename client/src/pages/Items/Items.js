@@ -1,6 +1,6 @@
 import React from 'react'
 import {useQuery} from 'react-apollo'
-import ItemCard, {ItemTag} from '../../components/ItemCard'
+import ItemGrid, {ItemCard, ItemTag} from '../../components/ItemGrid'
 import {ALL_ITEMS_QUERY} from '../../graphql'
 import Layout from '../../components/Layout'
 
@@ -15,7 +15,7 @@ const Items = () => {
           Unable to load items. Please refresh the page to try again.
         </p>
       ) : data && data.items ? (
-        <ul>
+        <ItemGrid>
           {data.items.map(
             ({id, title, desc, created_at, owner, tags}) => (
               <ItemCard
@@ -35,7 +35,7 @@ const Items = () => {
               </ItemCard>
             ),
           )}
-        </ul>
+        </ItemGrid>
       ) : (
         <p>No items found...</p>
       )}

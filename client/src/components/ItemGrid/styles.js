@@ -14,6 +14,9 @@ const styles = ({theme}) => ({
   title: {
     fontSize: '1.6rem',
   },
+  grid: {
+    flexGrow: 1,
+  },
 })
 
 export default styles
