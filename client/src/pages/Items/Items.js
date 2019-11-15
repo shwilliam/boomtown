@@ -1,32 +1,41 @@
 import React from 'react'
 import {useQuery} from 'react-apollo'
+import ItemCard, {ItemTag} from '../../components/ItemCard'
 import {ALL_ITEMS_QUERY} from '../../graphql'
 import MenuBar from '../../components/MenuBar'
 
 const Items = () => {
   const {loading, error, data} = useQuery(ALL_ITEMS_QUERY)
 
-  if (loading) return <p>loading...</p>
-  if (error) return <p>oops</p>
-
   return (
     <div>
       <MenuBar />
-      {data && data.items ? (
+      {loading && <p>loading...</p>}
+      {error ? (
+        <p>
+          Unable to load items. Please refresh the page to try again.
+        </p>
+      ) : data && data.items ? (
         <ul>
-          {data.items.map(({id, title, desc, tags}) => (
-            <li key={id}>
-              <p>{title}</p>
-              <p>{desc}</p>
-              {tags.length ? (
-                <ul>
-                  {tags.map(({id, title}) => (
-                    <li key={id}>{title}</li>
-                  ))}
-                </ul>
-              ) : null}
-            </li>
-          ))}
+          {data.items.map(
+            ({id, title, desc, created_at, owner, tags}) => (
+              <ItemCard
+                key={id}
+                title={title}
+                desc={desc}
+                date={created_at}
+                owner={owner.fullname}
+              >
+                {tags.length ? (
+                  <ul>
+                    {tags.map(({id, title}) => (
+                      <ItemTag id={id}>{title}</ItemTag>
+                    ))}
+                  </ul>
+                ) : null}
+              </ItemCard>
+            ),
+          )}
         </ul>
       ) : (
         <p>No items found...</p>
@@ -34,4 +43,5 @@ const Items = () => {
     </div>
   )
 }
+
 export default Items

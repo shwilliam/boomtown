@@ -11,6 +11,10 @@ export const ALL_ITEMS_QUERY = gql`
         id
         title
       }
+      owner {
+        id
+        fullname
+      }
     }
   }
 `
