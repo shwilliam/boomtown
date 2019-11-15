@@ -2,14 +2,13 @@ import React from 'react'
 import {useQuery} from 'react-apollo'
 import ItemCard, {ItemTag} from '../../components/ItemCard'
 import {ALL_ITEMS_QUERY} from '../../graphql'
-import MenuBar from '../../components/MenuBar'
+import Layout from '../../components/Layout'
 
 const Items = () => {
   const {loading, error, data} = useQuery(ALL_ITEMS_QUERY)
 
   return (
-    <div>
-      <MenuBar />
+    <Layout>
       {loading && <p>loading...</p>}
       {error ? (
         <p>
@@ -40,7 +39,7 @@ const Items = () => {
       ) : (
         <p>No items found...</p>
       )}
-    </div>
+    </Layout>
   )
 }
 

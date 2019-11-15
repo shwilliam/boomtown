@@ -22,6 +22,7 @@ const GridContainer = ({children, ...props}) => (
     {children}
   </Grid>
 )
+
 const Home = ({classes}) => {
   return (
     <GridContainer className={classes.root}>
