@@ -1,5 +1,11 @@
 import React from 'react'
+import MenuBar from '../../components/MenuBar'
 
-const Share = () => <div>share</div>
+const Share = () => (
+  <>
+    <MenuBar />
+    share
+  </>
+)
 
 export default Share

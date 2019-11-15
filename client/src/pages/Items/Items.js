@@ -1,6 +1,7 @@
 import React from 'react'
 import {useQuery} from 'react-apollo'
 import {ALL_ITEMS_QUERY} from '../../graphql'
+import MenuBar from '../../components/MenuBar'
 
 const Items = () => {
   const {loading, error, data} = useQuery(ALL_ITEMS_QUERY)
@@ -10,6 +11,7 @@ const Items = () => {
 
   return (
     <div>
+      <MenuBar />
       {data && data.items ? (
         <ul>
           {data.items.map(({id, title, desc, tags}) => (

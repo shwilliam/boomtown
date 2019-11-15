@@ -1,5 +1,11 @@
 import React from 'react'
+import MenuBar from '../../components/MenuBar'
 
-const Profile = () => <div>profile</div>
+const Profile = () => (
+  <>
+    <MenuBar />
+    profile
+  </>
+)
 
 export default Profile
