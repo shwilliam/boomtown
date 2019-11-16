@@ -4,10 +4,13 @@ import {withStyles} from '@material-ui/core/styles'
 import {Paper} from '@material-ui/core'
 import styles from './styles'
 
-const Layout = ({classes, children, ...props}) => (
+const Layout = ({dark = false, classes, children, ...props}) => (
   <>
     <MenuBar />
-    <Paper className={classes.paper} {...props}>
+    <Paper
+      className={dark ? classes.paperDark : classes.paper}
+      {...props}
+    >
       {children}
     </Paper>
   </>
