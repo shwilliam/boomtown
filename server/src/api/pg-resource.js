@@ -148,4 +148,24 @@ module.exports = postgres => ({
       })
     })
   },
+
+  borrowItem: async ({item, user}) => {
+    const userId = user && user.id
+
+    const queryResult = await postgres.query({
+      text: 'SELECT * FROM items WHERE id=$1',
+      values: [item],
+    })
+    const itemData = queryResult.rows[0]
+
+    if (!itemData) return -1 // item not found
+    if (itemData.borrower_id) return 0 // item already borrowed
+
+    await postgres.query({
+      text: 'UPDATE items SET borrower_id=$1 WHERE id=$2',
+      values: [userId, item],
+    })
+
+    return item
+  },
 })

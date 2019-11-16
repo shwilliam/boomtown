@@ -15,6 +15,9 @@ export const ALL_ITEMS_QUERY = gql`
         id
         fullname
       }
+      borrower {
+        id
+      }
     }
   }
 `
@@ -54,5 +57,11 @@ export const LOGIN_MUTATION = gql`
       }
       token
     }
+  }
+`
+
+export const BORROW_ITEM_MUTATION = gql`
+  mutation borrowItem($item: ID!) {
+    borrowItem(item: $item)
   }
 `

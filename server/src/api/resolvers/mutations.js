@@ -1,6 +1,7 @@
 const {
   AuthenticationError,
-  ApolloError,
+  // TODO: throw appropriate ApolloError
+  // ApolloError,
 } = require('apollo-server-express')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
@@ -19,7 +20,7 @@ function generateToken(user, secret) {
 
 module.exports = app => ({
   signup: async (
-    parent,
+    _,
     {user: {fullname, email, password}},
     {pgResource, req},
   ) => {
@@ -47,11 +48,7 @@ module.exports = app => ({
     }
   },
 
-  login: async (
-    parent,
-    {user: {email, password}},
-    {pgResource, req},
-  ) => {
+  login: async (_, {user: {email, password}}, {pgResource, req}) => {
     try {
       const user = await pgResource.getUserAndPasswordForVerification(
         email,
@@ -77,15 +74,24 @@ module.exports = app => ({
     }
   },
 
-  logout: (parent, args, context) => {
+  logout: (_, __, context) => {
     context.req.res.clearCookie(app.get('JWT_COOKIE_NAME'))
 
     return true
   },
 
-  addItem: async (parent, {item}, {token, pgResource}, info) => {
-    const user = await jwt.decode(token, app.get('JWT_SECRET'))
+  addItem: async (_, {item}, {token, pgResource}) => {
+    const user = jwt.decode(token, app.get('JWT_SECRET'))
     const newItem = await pgResource.saveNewItem({
+      item,
+      user,
+    })
+    return newItem
+  },
+
+  borrowItem: async (_, {item}, {token, pgResource}) => {
+    const user = jwt.decode(token, app.get('JWT_SECRET'))
+    const newItem = await pgResource.borrowItem({
       item,
       user,
     })

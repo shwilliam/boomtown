@@ -8,7 +8,7 @@ const Items = () => {
   const {loading, error, data} = useQuery(ALL_ITEMS_QUERY)
 
   return (
-    <Layout>
+    <Layout dark>
       {loading && <p>loading...</p>}
       {error ? (
         <p>
@@ -17,21 +17,31 @@ const Items = () => {
       ) : data && data.items ? (
         <ItemGrid>
           {data.items.map(
-            ({id, title, desc, created_at, owner, tags}) => (
+            ({
+              id,
+              title,
+              desc,
+              created_at,
+              owner,
+              borrower,
+              tags,
+            }) => (
               <ItemCard
                 key={id}
+                id={id}
                 title={title}
                 desc={desc}
                 date={created_at}
                 owner={owner.fullname}
+                disabled={!!borrower}
               >
-                {tags.length ? (
-                  <ul>
-                    {tags.map(({id, title}) => (
-                      <ItemTag id={id}>{title}</ItemTag>
-                    ))}
-                  </ul>
-                ) : null}
+                {tags.length
+                  ? tags.map(({id, title}) => (
+                      <ItemTag key={id} id={id}>
+                        {title}
+                      </ItemTag>
+                    ))
+                  : null}
               </ItemCard>
             ),
           )}

@@ -4,6 +4,7 @@ import {
   ADD_ITEM_MUTATION,
   SIGNUP_MUTATION,
   LOGIN_MUTATION,
+  BORROW_ITEM_MUTATION,
 } from './queries'
 
 export default client
@@ -12,4 +13,5 @@ export {
   ADD_ITEM_MUTATION,
   SIGNUP_MUTATION,
   LOGIN_MUTATION,
+  BORROW_ITEM_MUTATION,
 }
