@@ -1,7 +1,12 @@
 const {ApolloError} = require('apollo-server')
+const jwt = require('jsonwebtoken')
 
 module.exports = app => ({
-  viewer: (_, args, {user}) => {
+  viewer: async (_, __, {token, pgResource}) => {
+    // TODO: refactor
+    let user = jwt.decode(token, app.get('JWT_SECRET'))
+    user = await pgResource.getUserById(user.id)
+
     return user
   },
 
@@ -23,7 +28,7 @@ module.exports = app => ({
     }
   },
 
-  tags: async (_, args, {pgResource}) => {
+  tags: async (_, __, {pgResource}) => {
     try {
       const tags = await pgResource.getTags()
       return tags
