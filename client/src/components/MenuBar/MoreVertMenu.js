@@ -1,11 +1,13 @@
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
 import {useHistory} from 'react-router-dom'
 import {Menu, MenuItem, IconButton} from '@material-ui/core'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import FingerprintIcon from '@material-ui/icons/Fingerprint'
 import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew'
+import AuthContext from '../../context/AuthContext'
 
 const MoreVertMenu = props => {
+  const {logout} = useContext(AuthContext)
   const [anchor, setAnchor] = useState()
   const history = useHistory()
 
@@ -33,7 +35,7 @@ const MoreVertMenu = props => {
           <FingerprintIcon />
           Your Profile
         </MenuItem>
-        <MenuItem onClick={() => setAnchor()}>
+        <MenuItem onClick={() => logout()}>
           <PowerSettingsNewIcon />
           Logout
         </MenuItem>
