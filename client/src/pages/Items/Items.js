@@ -1,11 +1,18 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {useQuery} from 'react-apollo'
 import ItemGrid, {ItemCard, ItemTag} from '../../components/ItemGrid'
 import {ALL_ITEMS_QUERY} from '../../graphql'
 import Layout from '../../components/Layout'
 
 const Items = () => {
-  const {loading, error, data} = useQuery(ALL_ITEMS_QUERY)
+  const {loading, error, data, refetch} = useQuery(ALL_ITEMS_QUERY, {
+    pollInterval: 30000, // 30 sec
+  })
+
+  // refetch on mount
+  useEffect(() => {
+    refetch()
+  }, [refetch])
 
   return (
     <Layout dark>
@@ -34,6 +41,7 @@ const Items = () => {
                 date={created_at}
                 owner={owner.fullname}
                 disabled={!!borrower}
+                onBorrow={refetch}
               >
                 {tags.length
                   ? tags.map(({id, title}) => (

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {useMutation} from '@apollo/react-hooks'
 import {format as timeago} from 'timeago.js'
 import {withStyles} from '@material-ui/core/styles'
@@ -19,12 +19,19 @@ const ItemCard = ({
   date,
   desc,
   owner,
+  onBorrow,
   classes,
   children,
   disabled = false,
   ...props
 }) => {
-  const [borrowItem, {itemStatus}] = useMutation(BORROW_ITEM_MUTATION)
+  const [borrowItem, {data: itemStatus}] = useMutation(
+    BORROW_ITEM_MUTATION,
+  )
+
+  useEffect(() => {
+    if (itemStatus) onBorrow()
+  }, [itemStatus, onBorrow])
 
   return (
     <Card className={classes.card} {...props}>
