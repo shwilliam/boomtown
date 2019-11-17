@@ -1,4 +1,5 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
+import {useHistory} from 'react-router-dom'
 import {Form, Field} from 'react-final-form'
 import {useMutation} from '@apollo/react-hooks'
 import Button from '@material-ui/core/Button'
@@ -6,28 +7,33 @@ import FormControl from '@material-ui/core/FormControl'
 import Grid from '@material-ui/core/Grid'
 import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel'
-import {withStyles} from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import {LOGIN_MUTATION, SIGNUP_MUTATION} from '../../graphql'
+import {withStyles} from '@material-ui/core/styles'
 import styles from './styles'
 import validate from './helpers/validate'
+import {AuthContext} from '../../context'
 
 const AccountForm = ({classes, ...props}) => {
-  const [isSignUp, setIsSignUp] = useState(false)
+  const history = useHistory()
+  // TODO: refactor to custom auth hook
   const [logIn, {data: signInData}] = useMutation(LOGIN_MUTATION)
   const [signUp, {data: signUpData}] = useMutation(SIGNUP_MUTATION)
+  const [isSignUp, setIsSignUp] = useState(false)
+  const {setActiveUser} = useContext(AuthContext)
 
   useEffect(() => {
-    // TODO: store user data in context
-    if (signUpData) {
-      console.log(signUpData.signup)
-    } else if (signInData) {
-      console.log(signInData.login)
-    }
-  }, [signUpData, signInData])
+    const userData = signUpData
+      ? signUpData.signup
+      : signInData && signInData.login
 
-  const onSubmit = ({email, password, fullname}) => {
-    console.log(email, password, fullname)
+    if (userData) {
+      setActiveUser(userData)
+      history.push('/')
+    }
+  }, [signUpData, signInData, setActiveUser, history])
+
+  const onSubmit = ({email, password, fullname}) =>
     isSignUp
       ? signUp({
           variables: {
@@ -43,7 +49,6 @@ const AccountForm = ({classes, ...props}) => {
             user: {email, password},
           },
         })
-  }
 
   return (
     <Form
@@ -60,10 +65,11 @@ const AccountForm = ({classes, ...props}) => {
               <InputLabel htmlFor="fullname">Full name</InputLabel>
               <Field
                 name="fullname"
-                render={({input}) => (
+                render={({input, meta}) => (
                   <Input
                     id="fullname"
                     type="text"
+                    error={meta.touched && !!meta.error}
                     inputProps={{
                       ...input,
                       autoComplete: 'off',

@@ -1,3 +1,9 @@
+import AuthContext, {AuthContextProvider} from './AuthContext'
 import ShareItemContext, {ShareItemContextProvider} from './ShareItem'
 
-export {ShareItemContext, ShareItemContextProvider}
+export {
+  AuthContext,
+  AuthContextProvider,
+  ShareItemContext,
+  ShareItemContextProvider,
+}
