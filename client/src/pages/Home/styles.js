@@ -1,7 +1,6 @@
 const styles = theme => ({
   root: {
-    flexGrow: 1,
-    height: '100%',
+    minHeight: '100vh',
     background: theme.palette.primary.main,
     padding: theme.spacing(5),
     [theme.breakpoints.up('md')]: {
