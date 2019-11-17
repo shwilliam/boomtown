@@ -24,8 +24,8 @@ module.exports = ({app, pgResource}) => {
       let user
 
       // HACK: use token in playground
-      if (process.env.NODE_ENV === 'development')
-        token = req.headers.token
+      // if (process.env.NODE_ENV === 'development')
+      //   token = req.headers.token
 
       if (token) user = jwt.decode(token, app.get('JWT_SECRET'))
 
