@@ -1,8 +1,8 @@
 import gql from 'graphql-tag'
 
 export const ALL_ITEMS_QUERY = gql`
-  query items {
-    items {
+  query items($filter: ID) {
+    items(filter: $filter) {
       id
       title
       created_at
@@ -21,8 +21,6 @@ export const ALL_ITEMS_QUERY = gql`
     }
   }
 `
-
-// export const ALL_USER_ITEMS_QUERY = gql``
 
 // export const ALL_TAGS_QUERY = gql``
 

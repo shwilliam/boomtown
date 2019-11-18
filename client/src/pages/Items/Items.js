@@ -1,11 +1,14 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useContext} from 'react'
 import {useQuery} from 'react-apollo'
 import ItemGrid, {ItemCard, ItemTag} from '../../components/ItemGrid'
 import {ALL_ITEMS_QUERY} from '../../graphql'
 import Layout from '../../components/Layout'
+import {AuthContext} from '../../context'
 
 const Items = () => {
+  const {activeUser} = useContext(AuthContext)
   const {loading, error, data, refetch} = useQuery(ALL_ITEMS_QUERY, {
+    variables: {filter: activeUser.user.id},
     pollInterval: 30000, // 30 sec
   })
 
