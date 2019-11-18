@@ -17,16 +17,17 @@ import {
   Checkbox,
   ListItemText,
 } from '@material-ui/core'
-import {ShareItemContext} from '../../context'
+import {ShareItemContext, GQLContext} from '../../context'
 
 const TAGS = {1: 'Fun', 2: 'Gardening'}
 
 const ShareItemForm = ({classes, ...props}) => {
+  const {refetchUserData} = useContext(GQLContext)
   const {setFormFieldValue} = useContext(ShareItemContext)
   const [addItem, {data: newItem}] = useMutation(ADD_ITEM_MUTATION)
   const history = useHistory()
 
-  const onSubmit = ({title, desc, tags}) =>
+  const onSubmit = ({title, desc, tags = []}) =>
     addItem({
       variables: {
         item: {
@@ -35,7 +36,7 @@ const ShareItemForm = ({classes, ...props}) => {
           tags: tags.map(d => Number(d)),
         },
       },
-    })
+    }) && refetchUserData()
 
   useEffect(() => {
     if (newItem) history.push('/')

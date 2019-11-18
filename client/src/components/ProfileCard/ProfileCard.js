@@ -1,19 +1,20 @@
-import React from 'react'
-import {useQuery} from 'react-apollo'
-import {VIEWER_QUERY} from '../../graphql'
+import React, {useContext} from 'react'
 import {withStyles} from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
 import CardContent from '@material-ui/core/CardContent'
 import Avatar from '@material-ui/core/Avatar'
 import Typography from '@material-ui/core/Typography'
+import {GQLContext} from '../../context'
 import styles from './styles'
 
 const ProfileCard = ({classes, ...props}) => {
-  const {loading, error, data: userData} = useQuery(VIEWER_QUERY)
+  const {userDataLoading, userDataError, userData} = useContext(
+    GQLContext,
+  )
 
-  if (error) return <p>oops...</p>
-  if (loading) return <p>loading...</p>
+  if (userDataError) return <p>oops...</p>
+  if (userDataLoading) return <p>loading...</p>
 
   const {fullname, bio, items, borrowed} = userData.viewer
   return (

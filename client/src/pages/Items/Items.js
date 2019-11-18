@@ -1,32 +1,21 @@
-import React, {useEffect, useContext} from 'react'
-import {useQuery} from 'react-apollo'
+import React, {useContext} from 'react'
 import ItemGrid, {ItemCard, ItemTag} from '../../components/ItemGrid'
-import {ALL_ITEMS_QUERY} from '../../graphql'
 import Layout from '../../components/Layout'
-import {AuthContext} from '../../context'
+import {GQLContext} from '../../context'
 
 const Items = () => {
-  const {activeUser} = useContext(AuthContext)
-  const {loading, error, data, refetch} = useQuery(ALL_ITEMS_QUERY, {
-    variables: {filter: activeUser.user.id},
-    pollInterval: 30000, // 30 sec
-  })
-
-  // refetch on mount
-  useEffect(() => {
-    refetch()
-  }, [refetch])
+  const {itemsLoading, itemsError, itemsData} = useContext(GQLContext)
 
   return (
     <Layout dark>
-      {loading && <p>loading...</p>}
-      {error ? (
+      {itemsLoading && <p>loading...</p>}
+      {itemsError ? (
         <p>
           Unable to load items. Please refresh the page to try again.
         </p>
-      ) : data && data.items ? (
+      ) : itemsData && itemsData.items ? (
         <ItemGrid>
-          {data.items.map(
+          {itemsData.items.map(
             ({
               id,
               title,
@@ -44,7 +33,6 @@ const Items = () => {
                 date={created_at}
                 owner={owner.fullname}
                 disabled={!!borrower}
-                onBorrow={refetch}
               >
                 {tags.length
                   ? tags.map(({id, title}) => (

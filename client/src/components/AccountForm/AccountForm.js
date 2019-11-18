@@ -12,10 +12,11 @@ import {LOGIN_MUTATION, SIGNUP_MUTATION} from '../../graphql'
 import {withStyles} from '@material-ui/core/styles'
 import styles from './styles'
 import validate from './helpers/validate'
-import {AuthContext} from '../../context'
+import {AuthContext, GQLContext} from '../../context'
 
 const AccountForm = ({classes, ...props}) => {
   const history = useHistory()
+  const {refetchUserData, refetchItems} = useContext(GQLContext)
   // TODO: refactor to custom auth hook
   const [logIn, {data: signInData}] = useMutation(LOGIN_MUTATION)
   const [signUp, {data: signUpData}] = useMutation(SIGNUP_MUTATION)
@@ -29,9 +30,18 @@ const AccountForm = ({classes, ...props}) => {
 
     if (userData) {
       setActiveUser(userData)
+      refetchItems()
+      refetchUserData()
       history.push('/')
     }
-  }, [signUpData, signInData, setActiveUser, history])
+  }, [
+    signUpData,
+    signInData,
+    setActiveUser,
+    refetchItems,
+    refetchUserData,
+    history,
+  ])
 
   const onSubmit = ({email, password, fullname}) =>
     isSignUp

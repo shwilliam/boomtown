@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useContext} from 'react'
 import {useMutation} from '@apollo/react-hooks'
 import {format as timeago} from 'timeago.js'
 import {withStyles} from '@material-ui/core/styles'
@@ -12,6 +12,7 @@ import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import {BORROW_ITEM_MUTATION} from '../../graphql'
 import styles from './styles'
+import {GQLContext} from '../../context'
 
 const ItemCard = ({
   id,
@@ -19,19 +20,22 @@ const ItemCard = ({
   date,
   desc,
   owner,
-  onBorrow,
   classes,
   children,
   disabled = false,
   ...props
 }) => {
+  const {refetchItems, refetchUserData} = useContext(GQLContext)
   const [borrowItem, {data: itemStatus}] = useMutation(
     BORROW_ITEM_MUTATION,
   )
 
   useEffect(() => {
-    if (itemStatus) onBorrow()
-  }, [itemStatus, onBorrow])
+    if (itemStatus) {
+      refetchItems()
+      refetchUserData()
+    }
+  }, [itemStatus, refetchItems, refetchUserData])
 
   return (
     <Card className={classes.card} {...props}>
