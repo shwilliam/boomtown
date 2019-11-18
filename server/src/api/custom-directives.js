@@ -6,7 +6,7 @@ class AuthDirective extends SchemaDirectiveVisitor {
   visitObject(type) {
     this.ensureFieldsWrapped(type)
   }
-  visitFieldDefinition(field, details) {
+  visitFieldDefinition(_, details) {
     this.ensureFieldsWrapped(details.objectType)
   }
 
@@ -20,6 +20,7 @@ class AuthDirective extends SchemaDirectiveVisitor {
     Object.keys(fields).forEach(fieldName => {
       const field = fields[fieldName]
       const {resolve = defaultFieldResolver} = field
+
       field.resolve = async function(parent, args, context, info) {
         if (
           !context.token &&

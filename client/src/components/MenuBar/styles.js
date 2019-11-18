@@ -1,7 +1,4 @@
 const styles = theme => ({
-  root: {
-    flexGrow: 1,
-  },
   margin: {
     margin: theme.spacing(1),
   },
