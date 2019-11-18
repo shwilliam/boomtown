@@ -2,6 +2,7 @@ import React, {useContext} from 'react'
 import ItemGrid, {ItemCard, ItemTag} from '../../components/ItemGrid'
 import Layout from '../../components/Layout'
 import {GQLContext} from '../../context'
+import {capitalize} from '../../utils'
 
 const Items = () => {
   const {itemsLoading, itemsError, itemsData} = useContext(GQLContext)
@@ -37,7 +38,7 @@ const Items = () => {
                 {tags.length
                   ? tags.map(({id, title}) => (
                       <ItemTag key={id} id={id}>
-                        {title}
+                        {capitalize(title)}
                       </ItemTag>
                     ))
                   : null}

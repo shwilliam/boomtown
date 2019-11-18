@@ -1,6 +1,7 @@
 import React, {useContext} from 'react'
 import {ItemCard, ItemTag} from '../ItemGrid'
 import {ShareItemContext, GQLContext} from '../../context'
+import {capitalize} from '../../utils'
 
 const ShareItemPreview = props => {
   const {formValues} = useContext(ShareItemContext)
@@ -18,7 +19,7 @@ const ShareItemPreview = props => {
       {formValues.tags && formValues.tags.length
         ? formValues.tags.map(({id, title}) => (
             <ItemTag key={id} id={id}>
-              {title}
+              {capitalize(title)}
             </ItemTag>
           ))
         : null}

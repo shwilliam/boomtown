@@ -1,6 +1,7 @@
 import client from './apollo'
 import {
   ALL_ITEMS_QUERY,
+  ALL_TAGS_QUERY,
   ADD_ITEM_MUTATION,
   VIEWER_QUERY,
   LOGOUT_MUTATION,
@@ -12,6 +13,7 @@ import {
 export default client
 export {
   ALL_ITEMS_QUERY,
+  ALL_TAGS_QUERY,
   ADD_ITEM_MUTATION,
   VIEWER_QUERY,
   LOGOUT_MUTATION,

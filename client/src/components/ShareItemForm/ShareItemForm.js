@@ -1,13 +1,13 @@
 import React, {useEffect, useContext} from 'react'
 import {useHistory} from 'react-router-dom'
 import {Form, Field} from 'react-final-form'
-import {useMutation} from '@apollo/react-hooks'
+import {useMutation, useQuery} from '@apollo/react-hooks'
 import Button from '@material-ui/core/Button'
 import FormControl from '@material-ui/core/FormControl'
 import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel'
 import Typography from '@material-ui/core/Typography'
-import {ADD_ITEM_MUTATION} from '../../graphql'
+import {ADD_ITEM_MUTATION, ALL_TAGS_QUERY} from '../../graphql'
 import {withStyles} from '@material-ui/core/styles'
 import styles from './styles'
 import validate from './helpers/validate'
@@ -18,14 +18,17 @@ import {
   ListItemText,
 } from '@material-ui/core'
 import {ShareItemContext, GQLContext} from '../../context'
-
-const TAGS = {1: 'Fun', 2: 'Gardening'}
+import {capitalize} from '../../utils'
 
 const ShareItemForm = ({classes, ...props}) => {
   const {refetchUserData} = useContext(GQLContext)
   const {setFormFieldValue} = useContext(ShareItemContext)
   const [addItem, {data: newItem}] = useMutation(ADD_ITEM_MUTATION)
+  const {data: tagsData, error: itemsError} = useQuery(ALL_TAGS_QUERY)
   const history = useHistory()
+
+  // TODO: handle error loading tags
+  if (itemsError) console.error(itemsError)
 
   const onSubmit = ({title, desc, tags = []}) =>
     addItem({
@@ -111,35 +114,44 @@ const ShareItemForm = ({classes, ...props}) => {
                     inputProps={inputProps}
                     {...input}
                     renderValue={values =>
-                      values.map(id => TAGS[id]).join(', ')
+                      values
+                        .map(val =>
+                          capitalize(
+                            tagsData.tags.find(({id}) => id === val)
+                              .title,
+                          ),
+                        )
+                        .join(', ')
                     }
                     value={value || []}
                     name={name}
                     onChange={e =>
                       setFormFieldValue(
                         'tags',
-                        e.target.value.map(id => ({
-                          id,
-                          title: TAGS[id],
-                        })),
+                        tagsData
+                          ? tagsData.tags.filter(({id}) =>
+                              e.target.value.includes(String(id)),
+                            )
+                          : [],
                       ) || onChange(e)
                     }
                   >
-                    {Object.keys(TAGS).map(id => (
-                      <MenuItem key={id} value={id}>
-                        <Checkbox
-                          checked={
-                            !!(
-                              value &&
-                              value.some(
-                                selectedId => selectedId === id,
+                    {tagsData &&
+                      tagsData.tags.map(({id, title}) => (
+                        <MenuItem key={id} value={id}>
+                          <Checkbox
+                            checked={
+                              !!(
+                                value &&
+                                value.some(
+                                  selectedId => selectedId === id,
+                                )
                               )
-                            )
-                          }
-                        />
-                        <ListItemText primary={TAGS[id]} />
-                      </MenuItem>
-                    ))}
+                            }
+                          />
+                          <ListItemText primary={capitalize(title)} />
+                        </MenuItem>
+                      ))}
                   </Select>
                 )
               }}
