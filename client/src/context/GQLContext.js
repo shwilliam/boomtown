@@ -27,8 +27,9 @@ const GQLContextProvider = ({children}) => {
   return (
     <GQLContext.Provider
       value={{
-        itemsData,
-        itemsLoading,
+        // HACK: avoid unfiltered query flash
+        itemsData: activeUser && !itemsLoading ? itemsData : null,
+        itemsLoading: activeUser ? itemsLoading : true,
         itemsError,
         refetchItems,
         userData,
