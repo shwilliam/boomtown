@@ -1,8 +1,12 @@
-const cookieParser = require('cookie-parser')
-const cors = require('cors')
+const {existsSync, mkdirSync} = require('fs')
+const path = require('path')
 const express = require('express')
 const fallback = require('express-history-api-fallback')
-const path = require('path')
+const cors = require('cors')
+const cookieParser = require('cookie-parser')
+
+existsSync(path.join(__dirname, '../uploads')) ||
+  mkdirSync(path.join(__dirname, '../uploads'))
 
 module.exports = app => {
   const PORT = process.env.PORT || 8080
@@ -17,6 +21,10 @@ module.exports = app => {
   app.set('JWT_COOKIE_NAME', 'monster')
 
   app.use(cookieParser())
+  app.use(
+    '/uploads',
+    express.static(path.join(__dirname, '../uploads')),
+  )
 
   if (process.env.NODE_ENV === 'production') {
     const root = path.resolve(__dirname, '../public')

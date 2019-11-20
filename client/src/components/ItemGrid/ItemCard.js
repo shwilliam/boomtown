@@ -20,6 +20,7 @@ const ItemCard = ({
   date,
   desc,
   owner,
+  imageUrl,
   classes,
   children,
   disabled = false,
@@ -50,8 +51,11 @@ const ItemCard = ({
       />
       <CardMedia
         className={classes.media}
-        image="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fcdn.akc.org%2Fcontent%2Fhero%2Fpuppy-boundaries_header.jpg&f=1&nofb=1"
-        title="pup"
+        image={
+          imageUrl ||
+          'https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fcdn.akc.org%2Fcontent%2Fhero%2Fpuppy-boundaries_header.jpg&f=1&nofb=1'
+        }
+        title={imageUrl ? title : 'Pup'}
       />
       <CardContent>
         <Typography variant="h3" className={classes.title}>

@@ -1,3 +1,5 @@
+const {createWriteStream} = require('fs')
+const path = require('path')
 const {
   AuthenticationError,
   // TODO: throw appropriate ApolloError
@@ -82,8 +84,21 @@ module.exports = app => ({
 
   addItem: async (_, {item}, {token, pgResource}) => {
     const user = jwt.decode(token, app.get('JWT_SECRET'))
+    const {createReadStream, filename} = await item.image.variables
+      .file
+
+    await new Promise(res =>
+      createReadStream()
+        .pipe(
+          createWriteStream(
+            path.join(__dirname, '../../../uploads', filename),
+          ),
+        )
+        .on('close', res),
+    )
+
     const newItem = await pgResource.saveNewItem({
-      item,
+      item: {...item, image_url: filename},
       user,
     })
     return newItem

@@ -102,15 +102,15 @@ module.exports = postgres => ({
       postgres.connect((err, client, done) => {
         try {
           client.query('BEGIN', async err => {
-            const {title, description, tags} = item
+            const {title, description, tags, image_url} = item
             const userId = user && user.id
 
             let newItem
             try {
               const queryResult = await postgres.query({
                 text:
-                  'INSERT INTO items ("title", "desc", "owner_id") VALUES ($1, $2, $3) RETURNING *',
-                values: [title, description, userId],
+                  'INSERT INTO items ("title", "desc", "owner_id", "image_url") VALUES ($1, $2, $3, $4) RETURNING *',
+                values: [title, description, userId, image_url],
               })
               newItem = queryResult.rows[0]
               if (!newItem) throw 'Error adding new item'

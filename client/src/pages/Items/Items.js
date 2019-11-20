@@ -23,6 +23,7 @@ const Items = () => {
               desc,
               created_at,
               owner,
+              image_url,
               borrower,
               tags,
             }) => (
@@ -34,6 +35,11 @@ const Items = () => {
                 date={created_at}
                 owner={owner.fullname}
                 disabled={!!borrower}
+                imageUrl={
+                  process.env.NODE_ENV === 'production'
+                    ? `/uploads/${image_url}`
+                    : `http://localhost:8080/uploads/${image_url}`
+                }
               >
                 {tags.length
                   ? tags.map(({id, title}) => (

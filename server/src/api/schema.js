@@ -3,6 +3,25 @@ const {gql} = require('apollo-server-express')
 module.exports = gql`
   directive @auth on OBJECT
   scalar Date
+  scalar Upload
+
+  input NewItemInput {
+    title: String!
+    description: String!
+    tags: [ID]
+    image: Upload
+  }
+
+  input NewUserInput {
+    fullname: String!
+    email: String!
+    password: String!
+  }
+
+  input LoginUserInput {
+    email: String!
+    password: String!
+  }
 
   type Item {
     id: ID!
@@ -27,23 +46,6 @@ module.exports = gql`
   type Tag {
     id: ID!
     title: String!
-  }
-
-  input NewItemInput {
-    title: String!
-    description: String!
-    tags: [ID]
-  }
-
-  input NewUserInput {
-    fullname: String!
-    email: String!
-    password: String!
-  }
-
-  input LoginUserInput {
-    email: String!
-    password: String!
   }
 
   type AuthPayload {

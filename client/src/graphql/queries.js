@@ -7,6 +7,7 @@ export const ALL_ITEMS_QUERY = gql`
       title
       created_at
       desc
+      image_url
       tags {
         id
         title

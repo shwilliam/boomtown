@@ -2,9 +2,9 @@ import {InMemoryCache} from 'apollo-cache-inmemory'
 import {ApolloClient} from 'apollo-client'
 import {ApolloLink} from 'apollo-link'
 import {onError} from 'apollo-link-error'
-import {createHttpLink} from 'apollo-link-http'
+import {createUploadLink} from 'apollo-upload-client'
 
-const httpLink = createHttpLink({
+const apolloLink = createUploadLink({
   includeExtensions: true,
   uri:
     process.env.NODE_ENV === 'production'
@@ -27,7 +27,7 @@ const client = new ApolloClient({
       if (networkError)
         console.log(`[Network error]: ${networkError}`)
     }),
-    httpLink,
+    apolloLink,
   ]),
   cache: new InMemoryCache(),
 })

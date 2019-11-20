@@ -5,26 +5,24 @@ import Grid from '@material-ui/core/Grid'
 import {ShareItemContextProvider} from '../../context'
 import ShareItemPreview from '../../components/ShareItemPreview'
 
-const Share = () => {
-  return (
-    <Layout>
-      <ShareItemContextProvider>
-        <Grid
-          container
-          direction="row"
-          alignItems="center"
-          justify="center"
-        >
-          <Grid item>
-            <ShareItemPreview />
-          </Grid>
-          <Grid item>
-            <ShareItemForm />
-          </Grid>
+const Share = () => (
+  <Layout>
+    <ShareItemContextProvider>
+      <Grid
+        container
+        direction="row"
+        alignItems="center"
+        justify="center"
+      >
+        <Grid item>
+          <ShareItemPreview />
         </Grid>
-      </ShareItemContextProvider>
-    </Layout>
-  )
-}
+        <Grid item>
+          <ShareItemForm />
+        </Grid>
+      </Grid>
+    </ShareItemContextProvider>
+  </Layout>
+)
 
 export default Share

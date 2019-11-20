@@ -1,4 +1,9 @@
-import React, {useEffect, useContext} from 'react'
+import React, {
+  useEffect,
+  useContext,
+  useCallback,
+  useState,
+} from 'react'
 import {useHistory} from 'react-router-dom'
 import {Form, Field} from 'react-final-form'
 import {useMutation, useQuery} from '@apollo/react-hooks'
@@ -9,18 +14,20 @@ import InputLabel from '@material-ui/core/InputLabel'
 import Typography from '@material-ui/core/Typography'
 import {ADD_ITEM_MUTATION, ALL_TAGS_QUERY} from '../../graphql'
 import {withStyles} from '@material-ui/core/styles'
-import styles from './styles'
-import validate from './helpers/validate'
 import {
   Select,
   MenuItem,
   Checkbox,
   ListItemText,
 } from '@material-ui/core'
+import Dropzone from '../Dropzone'
 import {ShareItemContext, GQLContext} from '../../context'
 import {capitalize} from '../../utils'
+import validate from './helpers/validate'
+import styles from './styles'
 
 const ShareItemForm = ({classes, ...props}) => {
+  const [image, setImage] = useState()
   const {refetchUserData} = useContext(GQLContext)
   const {setFormFieldValue} = useContext(ShareItemContext)
   const [addItem, {data: newItem}] = useMutation(ADD_ITEM_MUTATION)
@@ -30,16 +37,20 @@ const ShareItemForm = ({classes, ...props}) => {
   // TODO: handle error loading tags
   if (itemsError) console.error(itemsError)
 
-  const onSubmit = ({title, desc, tags = []}) =>
-    addItem({
-      variables: {
-        item: {
-          title,
-          description: desc,
-          tags: tags.map(d => Number(d)),
+  const onSubmit = useCallback(
+    ({title, desc, tags = []}) =>
+      addItem({
+        variables: {
+          item: {
+            title,
+            description: desc,
+            tags: tags.map(d => Number(d)),
+            image,
+          },
         },
-      },
-    }) && refetchUserData()
+      }) && refetchUserData(),
+    [image, addItem, refetchUserData],
+  )
 
   useEffect(() => {
     if (newItem) history.push('/')
@@ -58,6 +69,8 @@ const ShareItemForm = ({classes, ...props}) => {
           }
           {...props}
         >
+          <Dropzone onUpload={setImage} file={image} />
+
           <FormControl fullWidth className={classes.formControl}>
             <InputLabel htmlFor="title">Name your item</InputLabel>
             <Field
