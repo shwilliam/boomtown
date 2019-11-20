@@ -27,7 +27,7 @@ import validate from './helpers/validate'
 import styles from './styles'
 
 const ShareItemForm = ({classes, ...props}) => {
-  const [image, setImage] = useState()
+  const [imageData, setImageData] = useState()
   const {refetchUserData} = useContext(GQLContext)
   const {setFormFieldValue} = useContext(ShareItemContext)
   const [addItem, {data: newItem}] = useMutation(ADD_ITEM_MUTATION)
@@ -45,11 +45,22 @@ const ShareItemForm = ({classes, ...props}) => {
             title,
             description: desc,
             tags: tags.map(d => Number(d)),
-            image,
+            image: imageData,
           },
         },
       }) && refetchUserData(),
-    [image, addItem, refetchUserData],
+    [imageData, addItem, refetchUserData],
+  )
+
+  const onImageUpload = useCallback(
+    e => {
+      setImageData(e)
+      const reader = new FileReader()
+      reader.readAsDataURL(e.variables.file)
+      reader.onloadend = () =>
+        setFormFieldValue('image', reader.result)
+    },
+    [setFormFieldValue],
   )
 
   useEffect(() => {
@@ -69,7 +80,7 @@ const ShareItemForm = ({classes, ...props}) => {
           }
           {...props}
         >
-          <Dropzone onUpload={setImage} file={image} />
+          <Dropzone onUpload={onImageUpload} file={imageData} />
 
           <FormControl fullWidth className={classes.formControl}>
             <InputLabel htmlFor="title">Name your item</InputLabel>

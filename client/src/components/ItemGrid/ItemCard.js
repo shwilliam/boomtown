@@ -53,9 +53,9 @@ const ItemCard = ({
         className={classes.media}
         image={
           imageUrl ||
-          'https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fcdn.akc.org%2Fcontent%2Fhero%2Fpuppy-boundaries_header.jpg&f=1&nofb=1'
+          'https://via.placeholder.com/420x320/f9a825/333333?text=%20'
         }
-        title={imageUrl ? title : 'Pup'}
+        title={imageUrl ? title : ''}
       />
       <CardContent>
         <Typography variant="h3" className={classes.title}>

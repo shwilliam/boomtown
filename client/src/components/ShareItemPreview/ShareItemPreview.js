@@ -13,6 +13,7 @@ const ShareItemPreview = props => {
       desc={formValues.desc}
       date="Just now"
       owner={userData.viewer.fullname}
+      imageUrl={formValues.image}
       disabled={true}
       {...props}
     >
