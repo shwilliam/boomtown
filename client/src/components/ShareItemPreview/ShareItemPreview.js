@@ -1,5 +1,5 @@
 import React, {useContext} from 'react'
-import {ItemCard, ItemTag} from '../ItemGrid'
+import ItemCard, {ItemTag} from '../ItemCard'
 import {ShareItemContext, GQLContext} from '../../context'
 import {capitalize} from '../../utils'
 
@@ -11,9 +11,9 @@ const ShareItemPreview = props => {
     <ItemCard
       title={formValues.title}
       desc={formValues.desc}
-      date="Just now"
       owner={userData.viewer.fullname}
       imageUrl={formValues.image}
+      date="Just now"
       disabled={true}
       {...props}
     >

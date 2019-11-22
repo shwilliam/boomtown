@@ -1,5 +1,5 @@
 import React, {useContext} from 'react'
-import ItemGrid, {ItemCard, ItemTag} from '../../components/ItemGrid'
+import ItemCard, {ItemGrid, ItemTag} from '../../components/ItemCard'
 import Layout from '../../components/Layout'
 import {GQLContext} from '../../context'
 import {capitalize} from '../../utils'

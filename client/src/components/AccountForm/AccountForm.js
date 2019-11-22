@@ -2,19 +2,47 @@ import React, {useState, useEffect, useContext} from 'react'
 import {useHistory} from 'react-router-dom'
 import {Form, Field} from 'react-final-form'
 import {useMutation} from '@apollo/react-hooks'
-import Button from '@material-ui/core/Button'
-import FormControl from '@material-ui/core/FormControl'
-import Grid from '@material-ui/core/Grid'
-import Input from '@material-ui/core/Input'
-import InputLabel from '@material-ui/core/InputLabel'
-import Typography from '@material-ui/core/Typography'
+import {makeStyles} from '@material-ui/core/styles'
+import {
+  Button,
+  FormControl,
+  Grid,
+  Input,
+  InputLabel,
+  Typography,
+} from '@material-ui/core'
 import {LOGIN_MUTATION, SIGNUP_MUTATION} from '../../graphql'
-import {withStyles} from '@material-ui/core/styles'
-import styles from './styles'
-import validate from './helpers/validate'
 import {AuthContext, GQLContext} from '../../context'
+import validate from './helpers/validate'
 
-const AccountForm = ({classes, ...props}) => {
+const useAccountFormStyles = makeStyles(theme => ({
+  root: {
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      width: '400px',
+    },
+  },
+  formControl: {
+    marginBottom: theme.spacing(2),
+    width: '100%',
+  },
+  formButton: {
+    marginTop: theme.spacing(2),
+  },
+  formToggle: {
+    background: 'none',
+    border: 'none',
+    textDecoration: 'underline',
+    '&:hover': {
+      cursor: 'pointer',
+    },
+  },
+  errorMessage: {
+    color: 'firebrick',
+  },
+}))
+
+const AccountForm = props => {
   const history = useHistory()
   const {refetchUserData, refetchItems} = useContext(GQLContext)
   // TODO: refactor to custom auth hook
@@ -22,6 +50,13 @@ const AccountForm = ({classes, ...props}) => {
   const [signUp, {data: signUpData}] = useMutation(SIGNUP_MUTATION)
   const [isSignUp, setIsSignUp] = useState(false)
   const {setActiveUser} = useContext(AuthContext)
+  const {
+    root,
+    formControl,
+    formButton,
+    formToggle,
+    errorMessage,
+  } = useAccountFormStyles()
 
   useEffect(() => {
     const userData = signUpData
@@ -65,13 +100,9 @@ const AccountForm = ({classes, ...props}) => {
       onSubmit={onSubmit}
       validate={values => validate({isSignUp, ...values})}
       render={({handleSubmit}) => (
-        <form
-          onSubmit={handleSubmit}
-          className={classes.accountForm}
-          {...props}
-        >
+        <form onSubmit={handleSubmit} className={root} {...props}>
           {isSignUp && (
-            <FormControl fullWidth className={classes.formControl}>
+            <FormControl fullWidth className={formControl}>
               <InputLabel htmlFor="fullname">Full name</InputLabel>
               <Field
                 name="fullname"
@@ -89,7 +120,7 @@ const AccountForm = ({classes, ...props}) => {
               />
             </FormControl>
           )}
-          <FormControl fullWidth className={classes.formControl}>
+          <FormControl fullWidth className={formControl}>
             <InputLabel htmlFor="email">Email</InputLabel>
             <Field
               name="email"
@@ -106,7 +137,7 @@ const AccountForm = ({classes, ...props}) => {
               )}
             />
           </FormControl>
-          <FormControl fullWidth className={classes.formControl}>
+          <FormControl fullWidth className={formControl}>
             <InputLabel htmlFor="password">Password</InputLabel>
             <Field
               name="password"
@@ -123,7 +154,7 @@ const AccountForm = ({classes, ...props}) => {
               )}
             />
           </FormControl>
-          <FormControl className={classes.formControl}>
+          <FormControl className={formControl}>
             <Grid
               container
               direction="row"
@@ -132,7 +163,7 @@ const AccountForm = ({classes, ...props}) => {
             >
               <Button
                 type="submit"
-                className={classes.formButton}
+                className={formButton}
                 variant="contained"
                 size="large"
                 color="secondary"
@@ -142,7 +173,7 @@ const AccountForm = ({classes, ...props}) => {
               </Button>
               <Typography>
                 <button
-                  className={classes.formToggle}
+                  className={formToggle}
                   type="button"
                   onClick={() => setIsSignUp(!isSignUp)}
                 >
@@ -153,7 +184,7 @@ const AccountForm = ({classes, ...props}) => {
               </Typography>
             </Grid>
           </FormControl>
-          <Typography className={classes.errorMessage}>
+          <Typography className={errorMessage}>
             {/* errors */}
           </Typography>
         </form>
@@ -162,4 +193,4 @@ const AccountForm = ({classes, ...props}) => {
   )
 }
 
-export default withStyles(styles)(AccountForm)
+export default AccountForm

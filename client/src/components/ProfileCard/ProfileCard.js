@@ -1,27 +1,44 @@
 import React, {useContext} from 'react'
-import {withStyles} from '@material-ui/core/styles'
-import Card from '@material-ui/core/Card'
-import CardHeader from '@material-ui/core/CardHeader'
-import CardContent from '@material-ui/core/CardContent'
-import Avatar from '@material-ui/core/Avatar'
-import Typography from '@material-ui/core/Typography'
+import {makeStyles} from '@material-ui/core/styles'
+import {red} from '@material-ui/core/colors'
+import {
+  Card,
+  CardHeader,
+  CardContent,
+  Avatar,
+  Typography,
+} from '@material-ui/core'
 import {GQLContext} from '../../context'
-import styles from './styles'
 
-const ProfileCard = ({classes, ...props}) => {
+const useProfileCardStyles = makeStyles({
+  root: {
+    maxWidth: 345,
+    margin: '0 auto',
+  },
+  avatar: {
+    backgroundColor: red[500],
+  },
+  title: {
+    fontSize: '2rem',
+    fontWeight: 500,
+  },
+})
+
+const ProfileCard = props => {
   const {userDataLoading, userDataError, userData} = useContext(
     GQLContext,
   )
+  const {root, avatar, title} = useProfileCardStyles()
 
   if (userDataError) return <p>oops...</p>
   if (userDataLoading) return <p>loading...</p>
 
   const {fullname, bio, items, borrowed} = userData.viewer
   return (
-    <Card className={classes.card} {...props}>
+    <Card className={root} {...props}>
       <CardHeader
         avatar={
-          <Avatar aria-label={fullname} className={classes.avatar}>
+          <Avatar aria-label={fullname} className={avatar}>
             {fullname[0]}
           </Avatar>
         }
@@ -29,7 +46,7 @@ const ProfileCard = ({classes, ...props}) => {
           <Typography
             variant="h2"
             color="textSecondary"
-            className={classes.title}
+            className={title}
           >
             {fullname}
           </Typography>
@@ -53,4 +70,4 @@ const ProfileCard = ({classes, ...props}) => {
   )
 }
 
-export default withStyles(styles)(ProfileCard)
+export default ProfileCard

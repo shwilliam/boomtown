@@ -7,32 +7,56 @@ import React, {
 import {useHistory} from 'react-router-dom'
 import {Form, Field} from 'react-final-form'
 import {useMutation, useQuery} from '@apollo/react-hooks'
-import Button from '@material-ui/core/Button'
-import FormControl from '@material-ui/core/FormControl'
-import Input from '@material-ui/core/Input'
-import InputLabel from '@material-ui/core/InputLabel'
-import Typography from '@material-ui/core/Typography'
-import {ADD_ITEM_MUTATION, ALL_TAGS_QUERY} from '../../graphql'
-import {withStyles} from '@material-ui/core/styles'
+import {makeStyles} from '@material-ui/core/styles'
 import {
+  Button,
+  FormControl,
+  Input,
+  InputLabel,
+  Typography,
   Select,
   MenuItem,
   Checkbox,
   ListItemText,
 } from '@material-ui/core'
 import Dropzone from '../Dropzone'
+import {ADD_ITEM_MUTATION, ALL_TAGS_QUERY} from '../../graphql'
 import {ShareItemContext, GQLContext} from '../../context'
 import {capitalize} from '../../utils'
 import validate from './helpers/validate'
-import styles from './styles'
 
-const ShareItemForm = ({classes, ...props}) => {
+const useShareItemFormStyles = makeStyles(theme => ({
+  root: {
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      width: '400px',
+    },
+  },
+  formControl: {
+    marginBottom: theme.spacing(2),
+    width: '100%',
+  },
+  formButton: {
+    marginTop: theme.spacing(2),
+  },
+  errorMessage: {
+    color: 'firebrick',
+  },
+}))
+
+const ShareItemForm = props => {
   const [imageData, setImageData] = useState()
   const {refetchUserData} = useContext(GQLContext)
   const {setFormFieldValue} = useContext(ShareItemContext)
   const [addItem, {data: newItem}] = useMutation(ADD_ITEM_MUTATION)
   const {data: tagsData, error: itemsError} = useQuery(ALL_TAGS_QUERY)
   const history = useHistory()
+  const {
+    root,
+    formControl,
+    formButton,
+    errorMessage,
+  } = useShareItemFormStyles()
 
   // TODO: handle error loading tags
   if (itemsError) console.error(itemsError)
@@ -74,7 +98,7 @@ const ShareItemForm = ({classes, ...props}) => {
       render={({handleSubmit}) => (
         <form
           onSubmit={handleSubmit}
-          className={classes.form}
+          className={root}
           onChange={e =>
             setFormFieldValue(e.target.name, e.target.value)
           }
@@ -82,7 +106,7 @@ const ShareItemForm = ({classes, ...props}) => {
         >
           <Dropzone onUpload={onImageUpload} file={imageData} />
 
-          <FormControl fullWidth className={classes.formControl}>
+          <FormControl fullWidth className={formControl}>
             <InputLabel htmlFor="title">Name your item</InputLabel>
             <Field
               name="title"
@@ -99,7 +123,7 @@ const ShareItemForm = ({classes, ...props}) => {
               )}
             />
           </FormControl>
-          <FormControl fullWidth className={classes.formControl}>
+          <FormControl fullWidth className={formControl}>
             <InputLabel htmlFor="desc">Describe your item</InputLabel>
             <Field
               name="desc"
@@ -116,7 +140,7 @@ const ShareItemForm = ({classes, ...props}) => {
               )}
             />
           </FormControl>
-          <FormControl fullWidth className={classes.formControl}>
+          <FormControl fullWidth className={formControl}>
             <InputLabel htmlFor="tags">Add some tags</InputLabel>
             <Field
               name="tags"
@@ -181,10 +205,10 @@ const ShareItemForm = ({classes, ...props}) => {
               }}
             />
           </FormControl>
-          <FormControl className={classes.formControl}>
+          <FormControl className={formControl}>
             <Button
               type="submit"
-              className={classes.formButton}
+              className={formButton}
               variant="contained"
               size="large"
               color="secondary"
@@ -193,7 +217,7 @@ const ShareItemForm = ({classes, ...props}) => {
               Submit
             </Button>
           </FormControl>
-          <Typography className={classes.errorMessage}>
+          <Typography className={errorMessage}>
             {/* errors */}
           </Typography>
         </form>
@@ -202,4 +226,4 @@ const ShareItemForm = ({classes, ...props}) => {
   )
 }
 
-export default withStyles(styles)(ShareItemForm)
+export default ShareItemForm

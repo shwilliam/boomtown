@@ -1,9 +1,11 @@
 import React, {useState, useContext} from 'react'
 import {useHistory} from 'react-router-dom'
 import {Menu, MenuItem, IconButton} from '@material-ui/core'
-import MoreVertIcon from '@material-ui/icons/MoreVert'
-import FingerprintIcon from '@material-ui/icons/Fingerprint'
-import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew'
+import {
+  MoreVert as MoreVertIcon,
+  Fingerprint as FingerprintIcon,
+  PowerSettingsNew as PowerSettingsNewIcon,
+} from '@material-ui/icons'
 import AuthContext from '../../context/AuthContext'
 
 const MoreVertMenu = props => {

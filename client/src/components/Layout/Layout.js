@@ -1,19 +1,30 @@
 import React from 'react'
 import MenuBar from '../../components/MenuBar'
-import {withStyles} from '@material-ui/core/styles'
+import {grey} from '@material-ui/core/colors'
+import {makeStyles} from '@material-ui/core/styles'
 import {Paper} from '@material-ui/core'
-import styles from './styles'
 
-const Layout = ({dark = false, classes, children, ...props}) => (
-  <>
-    <MenuBar />
-    <Paper
-      className={dark ? classes.paperDark : classes.paper}
-      {...props}
-    >
-      {children}
-    </Paper>
-  </>
-)
+const useLayoutStyles = makeStyles(theme => ({
+  root: {
+    padding: theme.spacing(2),
+  },
+  rootDark: {
+    padding: theme.spacing(2),
+    backgroundColor: grey[900],
+  },
+}))
 
-export default withStyles(styles)(Layout)
+const Layout = ({dark = false, children, ...props}) => {
+  const {root, rootDark} = useLayoutStyles()
+
+  return (
+    <>
+      <MenuBar />
+      <Paper className={dark ? rootDark : root} {...props}>
+        {children}
+      </Paper>
+    </>
+  )
+}
+
+export default Layout

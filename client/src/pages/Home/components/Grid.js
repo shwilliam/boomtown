@@ -1,19 +1,33 @@
 import React from 'react'
+import {makeStyles} from '@material-ui/core/styles'
 import {Grid as MaterialGrid} from '@material-ui/core'
-import {withStyles} from '@material-ui/core/styles'
-import styles from './styles'
 
-const Grid = ({classes, children, ...props}) => (
-  <MaterialGrid
-    container
-    direction="row"
-    alignItems="center"
-    justify="center"
-    className={classes.grid}
-    {...props}
-  >
-    {children}
-  </MaterialGrid>
-)
+const useGridStyles = makeStyles(theme => ({
+  root: {
+    minHeight: '100vh',
+    background: theme.palette.primary.main,
+    padding: theme.spacing(5),
+    [theme.breakpoints.up('md')]: {
+      padding: theme.spacing(20),
+    },
+  },
+}))
 
-export default withStyles(styles)(Grid)
+const Grid = ({children, ...props}) => {
+  const {root} = useGridStyles()
+
+  return (
+    <MaterialGrid
+      container
+      direction="row"
+      alignItems="center"
+      justify="center"
+      className={root}
+      {...props}
+    >
+      {children}
+    </MaterialGrid>
+  )
+}
+
+export default Grid

@@ -1,18 +1,28 @@
 import React from 'react'
+import {makeStyles} from '@material-ui/core/styles'
 import {Typography} from '@material-ui/core'
-import {withStyles} from '@material-ui/core/styles'
-import styles from './styles'
 
-const Title = ({classes, children, ...props}) => (
-  <Typography
-    component="h1"
-    variant="button"
-    gutterBottom
-    className={classes.title}
-    {...props}
-  >
-    {children}
-  </Typography>
-)
+const useTitleStyles = makeStyles(() => ({
+  root: {
+    fontWeight: 400,
+    color: 'white',
+  },
+}))
 
-export default withStyles(styles)(Title)
+const Title = ({children, ...props}) => {
+  const {root} = useTitleStyles()
+
+  return (
+    <Typography
+      component="h1"
+      variant="button"
+      gutterBottom
+      className={root}
+      {...props}
+    >
+      {children}
+    </Typography>
+  )
+}
+
+export default Title

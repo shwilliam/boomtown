@@ -7,27 +7,39 @@ import {
   Icon,
   IconButton,
 } from '@material-ui/core'
-import {withStyles} from '@material-ui/core/styles'
-import styles from './styles'
+import {makeStyles} from '@material-ui/core/styles'
 import MoreVertMenu from './MoreVertMenu'
 import logoSrc from '../../images/boomtown.svg'
 
-const MenuBar = ({classes, ...props}) => {
+const useMenuBarStyles = makeStyles(theme => ({
+  margin: {
+    margin: theme.spacing(1),
+  },
+  menuButton: {
+    marginRight: 'auto',
+  },
+  menuButtonIcon: {
+    height: '50px',
+  },
+}))
+
+const MenuBar = props => {
   const history = useHistory()
+  const {margin, menuButton, menuButtonIcon} = useMenuBarStyles()
 
   return (
     <AppBar position="static" {...props}>
       <Toolbar>
         <IconButton
           edge="start"
-          className={classes.menuButton}
+          className={menuButton}
           color="inherit"
           aria-label="menu"
           onClick={() => history.push('/')}
         >
           <img
             alt="Boomtown"
-            className={classes.menuButtonIcon}
+            className={menuButtonIcon}
             src={logoSrc}
           />
         </IconButton>
@@ -38,7 +50,7 @@ const MenuBar = ({classes, ...props}) => {
             aria-label="add"
             onClick={() => history.push('/share')}
           >
-            <Icon className={classes.margin}>add_circle</Icon>
+            <Icon className={margin}>add_circle</Icon>
             Share something
           </Fab>
         )}
@@ -48,4 +60,4 @@ const MenuBar = ({classes, ...props}) => {
   )
 }
 
-export default withStyles(styles)(MenuBar)
+export default MenuBar
