@@ -1,5 +1,5 @@
 import AuthContext, {AuthContextProvider} from './AuthContext'
-import GQLContext, {GQLContextProvider} from './GQLContext'
+import ItemsContext, {ItemsContextProvider} from './ItemsContext'
 import ShareItemContext, {
   ShareItemContextProvider,
 } from './ShareItemContext'
@@ -7,8 +7,8 @@ import ShareItemContext, {
 export {
   AuthContext,
   AuthContextProvider,
-  GQLContext,
-  GQLContextProvider,
+  ItemsContext,
+  ItemsContextProvider,
   ShareItemContext,
   ShareItemContextProvider,
 }

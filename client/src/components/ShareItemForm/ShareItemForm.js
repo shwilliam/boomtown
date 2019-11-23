@@ -21,7 +21,7 @@ import {
 } from '@material-ui/core'
 import Dropzone from '../Dropzone'
 import {ADD_ITEM_MUTATION, ALL_TAGS_QUERY} from '../../graphql'
-import {ShareItemContext, GQLContext} from '../../context'
+import {ShareItemContext} from '../../context'
 import {capitalize} from '../../utils'
 import validate from './helpers/validate'
 
@@ -46,7 +46,6 @@ const useShareItemFormStyles = makeStyles(theme => ({
 
 const ShareItemForm = props => {
   const [imageData, setImageData] = useState()
-  const {refetchUserData} = useContext(GQLContext)
   const {setFormFieldValue} = useContext(ShareItemContext)
   const [addItem, {data: newItem}] = useMutation(ADD_ITEM_MUTATION)
   const {data: tagsData, error: itemsError} = useQuery(ALL_TAGS_QUERY)
@@ -72,8 +71,8 @@ const ShareItemForm = props => {
             image: imageData,
           },
         },
-      }) && refetchUserData(),
-    [imageData, addItem, refetchUserData],
+      }),
+    [imageData, addItem],
   )
 
   const onImageUpload = useCallback(

@@ -15,7 +15,7 @@ import {
   Typography,
 } from '@material-ui/core'
 import {BORROW_ITEM_MUTATION} from '../../graphql'
-import {GQLContext} from '../../context'
+import {ItemsContext} from '../../context'
 
 const useItemCardStyles = makeStyles({
   root: {
@@ -46,7 +46,7 @@ const ItemCard = ({
   ...props
 }) => {
   const history = useHistory()
-  const {refetchItems, refetchUserData} = useContext(GQLContext)
+  const {refetchItems} = useContext(ItemsContext)
   const [borrowItem, {data: itemStatus}] = useMutation(
     BORROW_ITEM_MUTATION,
   )
@@ -58,11 +58,8 @@ const ItemCard = ({
   } = useItemCardStyles()
 
   useEffect(() => {
-    if (itemStatus) {
-      refetchItems()
-      refetchUserData()
-    }
-  }, [itemStatus, refetchItems, refetchUserData])
+    if (itemStatus) refetchItems()
+  }, [itemStatus, refetchItems])
 
   return (
     <Card className={root} {...props}>

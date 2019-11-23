@@ -1,11 +1,11 @@
 import React, {createContext, useContext} from 'react'
 import AuthContext from './AuthContext'
 import {useQuery} from 'react-apollo'
-import {ALL_ITEMS_QUERY, VIEWER_QUERY} from '../graphql'
+import {ALL_ITEMS_QUERY} from '../graphql'
 
-const GQLContext = createContext()
+const ItemsContext = createContext()
 
-const GQLContextProvider = ({children}) => {
+const ItemsContextProvider = ({children}) => {
   const {activeUser} = useContext(AuthContext)
   // TODO: avoid fetching if no user
   const {
@@ -17,31 +17,21 @@ const GQLContextProvider = ({children}) => {
     variables: {filter: activeUser && activeUser.user.id},
     pollInterval: 30000, // 30 sec
   })
-  const {
-    data: userData,
-    loading: userDataLoading,
-    error: userDataError,
-    refetch: refetchUserData,
-  } = useQuery(VIEWER_QUERY)
 
   return (
-    <GQLContext.Provider
+    <ItemsContext.Provider
       value={{
         // HACK: avoid unfiltered query flash
         itemsData: activeUser && !itemsLoading ? itemsData : null,
         itemsLoading: activeUser ? itemsLoading : true,
         itemsError,
         refetchItems,
-        userData,
-        userDataLoading,
-        userDataError,
-        refetchUserData,
       }}
     >
       {children}
-    </GQLContext.Provider>
+    </ItemsContext.Provider>
   )
 }
 
-export default GQLContext
-export {GQLContextProvider}
+export default ItemsContext
+export {ItemsContextProvider}

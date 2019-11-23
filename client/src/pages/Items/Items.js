@@ -1,11 +1,15 @@
 import React, {useContext} from 'react'
 import ItemCard, {ItemGrid, ItemTag} from '../../components/ItemCard'
 import Layout from '../../components/Layout'
-import {GQLContext} from '../../context'
+import {ItemsContext} from '../../context'
 import {capitalize} from '../../utils'
 
 const Items = () => {
-  const {itemsLoading, itemsError, itemsData} = useContext(GQLContext)
+  const {itemsLoading, itemsError, itemsData} = useContext(
+    ItemsContext,
+  )
+
+  console.log(itemsData)
 
   return (
     <Layout dark>

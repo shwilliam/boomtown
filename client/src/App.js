@@ -1,6 +1,6 @@
 import React from 'react'
 import {ApolloProvider} from 'react-apollo'
-import {AuthContextProvider, GQLContextProvider} from './context'
+import {AuthContextProvider, ItemsContextProvider} from './context'
 import apolloClient from './graphql'
 import Router from './router'
 
@@ -11,12 +11,12 @@ import theme from './theme'
 const App = () => (
   <ApolloProvider client={apolloClient}>
     <AuthContextProvider>
-      <GQLContextProvider>
+      <ItemsContextProvider>
         <MuiThemeProvider theme={theme}>
           <CssBaseline />
           <Router />
         </MuiThemeProvider>
-      </GQLContextProvider>
+      </ItemsContextProvider>
     </AuthContextProvider>
   </ApolloProvider>
 )

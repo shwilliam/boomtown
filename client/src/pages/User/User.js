@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import {useParams} from 'react-router-dom'
 import {useQuery} from 'react-apollo'
 import Layout from '../../components/Layout'
@@ -6,9 +6,13 @@ import ItemCard, {ItemGrid, ItemTag} from '../../components/ItemCard'
 import ProfileCard from '../../components/ProfileCard'
 import {capitalize} from '../../utils'
 import {USER_QUERY} from '../../graphql'
+import {AuthContext} from '../../context'
 
 const User = () => {
-  const {id} = useParams()
+  const {activeUser} = useContext(AuthContext)
+  let {id} = useParams()
+  if (!id) id = activeUser.user.id
+
   const {
     data: userData,
     loading: userDataLoading,

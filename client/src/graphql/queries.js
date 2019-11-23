@@ -45,23 +45,6 @@ export const VIEWER_QUERY = gql`
     viewer {
       fullname
       email
-      items {
-        id
-        title
-        created_at
-        desc
-        image_url
-        tags {
-          id
-          title
-        }
-        borrower {
-          id
-        }
-      }
-      borrowed {
-        id
-      }
     }
   }
 `
@@ -103,6 +86,8 @@ export const SIGNUP_MUTATION = gql`
     signup(user: $user) {
       user {
         id
+        fullname
+        email
       }
       token
     }
@@ -114,6 +99,8 @@ export const LOGIN_MUTATION = gql`
     login(user: $user) {
       user {
         id
+        fullname
+        email
       }
       token
     }
