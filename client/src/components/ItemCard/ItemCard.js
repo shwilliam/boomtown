@@ -1,4 +1,5 @@
 import React, {useEffect, useContext} from 'react'
+import {useHistory} from 'react-router-dom'
 import {useMutation} from '@apollo/react-hooks'
 import {format as timeago} from 'timeago.js'
 import {makeStyles} from '@material-ui/core/styles'
@@ -38,11 +39,13 @@ const ItemCard = ({
   date,
   desc,
   owner,
+  ownerId,
   imageUrl,
   children,
   disabled = false,
   ...props
 }) => {
+  const history = useHistory()
   const {refetchItems, refetchUserData} = useContext(GQLContext)
   const [borrowItem, {data: itemStatus}] = useMutation(
     BORROW_ITEM_MUTATION,
@@ -71,6 +74,7 @@ const ItemCard = ({
         }
         title={owner}
         subheader={timeago(date)}
+        onClick={() => ownerId && history.push(`/user/${ownerId}`)}
       />
       <CardMedia
         className={media}

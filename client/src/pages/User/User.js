@@ -1,19 +1,26 @@
-import React, {useContext} from 'react'
+import React from 'react'
+import {useParams} from 'react-router-dom'
+import {useQuery} from 'react-apollo'
 import Layout from '../../components/Layout'
 import ItemCard, {ItemGrid, ItemTag} from '../../components/ItemCard'
 import ProfileCard from '../../components/ProfileCard'
-import {GQLContext} from '../../context'
 import {capitalize} from '../../utils'
+import {USER_QUERY} from '../../graphql'
 
-const Profile = () => {
-  const {userDataLoading, userDataError, userData} = useContext(
-    GQLContext,
-  )
+const User = () => {
+  const {id} = useParams()
+  const {
+    data: userData,
+    loading: userDataLoading,
+    error: userDataError,
+  } = useQuery(USER_QUERY, {
+    variables: {id},
+  })
 
   if (userDataError) return <p>oops...</p>
   if (!userData || userDataLoading) return <p>loading...</p>
 
-  const {fullname, bio, items, borrowed} = userData.viewer
+  const {fullname, bio, items, borrowed} = userData.user
   return (
     <Layout dark>
       <ProfileCard
@@ -66,4 +73,4 @@ const Profile = () => {
   )
 }
 
-export default Profile
+export default User

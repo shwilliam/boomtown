@@ -47,6 +47,43 @@ export const VIEWER_QUERY = gql`
       email
       items {
         id
+        title
+        created_at
+        desc
+        image_url
+        tags {
+          id
+          title
+        }
+        borrower {
+          id
+        }
+      }
+      borrowed {
+        id
+      }
+    }
+  }
+`
+
+export const USER_QUERY = gql`
+  query user($id: ID!) {
+    user(id: $id) {
+      fullname
+      email
+      items {
+        id
+        title
+        created_at
+        desc
+        image_url
+        tags {
+          id
+          title
+        }
+        borrower {
+          id
+        }
       }
       borrowed {
         id

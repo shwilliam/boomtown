@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React from 'react'
 import {makeStyles} from '@material-ui/core/styles'
 import {red} from '@material-ui/core/colors'
 import {
@@ -8,7 +8,6 @@ import {
   Avatar,
   Typography,
 } from '@material-ui/core'
-import {GQLContext} from '../../context'
 
 const useProfileCardStyles = makeStyles({
   root: {
@@ -24,16 +23,9 @@ const useProfileCardStyles = makeStyles({
   },
 })
 
-const ProfileCard = props => {
-  const {userDataLoading, userDataError, userData} = useContext(
-    GQLContext,
-  )
+const ProfileCard = ({fullname, bio, items, borrowed, ...props}) => {
   const {root, avatar, title} = useProfileCardStyles()
 
-  if (userDataError) return <p>oops...</p>
-  if (userDataLoading) return <p>loading...</p>
-
-  const {fullname, bio, items, borrowed} = userData.viewer
   return (
     <Card className={root} {...props}>
       <CardHeader

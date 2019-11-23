@@ -34,6 +34,7 @@ const Items = () => {
                 desc={desc}
                 date={created_at}
                 owner={owner.fullname}
+                ownerId={owner.id}
                 disabled={!!borrower}
                 imageUrl={
                   process.env.NODE_ENV === 'production'
