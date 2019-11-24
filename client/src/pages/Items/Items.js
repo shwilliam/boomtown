@@ -9,8 +9,6 @@ const Items = () => {
     ItemsContext,
   )
 
-  console.log(itemsData)
-
   return (
     <Layout dark>
       {itemsLoading && <p>loading...</p>}
