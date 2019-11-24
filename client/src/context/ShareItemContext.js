@@ -10,7 +10,7 @@ const ShareItemContextProvider = ({children}) => {
   })
 
   const setFormFieldValue = (name, value) =>
-    setFormValues({...formValues, [name]: value})
+    setFormValues(formValues => ({...formValues, [name]: value}))
 
   return (
     <ShareItemContext.Provider

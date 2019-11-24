@@ -167,7 +167,7 @@ const AccountForm = props => {
                 <button
                   className={formToggle}
                   type="button"
-                  onClick={() => setIsSignUp(!isSignUp)}
+                  onClick={() => setIsSignUp(isSignUp => !isSignUp)}
                 >
                   {isSignUp
                     ? 'Login to existing account.'
