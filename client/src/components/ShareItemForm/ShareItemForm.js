@@ -1,28 +1,28 @@
 import React, {
-  useEffect,
-  useContext,
   useCallback,
+  useContext,
+  useEffect,
   useState,
 } from 'react'
-import {useHistory} from 'react-router-dom'
-import {Form, Field} from 'react-final-form'
 import {useMutation, useQuery} from '@apollo/react-hooks'
-import {makeStyles} from '@material-ui/core/styles'
+import {Field, Form} from 'react-final-form'
+import {useHistory} from 'react-router-dom'
 import {
   Button,
+  Checkbox,
   FormControl,
   Input,
   InputLabel,
-  Typography,
-  Select,
-  MenuItem,
-  Checkbox,
   ListItemText,
+  MenuItem,
+  Select,
+  Typography,
 } from '@material-ui/core'
-import Dropzone from '../Dropzone'
-import {ADD_ITEM_MUTATION, ALL_TAGS_QUERY} from '../../graphql'
+import {makeStyles} from '@material-ui/core/styles'
 import {ShareItemContext} from '../../context'
+import {ADD_ITEM_MUTATION, ALL_TAGS_QUERY} from '../../graphql'
 import {capitalize} from '../../utils'
+import Dropzone from '../Dropzone'
 import validate from './helpers/validate'
 
 const useShareItemFormStyles = makeStyles(theme => ({

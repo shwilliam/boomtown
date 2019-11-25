@@ -1,17 +1,17 @@
 import React, {useContext} from 'react'
-import {useParams} from 'react-router-dom'
 import {useQuery} from 'react-apollo'
-import Layout from '../../components/Layout'
+import {useParams} from 'react-router-dom'
 import ItemCard, {ItemGrid, ItemTag} from '../../components/ItemCard'
+import Layout from '../../components/Layout'
 import ProfileCard from '../../components/ProfileCard'
 import TabBar, {
   TabBarItem,
-  TabPanel,
   TabContainer,
+  TabPanel,
 } from '../../components/TabBar'
-import {capitalize} from '../../utils'
-import {USER_QUERY} from '../../graphql'
 import {AuthContext} from '../../context'
+import {USER_QUERY} from '../../graphql'
+import {capitalize} from '../../utils'
 
 const User = () => {
   const {activeUser} = useContext(AuthContext)

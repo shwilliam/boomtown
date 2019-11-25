@@ -1,9 +1,9 @@
 import React from 'react'
 import {Typography} from '@material-ui/core'
 import AccountForm from '../../components/AccountForm'
-import {Grid, GridItem, Title, HeroText} from './components'
+import {Grid, GridItem, HeroText, Title} from './components'
 
-const Home = () => (
+const Welcome = () => (
   <Grid>
     <GridItem>
       <Title>Boomtown</Title>
@@ -19,4 +19,4 @@ const Home = () => (
   </Grid>
 )
 
-export default Home
+export default Welcome

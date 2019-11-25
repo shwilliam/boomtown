@@ -1,13 +1,13 @@
 import React from 'react'
-import {makeStyles} from '@material-ui/core/styles'
-import {red} from '@material-ui/core/colors'
 import {
-  Card,
-  CardHeader,
-  CardContent,
   Avatar,
+  Card,
+  CardContent,
+  CardHeader,
   Typography,
 } from '@material-ui/core'
+import {red} from '@material-ui/core/colors'
+import {makeStyles} from '@material-ui/core/styles'
 
 const useProfileCardStyles = makeStyles({
   root: {

@@ -1,6 +1,6 @@
 import Grid from './Grid'
 import GridItem from './GridItem'
-import Title from './Title'
 import HeroText from './HeroText'
+import Title from './Title'
 
-export {Grid, GridItem, Title, HeroText}
+export {Grid, GridItem, HeroText, Title}

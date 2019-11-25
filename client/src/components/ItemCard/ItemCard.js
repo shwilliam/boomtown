@@ -1,21 +1,21 @@
-import React, {useEffect, useContext} from 'react'
-import {useHistory} from 'react-router-dom'
+import React, {useContext, useEffect} from 'react'
 import {useMutation} from '@apollo/react-hooks'
+import {useHistory} from 'react-router-dom'
 import {format as timeago} from 'timeago.js'
-import {makeStyles} from '@material-ui/core/styles'
-import {red} from '@material-ui/core/colors'
 import {
-  Card,
-  CardHeader,
-  CardContent,
-  CardMedia,
-  CardActions,
   Avatar,
   Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  CardMedia,
   Typography,
 } from '@material-ui/core'
-import {BORROW_ITEM_MUTATION} from '../../graphql'
+import {red} from '@material-ui/core/colors'
+import {makeStyles} from '@material-ui/core/styles'
 import {ItemsContext} from '../../context'
+import {BORROW_ITEM_MUTATION} from '../../graphql'
 
 const useItemCardStyles = makeStyles({
   root: {

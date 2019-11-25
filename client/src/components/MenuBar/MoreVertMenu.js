@@ -1,9 +1,9 @@
-import React, {useState, useContext} from 'react'
+import React, {useContext, useState} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Menu, MenuItem, IconButton} from '@material-ui/core'
+import {IconButton, Menu, MenuItem} from '@material-ui/core'
 import {
-  MoreVert as MoreVertIcon,
   Fingerprint as FingerprintIcon,
+  MoreVert as MoreVertIcon,
   PowerSettingsNew as PowerSettingsNewIcon,
 } from '@material-ui/icons'
 import AuthContext from '../../context/AuthContext'

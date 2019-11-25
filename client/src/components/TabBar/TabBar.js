@@ -1,5 +1,5 @@
 import React, {useCallback, useContext} from 'react'
-import {AppBar, Tabs} from '@material-ui/core/'
+import {AppBar, Tabs} from '@material-ui/core'
 import TabContext from './context'
 
 const TabBar = ({label, children, ...props}) => {

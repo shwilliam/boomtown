@@ -1,6 +1,6 @@
 import React from 'react'
-import {makeStyles} from '@material-ui/styles'
 import {Typography} from '@material-ui/core'
+import {makeStyles} from '@material-ui/styles'
 
 const useHeroTextStyles = makeStyles(theme => ({
   root: {

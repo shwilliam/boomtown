@@ -5,16 +5,12 @@ import {
   Switch,
 } from 'react-router-dom'
 import ProtectedRoute from './ProtectedRoute'
-import Home from '../pages/Home'
-import Items from '../pages/Items'
-// import Profile from '../pages/Profile'
-import User from '../pages/User'
-import Share from '../pages/Share'
+import {Welcome, Items, User, Share} from '../pages'
 
 export default () => (
   <Router>
     <Switch>
-      <Route path="/welcome" component={Home} />
+      <Route path="/welcome" component={Welcome} />
       <ProtectedRoute path="/profile" component={User} />
       <ProtectedRoute path="/user/:id" component={User} />
       <ProtectedRoute path="/share" component={Share} />

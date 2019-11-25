@@ -1,8 +1,8 @@
 import React, {
   createContext,
-  useState,
-  useEffect,
   useCallback,
+  useEffect,
+  useState,
 } from 'react'
 import {useMutation} from 'react-apollo'
 import {LOGOUT_MUTATION} from '../graphql'

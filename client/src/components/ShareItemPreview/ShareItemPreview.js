@@ -1,7 +1,7 @@
 import React, {useContext} from 'react'
-import ItemCard, {ItemTag} from '../ItemCard'
-import {ShareItemContext, AuthContext} from '../../context'
+import {AuthContext, ShareItemContext} from '../../context'
 import {capitalize} from '../../utils'
+import ItemCard, {ItemTag} from '../ItemCard'
 
 const ShareItemPreview = props => {
   const {formValues} = useContext(ShareItemContext)

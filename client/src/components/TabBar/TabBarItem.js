@@ -1,5 +1,5 @@
 import React from 'react'
-import {Tab} from '@material-ui/core/'
+import {Tab} from '@material-ui/core'
 
 const a11yProps = i => ({
   id: `simple-tab-${i}`,

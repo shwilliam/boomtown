@@ -1,8 +1,8 @@
 import React from 'react'
-import MenuBar from '../../components/MenuBar'
+import {Paper} from '@material-ui/core'
 import {grey} from '@material-ui/core/colors'
 import {makeStyles} from '@material-ui/core/styles'
-import {Paper} from '@material-ui/core'
+import MenuBar from '../../components/MenuBar'
 
 const useLayoutStyles = makeStyles(theme => ({
   root: {

@@ -1,8 +1,7 @@
-import React, {useState, useEffect, useContext} from 'react'
-import {useHistory} from 'react-router-dom'
-import {Form, Field} from 'react-final-form'
+import React, {useContext, useEffect, useState} from 'react'
 import {useMutation} from '@apollo/react-hooks'
-import {makeStyles} from '@material-ui/core/styles'
+import {Field, Form} from 'react-final-form'
+import {useHistory} from 'react-router-dom'
 import {
   Button,
   FormControl,
@@ -11,8 +10,9 @@ import {
   InputLabel,
   Typography,
 } from '@material-ui/core'
-import {LOGIN_MUTATION, SIGNUP_MUTATION} from '../../graphql'
+import {makeStyles} from '@material-ui/core/styles'
 import {AuthContext, ItemsContext} from '../../context'
+import {LOGIN_MUTATION, SIGNUP_MUTATION} from '../../graphql'
 import validate from './helpers/validate'
 
 const useAccountFormStyles = makeStyles(theme => ({
