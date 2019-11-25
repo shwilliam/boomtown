@@ -4,6 +4,11 @@ import {useQuery} from 'react-apollo'
 import Layout from '../../components/Layout'
 import ItemCard, {ItemGrid, ItemTag} from '../../components/ItemCard'
 import ProfileCard from '../../components/ProfileCard'
+import TabBar, {
+  TabBarItem,
+  TabPanel,
+  TabContainer,
+} from '../../components/TabBar'
 import {capitalize} from '../../utils'
 import {USER_QUERY} from '../../graphql'
 import {AuthContext} from '../../context'
@@ -33,46 +38,55 @@ const User = () => {
         items={items}
         borrowed={borrowed}
       />
-      {items ? (
-        <ItemGrid>
-          {items.map(
-            ({
-              id,
-              title,
-              desc,
-              created_at,
-              image_url,
-              borrower,
-              tags,
-            }) => (
-              <ItemCard
-                key={id}
-                id={id}
-                title={title}
-                desc={desc}
-                date={created_at}
-                owner={fullname}
-                disabled={!!borrower}
-                imageUrl={
-                  process.env.NODE_ENV === 'production'
-                    ? `/uploads/${image_url}`
-                    : `http://localhost:8080/uploads/${image_url}`
-                }
-              >
-                {tags.length
-                  ? tags.map(({id, title}) => (
-                      <ItemTag key={id} id={id}>
-                        {capitalize(title)}
-                      </ItemTag>
-                    ))
-                  : null}
-              </ItemCard>
-            ),
+      <TabContainer>
+        <TabBar label="User items">
+          <TabBarItem index={0}>Shared items</TabBarItem>
+          <TabBarItem index={1}>Borrowed items</TabBarItem>
+        </TabBar>
+        <TabPanel index={0}>
+          {items ? (
+            <ItemGrid>
+              {items.map(
+                ({
+                  id,
+                  title,
+                  desc,
+                  created_at,
+                  image_url,
+                  borrower,
+                  tags,
+                }) => (
+                  <ItemCard
+                    key={id}
+                    id={id}
+                    title={title}
+                    desc={desc}
+                    date={created_at}
+                    owner={fullname}
+                    disabled={!!borrower}
+                    imageUrl={
+                      process.env.NODE_ENV === 'production'
+                        ? `/uploads/${image_url}`
+                        : `http://localhost:8080/uploads/${image_url}`
+                    }
+                  >
+                    {tags.length
+                      ? tags.map(({id, title}) => (
+                          <ItemTag key={id} id={id}>
+                            {capitalize(title)}
+                          </ItemTag>
+                        ))
+                      : null}
+                  </ItemCard>
+                ),
+              )}
+            </ItemGrid>
+          ) : (
+            <p>No items found...</p>
           )}
-        </ItemGrid>
-      ) : (
-        <p>No items found...</p>
-      )}
+        </TabPanel>
+        <TabPanel index={1}>TODO</TabPanel>
+      </TabContainer>
     </Layout>
   )
 }
