@@ -70,6 +70,21 @@ export const USER_QUERY = gql`
       }
       borrowed {
         id
+        title
+        created_at
+        desc
+        image_url
+        tags {
+          id
+          title
+        }
+        owner {
+          id
+          fullname
+        }
+        borrower {
+          id
+        }
       }
     }
   }

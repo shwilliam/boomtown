@@ -40,8 +40,8 @@ const User = () => {
       />
       <TabContainer>
         <TabBar label="User items">
-          <TabBarItem index={0}>Shared items</TabBarItem>
-          <TabBarItem index={1}>Borrowed items</TabBarItem>
+          <TabBarItem index={0}>Shared</TabBarItem>
+          <TabBarItem index={1}>Borrowed</TabBarItem>
         </TabBar>
         <TabPanel index={0}>
           {items ? (
@@ -82,10 +82,53 @@ const User = () => {
               )}
             </ItemGrid>
           ) : (
-            <p>No items found...</p>
+            <p>No items shared...</p>
           )}
         </TabPanel>
-        <TabPanel index={1}>TODO</TabPanel>
+        <TabPanel index={1}>
+          {borrowed ? (
+            <ItemGrid>
+              {borrowed.map(
+                ({
+                  id,
+                  title,
+                  desc,
+                  created_at,
+                  image_url,
+                  owner,
+                  borrower,
+                  tags,
+                }) => (
+                  <ItemCard
+                    key={id}
+                    id={id}
+                    title={title}
+                    desc={desc}
+                    date={created_at}
+                    owner={owner.fullname}
+                    ownerId={owner.id}
+                    disabled={!!borrower}
+                    imageUrl={
+                      process.env.NODE_ENV === 'production'
+                        ? `/uploads/${image_url}`
+                        : `http://localhost:8080/uploads/${image_url}`
+                    }
+                  >
+                    {tags.length
+                      ? tags.map(({id, title}) => (
+                          <ItemTag key={id} id={id}>
+                            {capitalize(title)}
+                          </ItemTag>
+                        ))
+                      : null}
+                  </ItemCard>
+                ),
+              )}
+            </ItemGrid>
+          ) : (
+            <p>No items borrowed...</p>
+          )}
+        </TabPanel>
       </TabContainer>
     </Layout>
   )
