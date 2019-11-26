@@ -1,7 +1,7 @@
 import React, {useContext} from 'react'
 import {useQuery} from 'react-apollo'
 import {useParams} from 'react-router-dom'
-import ItemCard, {ItemGrid, ItemTag} from '../../components/ItemCard'
+import ItemCard, {ItemGrid} from '../../components/ItemCard'
 import Layout from '../../components/Layout'
 import ProfileCard from '../../components/ProfileCard'
 import TabBar, {
@@ -11,7 +11,6 @@ import TabBar, {
 } from '../../components/TabBar'
 import {AuthContext} from '../../context'
 import {USER_QUERY} from '../../graphql'
-import {capitalize} from '../../utils'
 
 const User = () => {
   const {activeUser} = useContext(AuthContext)
@@ -22,6 +21,7 @@ const User = () => {
     data: userData,
     loading: userDataLoading,
     error: userDataError,
+    refetch: refetchUserData,
   } = useQuery(USER_QUERY, {
     variables: {id},
   })
@@ -64,20 +64,14 @@ const User = () => {
                     date={created_at}
                     owner={fullname}
                     disabled={!!borrower}
+                    tags={tags}
                     imageUrl={
                       process.env.NODE_ENV === 'production'
                         ? `/uploads/${image_url}`
                         : `http://localhost:8080/uploads/${image_url}`
                     }
-                  >
-                    {tags.length
-                      ? tags.map(({id, title}) => (
-                          <ItemTag key={id} id={id}>
-                            {capitalize(title)}
-                          </ItemTag>
-                        ))
-                      : null}
-                  </ItemCard>
+                    onChange={refetchUserData}
+                  />
                 ),
               )}
             </ItemGrid>
@@ -88,42 +82,40 @@ const User = () => {
         <TabPanel index={1}>
           {borrowed ? (
             <ItemGrid>
-              {borrowed.map(
-                ({
-                  id,
-                  title,
-                  desc,
-                  created_at,
-                  image_url,
-                  owner,
-                  borrower,
-                  tags,
-                }) => (
-                  <ItemCard
-                    key={id}
-                    id={id}
-                    title={title}
-                    desc={desc}
-                    date={created_at}
-                    owner={owner.fullname}
-                    ownerId={owner.id}
-                    disabled={!!borrower}
-                    imageUrl={
-                      process.env.NODE_ENV === 'production'
-                        ? `/uploads/${image_url}`
-                        : `http://localhost:8080/uploads/${image_url}`
-                    }
-                  >
-                    {tags.length
-                      ? tags.map(({id, title}) => (
-                          <ItemTag key={id} id={id}>
-                            {capitalize(title)}
-                          </ItemTag>
-                        ))
-                      : null}
-                  </ItemCard>
-                ),
-              )}
+              {borrowed
+                // HACK: refetch returns stale items wo borrower
+                .filter(({borrower}) => !!borrower)
+                .map(
+                  ({
+                    id,
+                    title,
+                    desc,
+                    created_at,
+                    image_url,
+                    owner,
+                    borrower,
+                    tags,
+                  }) => (
+                    <ItemCard
+                      key={id}
+                      id={id}
+                      title={title}
+                      desc={desc}
+                      date={created_at}
+                      owner={owner.fullname}
+                      ownerId={owner.id}
+                      borrowerId={borrower.id}
+                      disabled={!!borrower}
+                      tags={tags}
+                      imageUrl={
+                        process.env.NODE_ENV === 'production'
+                          ? `/uploads/${image_url}`
+                          : `http://localhost:8080/uploads/${image_url}`
+                      }
+                      onChange={refetchUserData}
+                    />
+                  ),
+                )}
             </ItemGrid>
           ) : (
             <p>No items borrowed...</p>

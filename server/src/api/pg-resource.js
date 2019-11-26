@@ -150,6 +150,7 @@ module.exports = postgres => ({
   },
 
   borrowItem: async ({item, user}) => {
+    // FIXME: userId null value
     const userId = user && user.id
 
     const queryResult = await postgres.query({
@@ -164,6 +165,23 @@ module.exports = postgres => ({
     await postgres.query({
       text: 'UPDATE items SET borrower_id=$1 WHERE id=$2',
       values: [userId, item],
+    })
+
+    return item
+  },
+
+  returnItem: async ({item}) => {
+    const queryResult = await postgres.query({
+      text: 'SELECT * FROM items WHERE id=$1',
+      values: [item],
+    })
+    const itemData = queryResult.rows[0]
+
+    if (!itemData) return -1 // item not found
+
+    await postgres.query({
+      text: 'UPDATE items SET borrower_id=null WHERE id=$1',
+      values: [item],
     })
 
     return item

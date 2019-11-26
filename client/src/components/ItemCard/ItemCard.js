@@ -14,8 +14,13 @@ import {
 } from '@material-ui/core'
 import {red} from '@material-ui/core/colors'
 import {makeStyles} from '@material-ui/core/styles'
-import {ItemsContext} from '../../context'
-import {BORROW_ITEM_MUTATION} from '../../graphql'
+import {ItemsContext, AuthContext} from '../../context'
+import {
+  BORROW_ITEM_MUTATION,
+  RETURN_ITEM_MUTATION,
+} from '../../graphql'
+import {capitalize} from '../../utils'
+import ItemTag from './ItemTag'
 
 const useItemCardStyles = makeStyles({
   root: {
@@ -40,15 +45,21 @@ const ItemCard = ({
   desc,
   owner,
   ownerId,
+  borrowerId,
+  tags,
   imageUrl,
-  children,
   disabled = false,
+  onChange,
   ...props
 }) => {
   const history = useHistory()
   const {refetchItems} = useContext(ItemsContext)
-  const [borrowItem, {data: itemStatus}] = useMutation(
+  const {activeUser} = useContext(AuthContext)
+  const [borrowItem, {data: borrowItemStatus}] = useMutation(
     BORROW_ITEM_MUTATION,
+  )
+  const [returnItem, {data: returnItemStatus}] = useMutation(
+    RETURN_ITEM_MUTATION,
   )
   const {
     root,
@@ -58,8 +69,9 @@ const ItemCard = ({
   } = useItemCardStyles()
 
   useEffect(() => {
-    if (itemStatus) refetchItems()
-  }, [itemStatus, refetchItems])
+    if (onChange) onChange()
+    refetchItems()
+  }, [borrowItemStatus, returnItemStatus, onChange, refetchItems])
 
   return (
     <Card className={root} {...props}>
@@ -85,20 +97,40 @@ const ItemCard = ({
         <Typography variant="h3" className={titleClasses}>
           {title}
         </Typography>
-        {children}
+        {tags && tags.length
+          ? tags.map(({id, title}) => (
+              <ItemTag key={id} id={id}>
+                {capitalize(title)}
+              </ItemTag>
+            ))
+          : null}
         <Typography variant="body1" color="textPrimary" component="p">
           {desc}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <Button
-          aria-label="Borrow"
-          variant="outlined"
-          disabled={disabled || itemStatus === 0 || itemStatus === -1}
-          onClick={() => borrowItem({variables: {item: id}})}
-        >
-          Borrow
-        </Button>
+        {activeUser.user.id === borrowerId ? (
+          <Button
+            aria-label="Return"
+            variant="outlined"
+            onClick={() => returnItem({variables: {item: id}})}
+          >
+            Return
+          </Button>
+        ) : (
+          <Button
+            aria-label="Borrow"
+            variant="outlined"
+            disabled={
+              disabled ||
+              borrowItemStatus === 0 ||
+              borrowItemStatus === -1
+            }
+            onClick={() => borrowItem({variables: {item: id}})}
+          >
+            Borrow
+          </Button>
+        )}
       </CardActions>
     </Card>
   )

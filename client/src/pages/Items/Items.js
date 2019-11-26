@@ -1,8 +1,7 @@
 import React, {useContext} from 'react'
-import ItemCard, {ItemGrid, ItemTag} from '../../components/ItemCard'
+import ItemCard, {ItemGrid} from '../../components/ItemCard'
 import Layout from '../../components/Layout'
 import {ItemsContext} from '../../context'
-import {capitalize} from '../../utils'
 
 const Items = () => {
   const {itemsLoading, itemsError, itemsData} = useContext(
@@ -37,21 +36,15 @@ const Items = () => {
                 date={created_at}
                 owner={owner.fullname}
                 ownerId={owner.id}
+                borrowerId={borrower && borrower.id}
+                tags={tags}
                 disabled={!!borrower}
                 imageUrl={
                   process.env.NODE_ENV === 'production'
                     ? `/uploads/${image_url}`
                     : `http://localhost:8080/uploads/${image_url}`
                 }
-              >
-                {tags.length
-                  ? tags.map(({id, title}) => (
-                      <ItemTag key={id} id={id}>
-                        {capitalize(title)}
-                      </ItemTag>
-                    ))
-                  : null}
-              </ItemCard>
+              />
             ),
           )}
         </ItemGrid>

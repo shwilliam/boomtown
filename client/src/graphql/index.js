@@ -9,6 +9,7 @@ import {
   SIGNUP_MUTATION,
   LOGIN_MUTATION,
   BORROW_ITEM_MUTATION,
+  RETURN_ITEM_MUTATION,
 } from './queries'
 
 export default client
@@ -22,4 +23,5 @@ export {
   SIGNUP_MUTATION,
   LOGIN_MUTATION,
   BORROW_ITEM_MUTATION,
+  RETURN_ITEM_MUTATION,
 }

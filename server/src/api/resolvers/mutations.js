@@ -106,10 +106,19 @@ module.exports = app => ({
 
   borrowItem: async (_, {item}, {token, pgResource}) => {
     const user = jwt.decode(token, app.get('JWT_SECRET'))
-    const newItem = await pgResource.borrowItem({
+    const borrowedItem = await pgResource.borrowItem({
       item,
       user,
     })
-    return newItem
+    return borrowedItem
+  },
+
+  returnItem: async (_, {item}, {token, pgResource}) => {
+    const user = jwt.decode(token, app.get('JWT_SECRET'))
+    const returnedItem = await pgResource.returnItem({
+      item,
+      user,
+    })
+    return returnedItem
   },
 })

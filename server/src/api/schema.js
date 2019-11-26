@@ -63,6 +63,7 @@ module.exports = gql`
   type Mutation @auth {
     addItem(item: NewItemInput!): Item
     borrowItem(item: ID!): ID
+    returnItem(item: ID!): ID
     signup(user: NewUserInput!): AuthPayload
     login(user: LoginUserInput!): AuthPayload
     logout: Boolean
