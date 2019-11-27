@@ -7,14 +7,7 @@ const {
 } = require('apollo-server-express')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
-
-function setCookie({tokenName, token, res}) {
-  res.cookie(tokenName, token, {
-    // httpOnly: true,
-    secure: Boolean(process.env.NODE_ENV === 'production'),
-    maxAge: 7200000, // 2 hrs
-  })
-}
+const {setCookie} = require('../../utils/setCookie')
 
 function generateToken(user, secret) {
   return jwt.sign(user, secret, {expiresIn: '2h'})

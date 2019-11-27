@@ -4,31 +4,37 @@ import React, {
   useEffect,
   useState,
 } from 'react'
-import {useMutation} from 'react-apollo'
-import {LOGOUT_MUTATION} from '../graphql'
-import {useLocalStorage} from '../hooks'
+import {useMutation, useQuery} from 'react-apollo'
+import {LOGOUT_MUTATION, VIEWER_QUERY} from '../graphql'
 
 const AuthContext = createContext()
 
 const AuthContextProvider = ({children}) => {
   const [activeUser, setActiveUser] = useState()
+  const [activeUserLoading, setActiveUserLoading] = useState(true)
   const [logoutMutation] = useMutation(LOGOUT_MUTATION)
-  const [localUser, setLocalUser] = useLocalStorage('user')
+  const {data: viewerData, error: viewerError} = useQuery(
+    VIEWER_QUERY,
+  )
 
   useEffect(() => {
-    if (activeUser) setLocalUser(activeUser)
-  }, [activeUser, setLocalUser])
+    if (viewerError) setActiveUserLoading(false)
+    else if (viewerData) {
+      setActiveUser({user: viewerData.viewer})
+      setActiveUserLoading(false)
+    }
+  }, [viewerData, viewerError, setActiveUser])
 
   const logout = useCallback(() => {
     logoutMutation()
-    setActiveUser(null)
-    setLocalUser()
-  }, [logoutMutation, setLocalUser])
+    setActiveUser()
+  }, [logoutMutation])
 
   return (
     <AuthContext.Provider
       value={{
-        activeUser: localUser || activeUser,
+        activeUser,
+        loading: activeUserLoading,
         setActiveUser,
         logout,
       }}

@@ -1,11 +1,17 @@
 const {ApolloError} = require('apollo-server')
 const jwt = require('jsonwebtoken')
+const {setCookie} = require('../../utils/setCookie')
 
 module.exports = app => ({
-  viewer: async (_, __, {token, pgResource}) => {
-    // TODO: refactor
+  viewer: async (_, __, {token, pgResource, req}) => {
     let user = jwt.decode(token, app.get('JWT_SECRET'))
     user = await pgResource.getUserById(user.id)
+
+    setCookie({
+      tokenName: app.get('JWT_COOKIE_NAME'),
+      token,
+      res: req.res,
+    })
 
     return user
   },
