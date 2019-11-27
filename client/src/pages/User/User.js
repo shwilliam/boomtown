@@ -21,7 +21,6 @@ const User = () => {
     data: userData,
     loading: userDataLoading,
     error: userDataError,
-    refetch: refetchUserData,
   } = useQuery(USER_QUERY, {
     variables: {id},
   })
@@ -63,6 +62,7 @@ const User = () => {
                     desc={desc}
                     date={created_at}
                     owner={fullname}
+                    borrowerId={borrower && borrower.id}
                     disabled={!!borrower}
                     tags={tags}
                     imageUrl={
@@ -70,7 +70,6 @@ const User = () => {
                         ? `/uploads/${image_url}`
                         : `http://localhost:8080/uploads/${image_url}`
                     }
-                    onChange={refetchUserData}
                   />
                 ),
               )}
@@ -83,7 +82,6 @@ const User = () => {
           {borrowed ? (
             <ItemGrid>
               {borrowed
-                // HACK: refetch returns stale items wo borrower
                 .filter(({borrower}) => !!borrower)
                 .map(
                   ({
@@ -112,7 +110,6 @@ const User = () => {
                           ? `/uploads/${image_url}`
                           : `http://localhost:8080/uploads/${image_url}`
                       }
-                      onChange={refetchUserData}
                     />
                   ),
                 )}

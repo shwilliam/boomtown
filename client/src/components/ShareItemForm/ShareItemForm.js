@@ -88,6 +88,8 @@ const ShareItemForm = props => {
 
   useEffect(() => {
     if (newItem) history.push('/')
+
+    // TODO: mui success/error modal
   }, [history, newItem])
 
   return (

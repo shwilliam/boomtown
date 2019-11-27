@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react'
+import React, {useContext} from 'react'
 import {useMutation} from '@apollo/react-hooks'
 import {useHistory} from 'react-router-dom'
 import {format as timeago} from 'timeago.js'
@@ -14,7 +14,7 @@ import {
 } from '@material-ui/core'
 import {red} from '@material-ui/core/colors'
 import {makeStyles} from '@material-ui/core/styles'
-import {ItemsContext, AuthContext} from '../../context'
+import {AuthContext} from '../../context'
 import {
   BORROW_ITEM_MUTATION,
   RETURN_ITEM_MUTATION,
@@ -53,25 +53,20 @@ const ItemCard = ({
   ...props
 }) => {
   const history = useHistory()
-  const {refetchItems} = useContext(ItemsContext)
   const {activeUser} = useContext(AuthContext)
   const [borrowItem, {data: borrowItemStatus}] = useMutation(
     BORROW_ITEM_MUTATION,
+    {refetchQueries: ['items', 'user']},
   )
-  const [returnItem, {data: returnItemStatus}] = useMutation(
-    RETURN_ITEM_MUTATION,
-  )
+  const [returnItem] = useMutation(RETURN_ITEM_MUTATION, {
+    refetchQueries: ['items', 'user'],
+  })
   const {
     root,
     media,
     avatar,
     title: titleClasses,
   } = useItemCardStyles()
-
-  useEffect(() => {
-    if (onChange) onChange()
-    refetchItems()
-  }, [borrowItemStatus, returnItemStatus, onChange, refetchItems])
 
   return (
     <Card className={root} {...props}>

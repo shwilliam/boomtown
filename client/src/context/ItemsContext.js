@@ -12,7 +12,6 @@ const ItemsContextProvider = ({children}) => {
     data: itemsData,
     loading: itemsLoading,
     error: itemsError,
-    refetch: refetchItems,
   } = useQuery(ALL_ITEMS_QUERY, {
     variables: {filter: activeUser && activeUser.user.id},
     pollInterval: 30000, // 30 sec
@@ -25,7 +24,6 @@ const ItemsContextProvider = ({children}) => {
         itemsData: activeUser && !itemsLoading ? itemsData : null,
         itemsLoading: activeUser ? itemsLoading : true,
         itemsError,
-        refetchItems,
       }}
     >
       {children}

@@ -11,7 +11,7 @@ import {
   Typography,
 } from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
-import {AuthContext, ItemsContext} from '../../context'
+import {AuthContext} from '../../context'
 import {LOGIN_MUTATION, SIGNUP_MUTATION} from '../../graphql'
 import validate from './helpers/validate'
 
@@ -44,9 +44,10 @@ const useAccountFormStyles = makeStyles(theme => ({
 
 const AccountForm = props => {
   const history = useHistory()
-  const {refetchItems} = useContext(ItemsContext)
   // TODO: refactor to custom auth hook
-  const [logIn, {data: signInData}] = useMutation(LOGIN_MUTATION)
+  const [logIn, {data: signInData}] = useMutation(LOGIN_MUTATION, {
+    refetchQueries: ['items'],
+  })
   const [signUp, {data: signUpData}] = useMutation(SIGNUP_MUTATION)
   const [isSignUp, setIsSignUp] = useState(false)
   const {setActiveUser} = useContext(AuthContext)
@@ -63,12 +64,13 @@ const AccountForm = props => {
       ? signUpData.signup
       : signInData && signInData.login
 
+    // TODO: render error msg
+
     if (userData) {
       setActiveUser(userData)
-      refetchItems()
       history.push('/')
     }
-  }, [signUpData, signInData, setActiveUser, refetchItems, history])
+  }, [signUpData, signInData, setActiveUser, history])
 
   const onSubmit = ({email, password, fullname}) =>
     isSignUp
