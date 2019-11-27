@@ -78,7 +78,11 @@ const ItemCard = ({
         }
         title={owner}
         subheader={timeago(date)}
-        onClick={() => ownerId && history.push(`/user/${ownerId}`)}
+        onClick={() =>
+          ownerId && activeUser && ownerId === activeUser.user.id
+            ? history.push('/profile')
+            : history.push(`/user/${ownerId}`)
+        }
       />
       <CardMedia
         className={media}
