@@ -45,9 +45,7 @@ const useAccountFormStyles = makeStyles(theme => ({
 const AccountForm = props => {
   const history = useHistory()
   // TODO: refactor to custom auth hook
-  const [logIn, {data: signInData}] = useMutation(LOGIN_MUTATION, {
-    refetchQueries: ['items'],
-  })
+  const [logIn, {data: signInData}] = useMutation(LOGIN_MUTATION)
   const [signUp, {data: signUpData}] = useMutation(SIGNUP_MUTATION)
   const [isSignUp, setIsSignUp] = useState(false)
   const {setActiveUser} = useContext(AuthContext)

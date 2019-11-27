@@ -30,11 +30,12 @@ const AuthContextProvider = ({children}) => {
     setActiveUser()
   }, [logoutMutation])
 
+  // authenticating
+  if (activeUserLoading) return null
   return (
     <AuthContext.Provider
       value={{
         activeUser,
-        loading: activeUserLoading,
         setActiveUser,
         logout,
       }}

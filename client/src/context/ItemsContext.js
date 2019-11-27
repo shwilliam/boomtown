@@ -7,7 +7,6 @@ const ItemsContext = createContext()
 
 const ItemsContextProvider = ({children}) => {
   const {activeUser} = useContext(AuthContext)
-  // TODO: avoid fetching if no user
   const {
     data: itemsData,
     loading: itemsLoading,
@@ -21,8 +20,8 @@ const ItemsContextProvider = ({children}) => {
     <ItemsContext.Provider
       value={{
         // HACK: avoid unfiltered query flash
-        itemsData: activeUser && !itemsLoading ? itemsData : null,
-        itemsLoading: activeUser ? itemsLoading : true,
+        itemsData: !itemsLoading ? itemsData : null,
+        itemsLoading,
         itemsError,
       }}
     >
