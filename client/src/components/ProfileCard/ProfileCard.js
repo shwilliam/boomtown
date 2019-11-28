@@ -1,13 +1,18 @@
-import React from 'react'
+import React, {useState, useCallback, useContext} from 'react'
 import {
   Avatar,
+  Button,
   Card,
   CardContent,
   CardHeader,
   Typography,
+  TextField,
 } from '@material-ui/core'
 import {red} from '@material-ui/core/colors'
 import {makeStyles} from '@material-ui/core/styles'
+import {useMutation} from 'react-apollo'
+import {UPDATE_BIO_MUTATION} from '../../graphql'
+import {AuthContext} from '../../context'
 
 const useProfileCardStyles = makeStyles({
   root: {
@@ -23,8 +28,29 @@ const useProfileCardStyles = makeStyles({
   },
 })
 
-const ProfileCard = ({fullname, bio, items, borrowed, ...props}) => {
+const ProfileCard = ({
+  userId,
+  fullname,
+  bio = '',
+  items,
+  borrowed,
+  ...props
+}) => {
   const {root, avatar, title} = useProfileCardStyles()
+  const {activeUser} = useContext(AuthContext)
+  const [bioTouched, setBioTouched] = useState(false)
+  const [bioInput, setBioInput] = useState(bio)
+  const [updateBio] = useMutation(UPDATE_BIO_MUTATION, {
+    refetchQueries: ['user'],
+  })
+
+  const onBioSubmit = useCallback(
+    e => {
+      e.preventDefault()
+      updateBio({variables: {bio: bioInput}})
+    },
+    [updateBio, bioInput],
+  )
 
   return (
     <Card className={root} {...props}>
@@ -48,13 +74,30 @@ const ProfileCard = ({fullname, bio, items, borrowed, ...props}) => {
         <Typography variant="body1" color="textPrimary" component="p">
           {items.length} Items shared {borrowed.length} Items borrowed
         </Typography>
-        {bio && (
+        {activeUser.user.id === userId ? (
+          <form noValidate autoComplete="off" onSubmit={onBioSubmit}>
+            <TextField
+              value={bioInput}
+              onChange={e => setBioInput(e.target.value)}
+              onFocus={() => setBioTouched(true)}
+              label={bioInput ? 'Bio' : 'No bio provided'}
+              multiline
+              rows="2"
+            />
+            <Button
+              type="submit"
+              disabled={!bioTouched || bio === bioInput}
+            >
+              Save
+            </Button>
+          </form>
+        ) : (
           <Typography
             variant="body1"
             color="textSecondary"
             component="p"
           >
-            "{bio}"
+            {bio || 'No bio provided'}
           </Typography>
         )}
       </CardContent>

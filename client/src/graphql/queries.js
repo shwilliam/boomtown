@@ -55,6 +55,7 @@ export const USER_QUERY = gql`
     user(id: $id) {
       fullname
       email
+      bio
       items {
         id
         title
@@ -132,5 +133,11 @@ export const BORROW_ITEM_MUTATION = gql`
 export const RETURN_ITEM_MUTATION = gql`
   mutation returnItem($item: ID!) {
     returnItem(item: $item)
+  }
+`
+
+export const UPDATE_BIO_MUTATION = gql`
+  mutation updateBio($bio: String) {
+    updateBio(bio: $bio)
   }
 `

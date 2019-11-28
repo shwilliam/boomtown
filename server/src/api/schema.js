@@ -67,5 +67,6 @@ module.exports = gql`
     signup(user: NewUserInput!): AuthPayload
     login(user: LoginUserInput!): AuthPayload
     logout: Boolean
+    updateBio(bio: String): ID
   }
 `

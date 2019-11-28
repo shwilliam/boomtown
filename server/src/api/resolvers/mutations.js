@@ -114,4 +114,13 @@ module.exports = app => ({
     })
     return returnedItem
   },
+
+  updateBio: async (_, {bio}, {token, pgResource}) => {
+    const user = jwt.decode(token, app.get('JWT_SECRET'))
+    await pgResource.updateBio({
+      bio,
+      user,
+    })
+    return user.id
+  },
 })

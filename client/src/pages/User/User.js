@@ -32,6 +32,7 @@ const User = () => {
   return (
     <Layout dark>
       <ProfileCard
+        userId={id}
         fullname={fullname}
         bio={bio}
         items={items}

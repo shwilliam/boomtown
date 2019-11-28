@@ -46,8 +46,8 @@ module.exports = postgres => ({
 
       if (!user) throw 'User not found'
 
-      const {id, email, fullname} = user
-      return {id, email, fullname}
+      const {id, email, fullname, bio} = user
+      return {id, email, fullname, bio}
     } catch (e) {
       throw e
     }
@@ -185,5 +185,14 @@ module.exports = postgres => ({
     })
 
     return item
+  },
+
+  updateBio: async ({user, bio}) => {
+    await postgres.query({
+      text: 'UPDATE users SET bio=$1 WHERE id=$2',
+      values: [bio, user.id],
+    })
+
+    return user.id
   },
 })
