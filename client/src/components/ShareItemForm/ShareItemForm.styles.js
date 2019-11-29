@@ -14,14 +14,6 @@ const useStyles = makeStyles(theme => ({
   formButton: {
     marginTop: theme.spacing(2),
   },
-  formToggle: {
-    background: 'none',
-    border: 'none',
-    textDecoration: 'underline',
-    '&:hover': {
-      cursor: 'pointer',
-    },
-  },
   errorMessage: {
     color: 'firebrick',
   },

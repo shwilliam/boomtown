@@ -1,15 +1,9 @@
 import React, {Children} from 'react'
 import {Grid} from '@material-ui/core'
-import {makeStyles} from '@material-ui/core/styles'
-
-const useItemGridStyles = makeStyles({
-  root: {
-    flexGrow: 1,
-  },
-})
+import useStyles from './ItemGrid.styles'
 
 const ItemGrid = ({children, ...props}) => {
-  const {root} = useItemGridStyles()
+  const {root} = useStyles()
 
   return (
     <Grid className={root} container spacing={3} {...props}>

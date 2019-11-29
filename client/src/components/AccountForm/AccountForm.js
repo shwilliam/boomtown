@@ -9,13 +9,13 @@ import {
   Typography,
 } from '@material-ui/core'
 import {useAuth} from '../../hooks'
-import useAccountFormStyles from './AccountForm.styles'
 import validate from './helpers/validate'
+import useStyles from './AccountForm.styles'
 
 const AccountForm = props => {
   const [isSignUp, setIsSignUp] = useState(false)
   const {signIn, signUp} = useAuth()
-  const styles = useAccountFormStyles()
+  const styles = useStyles()
 
   const onSubmit = ({email, password, fullname}) =>
     isSignUp

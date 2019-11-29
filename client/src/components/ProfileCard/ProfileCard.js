@@ -8,25 +8,10 @@ import {
   Typography,
   TextField,
 } from '@material-ui/core'
-import {red} from '@material-ui/core/colors'
-import {makeStyles} from '@material-ui/core/styles'
 import {useMutation} from 'react-apollo'
 import {UPDATE_BIO_MUTATION} from '../../graphql'
 import {AuthContext} from '../../context'
-
-const useProfileCardStyles = makeStyles({
-  root: {
-    maxWidth: 345,
-    margin: '0 auto',
-  },
-  avatar: {
-    backgroundColor: red[500],
-  },
-  title: {
-    fontSize: '2rem',
-    fontWeight: 500,
-  },
-})
+import useStyles from './ProfileCard.styles'
 
 const ProfileCard = ({
   userId,
@@ -36,7 +21,7 @@ const ProfileCard = ({
   borrowed,
   ...props
 }) => {
-  const {root, avatar, title} = useProfileCardStyles()
+  const {root, avatar, title} = useStyles()
   const {activeUser} = useContext(AuthContext)
   const [bioTouched, setBioTouched] = useState(false)
   const [bioInput, setBioInput] = useState(bio)

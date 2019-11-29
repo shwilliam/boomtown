@@ -1,5 +1,4 @@
 import React, {useContext} from 'react'
-import {useMutation} from '@apollo/react-hooks'
 import {useHistory} from 'react-router-dom'
 import {format as timeago} from 'timeago.js'
 import {
@@ -12,31 +11,11 @@ import {
   CardMedia,
   Typography,
 } from '@material-ui/core'
-import {red} from '@material-ui/core/colors'
-import {makeStyles} from '@material-ui/core/styles'
 import {AuthContext} from '../../context'
-import {
-  BORROW_ITEM_MUTATION,
-  RETURN_ITEM_MUTATION,
-} from '../../graphql'
 import {capitalize} from '../../utils'
+import {useBorrow} from '../../hooks'
 import ItemTag from './ItemTag'
-
-const useItemCardStyles = makeStyles({
-  root: {
-    maxWidth: 345,
-  },
-  media: {
-    height: 0,
-    paddingTop: '56.25%', // 16:9
-  },
-  avatar: {
-    backgroundColor: red[500],
-  },
-  title: {
-    fontSize: '1.6rem',
-  },
-})
+import useStyles from './ItemCard.styles'
 
 const ItemCard = ({
   id,
@@ -54,38 +33,30 @@ const ItemCard = ({
 }) => {
   const history = useHistory()
   const {activeUser} = useContext(AuthContext)
-  const [borrowItem, {data: borrowItemStatus}] = useMutation(
-    BORROW_ITEM_MUTATION,
-    {refetchQueries: ['items', 'user']},
-  )
-  const [returnItem] = useMutation(RETURN_ITEM_MUTATION, {
-    refetchQueries: ['items', 'user'],
-  })
-  const {
-    root,
-    media,
-    avatar,
-    title: titleClasses,
-  } = useItemCardStyles()
+  const {borrowItem, returnItem, borrowStatus} = useBorrow()
+  const styles = useStyles()
+
+  const isOwnItem = () =>
+    activeUser && ownerId && ownerId === activeUser.user.id
 
   return (
-    <Card className={root} {...props}>
+    <Card className={styles.root} {...props}>
       <CardHeader
         avatar={
-          <Avatar aria-label={owner} className={avatar}>
+          <Avatar aria-label={owner} className={styles.avatar}>
             {owner[0]}
           </Avatar>
         }
         title={owner}
         subheader={timeago(date)}
         onClick={() =>
-          ownerId && activeUser && ownerId === activeUser.user.id
+          isOwnItem
             ? history.push('/profile')
             : history.push(`/user/${ownerId}`)
         }
       />
       <CardMedia
-        className={media}
+        className={styles.media}
         image={
           imageUrl ||
           'https://via.placeholder.com/420x320/f9a825/333333?text=%20'
@@ -93,7 +64,7 @@ const ItemCard = ({
         title={imageUrl ? title : ''}
       />
       <CardContent>
-        <Typography variant="h3" className={titleClasses}>
+        <Typography variant="h3" className={styles.titleClasses}>
           {title}
         </Typography>
         {tags && tags.length
@@ -121,9 +92,7 @@ const ItemCard = ({
             aria-label="Borrow"
             variant="outlined"
             disabled={
-              disabled ||
-              borrowItemStatus === 0 ||
-              borrowItemStatus === -1
+              disabled || borrowStatus === 0 || borrowStatus === -1
             }
             onClick={() => borrowItem({variables: {item: id}})}
           >

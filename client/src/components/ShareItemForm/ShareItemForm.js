@@ -18,31 +18,12 @@ import {
   Select,
   Typography,
 } from '@material-ui/core'
-import {makeStyles} from '@material-ui/core/styles'
 import {ShareItemContext} from '../../context'
 import {ADD_ITEM_MUTATION, ALL_TAGS_QUERY} from '../../graphql'
 import {capitalize} from '../../utils'
 import Dropzone from '../Dropzone'
 import validate from './helpers/validate'
-
-const useShareItemFormStyles = makeStyles(theme => ({
-  root: {
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      width: '400px',
-    },
-  },
-  formControl: {
-    marginBottom: theme.spacing(2),
-    width: '100%',
-  },
-  formButton: {
-    marginTop: theme.spacing(2),
-  },
-  errorMessage: {
-    color: 'firebrick',
-  },
-}))
+import useStyles from './ShareItemForm.styles'
 
 const ShareItemForm = props => {
   const [imageData, setImageData] = useState()
@@ -50,12 +31,7 @@ const ShareItemForm = props => {
   const [addItem, {data: newItem}] = useMutation(ADD_ITEM_MUTATION)
   const {data: tagsData, error: itemsError} = useQuery(ALL_TAGS_QUERY)
   const history = useHistory()
-  const {
-    root,
-    formControl,
-    formButton,
-    errorMessage,
-  } = useShareItemFormStyles()
+  const {root, formControl, formButton, errorMessage} = useStyles()
 
   // TODO: handle error loading tags
   if (itemsError) console.error(itemsError)

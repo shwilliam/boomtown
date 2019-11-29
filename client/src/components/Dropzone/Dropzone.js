@@ -1,14 +1,11 @@
-import React, {useCallback} from 'react'
+import React from 'react'
 import {Button} from '@material-ui/core'
 import {useDropzone} from 'react-dropzone'
 
 const Dropzone = ({onUpload, file, ...props}) => {
-  const onDrop = useCallback(
-    ([file]) => {
-      onUpload({variables: {file}})
-    },
-    [onUpload],
-  )
+  const onDrop = ([file]) => {
+    onUpload({variables: {file}})
+  }
   const {getRootProps, getInputProps, isDragActive} = useDropzone({
     onDrop,
   })

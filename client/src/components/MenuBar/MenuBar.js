@@ -7,25 +7,13 @@ import {
   IconButton,
   Toolbar,
 } from '@material-ui/core'
-import {makeStyles} from '@material-ui/core/styles'
 import MoreVertMenu from './MoreVertMenu'
 import logoSrc from '../../images/boomtown.svg'
-
-const useMenuBarStyles = makeStyles(theme => ({
-  margin: {
-    margin: theme.spacing(1),
-  },
-  menuButton: {
-    marginRight: 'auto',
-  },
-  menuButtonIcon: {
-    height: '50px',
-  },
-}))
+import useStyles from './MenuBar.styles'
 
 const MenuBar = props => {
   const history = useHistory()
-  const {margin, menuButton, menuButtonIcon} = useMenuBarStyles()
+  const {margin, menuButton, menuButtonIcon} = useStyles()
 
   return (
     <AppBar position="static" {...props}>
