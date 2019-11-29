@@ -77,7 +77,7 @@ const ProfileCard = ({
         {activeUser.user.id === userId ? (
           <form noValidate autoComplete="off" onSubmit={onBioSubmit}>
             <TextField
-              value={bioInput}
+              value={bioInput || ''}
               onChange={e => setBioInput(e.target.value)}
               onFocus={() => setBioTouched(true)}
               label={bioInput ? 'Bio' : 'No bio provided'}
