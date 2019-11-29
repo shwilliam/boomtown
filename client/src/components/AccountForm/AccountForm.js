@@ -1,7 +1,5 @@
-import React, {useContext, useEffect, useState} from 'react'
-import {useMutation} from '@apollo/react-hooks'
+import React, {useState} from 'react'
 import {Field, Form} from 'react-final-form'
-import {useHistory} from 'react-router-dom'
 import {
   Button,
   FormControl,
@@ -11,8 +9,7 @@ import {
   Typography,
 } from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
-import {AuthContext} from '../../context'
-import {LOGIN_MUTATION, SIGNUP_MUTATION} from '../../graphql'
+import {useAuth} from '../../hooks'
 import validate from './helpers/validate'
 
 const useAccountFormStyles = makeStyles(theme => ({
@@ -43,12 +40,8 @@ const useAccountFormStyles = makeStyles(theme => ({
 }))
 
 const AccountForm = props => {
-  const history = useHistory()
-  // TODO: refactor to custom auth hook
-  const [logIn, {data: signInData}] = useMutation(LOGIN_MUTATION)
-  const [signUp, {data: signUpData}] = useMutation(SIGNUP_MUTATION)
   const [isSignUp, setIsSignUp] = useState(false)
-  const {setActiveUser} = useContext(AuthContext)
+  const {signIn, signUp} = useAuth()
   const {
     root,
     formControl,
@@ -56,19 +49,6 @@ const AccountForm = props => {
     formToggle,
     errorMessage,
   } = useAccountFormStyles()
-
-  useEffect(() => {
-    const userData = signUpData
-      ? signUpData.signup
-      : signInData && signInData.login
-
-    // TODO: render error msg
-
-    if (userData) {
-      setActiveUser(userData)
-      history.push('/')
-    }
-  }, [signUpData, signInData, setActiveUser, history])
 
   const onSubmit = ({email, password, fullname}) =>
     isSignUp
@@ -81,7 +61,7 @@ const AccountForm = props => {
             },
           },
         })
-      : logIn({
+      : signIn({
           variables: {
             user: {email, password},
           },
