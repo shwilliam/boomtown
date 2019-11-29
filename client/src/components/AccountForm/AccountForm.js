@@ -8,77 +8,39 @@ import {
   InputLabel,
   Typography,
 } from '@material-ui/core'
-import {makeStyles} from '@material-ui/core/styles'
 import {useAuth} from '../../hooks'
+import useAccountFormStyles from './AccountForm.styles'
 import validate from './helpers/validate'
-
-const useAccountFormStyles = makeStyles(theme => ({
-  root: {
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      width: '400px',
-    },
-  },
-  formControl: {
-    marginBottom: theme.spacing(2),
-    width: '100%',
-  },
-  formButton: {
-    marginTop: theme.spacing(2),
-  },
-  formToggle: {
-    background: 'none',
-    border: 'none',
-    textDecoration: 'underline',
-    '&:hover': {
-      cursor: 'pointer',
-    },
-  },
-  errorMessage: {
-    color: 'firebrick',
-  },
-}))
 
 const AccountForm = props => {
   const [isSignUp, setIsSignUp] = useState(false)
   const {signIn, signUp} = useAuth()
-  const {
-    root,
-    formControl,
-    formButton,
-    formToggle,
-    errorMessage,
-  } = useAccountFormStyles()
+  const styles = useAccountFormStyles()
 
   const onSubmit = ({email, password, fullname}) =>
     isSignUp
       ? signUp({
-          variables: {
-            user: {
-              fullname,
-              email,
-              password,
-            },
-          },
+          fullname,
+          email,
+          password,
         })
-      : signIn({
-          variables: {
-            user: {email, password},
-          },
-        })
+      : signIn({email, password})
 
   return (
     <Form
       onSubmit={onSubmit}
       validate={values => validate({isSignUp, ...values})}
-      render={({handleSubmit}) => (
-        <form onSubmit={handleSubmit} className={root} {...props}>
+      render={({handleSubmit, pristine, errors, touched}) => (
+        <form
+          onSubmit={handleSubmit}
+          className={styles.root}
+          {...props}
+        >
           {isSignUp && (
-            <FormControl fullWidth className={formControl}>
+            <FormControl fullWidth className={styles.formControl}>
               <InputLabel htmlFor="fullname">Full name</InputLabel>
-              <Field
-                name="fullname"
-                render={({input, meta}) => (
+              <Field name="fullname">
+                {({input, meta}) => (
                   <Input
                     id="fullname"
                     type="text"
@@ -89,10 +51,10 @@ const AccountForm = props => {
                     }}
                   />
                 )}
-              />
+              </Field>
             </FormControl>
           )}
-          <FormControl fullWidth className={formControl}>
+          <FormControl fullWidth className={styles.formControl}>
             <InputLabel htmlFor="email">Email</InputLabel>
             <Field
               name="email"
@@ -109,7 +71,7 @@ const AccountForm = props => {
               )}
             />
           </FormControl>
-          <FormControl fullWidth className={formControl}>
+          <FormControl fullWidth className={styles.formControl}>
             <InputLabel htmlFor="password">Password</InputLabel>
             <Field
               name="password"
@@ -126,7 +88,7 @@ const AccountForm = props => {
               )}
             />
           </FormControl>
-          <FormControl className={formControl}>
+          <FormControl className={styles.formControl}>
             <Grid
               container
               direction="row"
@@ -135,17 +97,17 @@ const AccountForm = props => {
             >
               <Button
                 type="submit"
-                className={formButton}
+                className={styles.formButton}
                 variant="contained"
                 size="large"
                 color="secondary"
-                disabled={false}
+                disabled={pristine}
               >
                 {isSignUp ? 'Create Account' : 'Enter'}
               </Button>
               <Typography>
                 <button
-                  className={formToggle}
+                  className={styles.formToggle}
                   type="button"
                   onClick={() => setIsSignUp(isSignUp => !isSignUp)}
                 >
@@ -156,8 +118,10 @@ const AccountForm = props => {
               </Typography>
             </Grid>
           </FormControl>
-          <Typography className={errorMessage}>
-            {/* errors */}
+          <Typography className={styles.errorMessage}>
+            {(errors && (touched.fullname && errors.fullname)) ||
+              (touched.email && errors.email) ||
+              (touched.password && errors.password)}
           </Typography>
         </form>
       )}

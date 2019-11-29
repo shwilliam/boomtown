@@ -4,6 +4,13 @@ import {useHistory} from 'react-router-dom'
 import {AuthContext} from '../context'
 import {LOGIN_MUTATION, SIGNUP_MUTATION} from '../graphql'
 
+const callableWithUserVariables = fn => d =>
+  fn({
+    variables: {
+      user: {...d},
+    },
+  })
+
 const useAuth = () => {
   const history = useHistory()
   const {setActiveUser} = useContext(AuthContext)
@@ -23,7 +30,10 @@ const useAuth = () => {
     }
   }, [signUpData, signInData, setActiveUser, history])
 
-  return {signIn, signUp}
+  return {
+    signIn: callableWithUserVariables(signIn),
+    signUp: callableWithUserVariables(signUp),
+  }
 }
 
 export default useAuth
