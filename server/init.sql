@@ -2,7 +2,7 @@
 CREATE TABLE public.users (
   "id" SERIAL PRIMARY KEY,
   "fullname" TEXT NOT NULL,
-  "email" TEXT NOT NULL,
+  "email" TEXT NOT NULL UNIQUE,
   "password" TEXT NOT NULL
 );
 CREATE TABLE public.items (
