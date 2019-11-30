@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import {Field, Form} from 'react-final-form'
 import {
   Button,
@@ -13,22 +13,17 @@ import validate from './helpers/validate'
 import useStyles from './AccountForm.styles'
 
 const AccountForm = props => {
-  const [isSignUp, setIsSignUp] = useState(false)
-  const {signIn, signUp} = useAuth()
+  const {
+    authenticate,
+    isSignUp,
+    error: authError,
+    toggleSignUp,
+  } = useAuth()
   const styles = useStyles()
-
-  const onSubmit = ({email, password, fullname}) =>
-    isSignUp
-      ? signUp({
-          fullname,
-          email,
-          password,
-        })
-      : signIn({email, password})
 
   return (
     <Form
-      onSubmit={onSubmit}
+      onSubmit={authenticate}
       validate={values => validate({isSignUp, ...values})}
       render={({handleSubmit, pristine, errors, touched}) => (
         <form
@@ -109,7 +104,7 @@ const AccountForm = props => {
                 <button
                   className={styles.formToggle}
                   type="button"
-                  onClick={() => setIsSignUp(isSignUp => !isSignUp)}
+                  onClick={toggleSignUp}
                 >
                   {isSignUp
                     ? 'Login to existing account.'
@@ -119,7 +114,9 @@ const AccountForm = props => {
             </Grid>
           </FormControl>
           <Typography className={styles.errorMessage}>
-            {(errors && (touched.fullname && errors.fullname)) ||
+            {(authError &&
+              authError.message.replace(/GraphQL error: /, '')) ||
+              (errors && (touched.fullname && errors.fullname)) ||
               (touched.email && errors.email) ||
               (touched.password && errors.password)}
           </Typography>
