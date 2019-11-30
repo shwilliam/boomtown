@@ -90,11 +90,13 @@ const AccountForm = props => {
             />
           </FormControl>
           <Typography className={styles.errorMessage}>
-            {(authError &&
-              authError.message.replace(/GraphQL error: /, '')) ||
-              (errors && (touched.fullname && errors.fullname)) ||
-              (touched.email && errors.email) ||
-              (touched.password && errors.password)}
+            {authError
+              ? authError.message.includes('ECONNREFUSED')
+                ? 'Unable to establish database connection'
+                : authError.message.replace(/GraphQL error: /, '')
+              : (errors && (touched.fullname && errors.fullname)) ||
+                (touched.email && errors.email) ||
+                (touched.password && errors.password)}
           </Typography>
           <FormControl className={styles.formControl}>
             <Grid
