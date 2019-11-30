@@ -1,5 +1,6 @@
 import React, {useCallback, useContext, useState} from 'react'
 import {useMutation, useQuery} from '@apollo/react-hooks'
+import {useHistory} from 'react-router-dom'
 import {Field, Form} from 'react-final-form'
 import {
   Button,
@@ -61,7 +62,12 @@ const useButtonStyles = makeStyles(theme => ({
 
 const ShareItemForm = props => {
   const [imageData, setImageData] = useState()
-  const {setFormFieldValue} = useContext(ShareItemContext)
+  const [addingMultipleItems, setAddingMultipleItems] = useState(
+    false,
+  )
+  const {setFormFieldValue, onFormReset} = useContext(
+    ShareItemContext,
+  )
   const [addItem, {data: newItem, error: newItemError}] = useMutation(
     ADD_ITEM_MUTATION,
   )
@@ -71,12 +77,14 @@ const ShareItemForm = props => {
   // TODO: refactor modal component
   const {buttonPrimary, buttonSecondary} = useButtonStyles()
   // TODO: refactor button components
+  const history = useHistory()
 
   // TODO: handle error loading tags
   if (tagsError) console.error(tagsError)
 
   const onSubmit = useCallback(
-    ({title, desc, tags = []}) =>
+    ({title, desc, tags = []}) => {
+      setAddingMultipleItems(false)
       addItem({
         variables: {
           item: {
@@ -86,7 +94,8 @@ const ShareItemForm = props => {
             image: imageData,
           },
         },
-      }),
+      })
+    },
     [imageData, addItem],
   )
 
@@ -102,88 +111,18 @@ const ShareItemForm = props => {
   )
 
   return (
-    <>
-      <Modal
-        aria-labelledby="item-share-title"
-        aria-describedby="item-share-description"
-        open={!!newItem}
-        onClose={() => {
-          // TODO: clear form
-        }}
-      >
-        <div className={modalContainer}>
-          <div className={modal}>
-            {/* TODO: use Typography */}
-            <h2 id="item-share-title">
-              [TODO: icon] Your item was added!
-            </h2>
-            <p id="item-share-description">
-              Thanks for contributing to Boomtown! Add another item or
-              return to the items page below.
-            </p>
-            <Button
-              onClick={() => {
-                // TODO: close modal
-              }}
-              className={buttonSecondary}
-            >
-              Add another item
-            </Button>
-            <Button
-              onClick={() => {
-                // TODO: redirect to `/items`
-              }}
-              className={buttonPrimary}
-            >
-              Back to items
-            </Button>
-          </div>
-        </div>
-      </Modal>
-      <Modal
-        aria-labelledby="item-share-error-title"
-        aria-describedby="item-share-error-description"
-        open={!!newItemError}
-        onClose={() => {
-          // TODO: hard refresh
-        }}
-        className={modal}
-      >
-        <div>
-          <h2 id="item-share-error-title">Something went wrong</h2>
-          <p id="item-share-error-description">
-            Unable to share item. If you wish to try again press 'Add
-            Another Item', otherwise use 'Back to Items' to navigate
-            back to the items page.
-          </p>
-          <Button
-            onClick={() => {
-              // TODO: close modal
-            }}
-            className={buttonSecondary}
-          >
-            Try again
-          </Button>
-          <Button
-            onClick={() => {
-              // TODO: redirect to `/items`
-            }}
-            className={buttonPrimary}
-          >
-            Back to items
-          </Button>
-        </div>
-      </Modal>
-      <Form
-        onSubmit={onSubmit}
-        validate={validate}
-        render={({
-          handleSubmit,
-          pristine,
-          touched,
-          errors,
-          invalid,
-        }) => (
+    <Form
+      onSubmit={onSubmit}
+      validate={validate}
+      render={({
+        handleSubmit,
+        pristine,
+        touched,
+        errors,
+        invalid,
+        form,
+      }) => (
+        <>
           <form
             onSubmit={handleSubmit}
             className={root}
@@ -313,10 +252,79 @@ const ShareItemForm = props => {
                 Submit
               </Button>
             </FormControl>
+            <Modal
+              aria-labelledby="item-share-title"
+              aria-describedby="item-share-description"
+              open={!!newItem && !addingMultipleItems}
+            >
+              <div className={modalContainer}>
+                <div className={modal}>
+                  {/* TODO: use Typography */}
+                  <h2 id="item-share-title">
+                    [TODO: icon] Your item was added!
+                  </h2>
+                  <p id="item-share-description">
+                    Thanks for contributing to Boomtown! Add another
+                    item or return to the items page below.
+                  </p>
+                  <Button
+                    onClick={() => {
+                      form.reset()
+                      onFormReset()
+                      setAddingMultipleItems(true)
+                    }}
+                    className={buttonSecondary}
+                  >
+                    Add another item
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      history.push('/')
+                    }}
+                    className={buttonPrimary}
+                  >
+                    Back to items
+                  </Button>
+                </div>
+              </div>
+            </Modal>
+            <Modal
+              aria-labelledby="item-share-error-title"
+              aria-describedby="item-share-error-description"
+              open={!!newItemError}
+              className={modal}
+            >
+              <div>
+                <h2 id="item-share-error-title">
+                  Something went wrong
+                </h2>
+                <p id="item-share-error-description">
+                  Unable to share item. If you wish to try again press
+                  'Add Another Item', otherwise use 'Back to Items' to
+                  navigate back to the items page.
+                </p>
+                <Button
+                  onClick={() => {
+                    history.push('/share')
+                  }}
+                  className={buttonSecondary}
+                >
+                  Try again
+                </Button>
+                <Button
+                  onClick={() => {
+                    history.push('/')
+                  }}
+                  className={buttonPrimary}
+                >
+                  Back to items
+                </Button>
+              </div>
+            </Modal>
           </form>
-        )}
-      />
-    </>
+        </>
+      )}
+    />
   )
 }
 
