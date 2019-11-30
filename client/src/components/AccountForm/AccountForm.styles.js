@@ -24,6 +24,7 @@ const useStyles = makeStyles(theme => ({
   },
   errorMessage: {
     color: 'firebrick',
+    height: '2rem',
   },
 }))
 

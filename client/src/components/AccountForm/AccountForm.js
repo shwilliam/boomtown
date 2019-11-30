@@ -25,7 +25,13 @@ const AccountForm = props => {
     <Form
       onSubmit={authenticate}
       validate={values => validate({isSignUp, ...values})}
-      render={({handleSubmit, pristine, errors, touched}) => (
+      render={({
+        handleSubmit,
+        pristine,
+        touched,
+        errors,
+        invalid,
+      }) => (
         <form
           onSubmit={handleSubmit}
           className={styles.root}
@@ -83,6 +89,13 @@ const AccountForm = props => {
               )}
             />
           </FormControl>
+          <Typography className={styles.errorMessage}>
+            {(authError &&
+              authError.message.replace(/GraphQL error: /, '')) ||
+              (errors && (touched.fullname && errors.fullname)) ||
+              (touched.email && errors.email) ||
+              (touched.password && errors.password)}
+          </Typography>
           <FormControl className={styles.formControl}>
             <Grid
               container
@@ -96,7 +109,7 @@ const AccountForm = props => {
                 variant="contained"
                 size="large"
                 color="secondary"
-                disabled={pristine}
+                disabled={pristine || invalid}
               >
                 {isSignUp ? 'Create Account' : 'Enter'}
               </Button>
@@ -113,13 +126,6 @@ const AccountForm = props => {
               </Typography>
             </Grid>
           </FormControl>
-          <Typography className={styles.errorMessage}>
-            {(authError &&
-              authError.message.replace(/GraphQL error: /, '')) ||
-              (errors && (touched.fullname && errors.fullname)) ||
-              (touched.email && errors.email) ||
-              (touched.password && errors.password)}
-          </Typography>
         </form>
       )}
     />
