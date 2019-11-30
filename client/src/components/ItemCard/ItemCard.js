@@ -2,7 +2,6 @@ import React, {useContext} from 'react'
 import {useHistory} from 'react-router-dom'
 import {format as timeago} from 'timeago.js'
 import {
-  Avatar,
   Button,
   Card,
   CardActions,
@@ -14,6 +13,7 @@ import {
 import {AuthContext} from '../../context'
 import {capitalize} from '../../utils'
 import {useBorrow} from '../../hooks'
+import Avatar from '../Avatar'
 import ItemTag from './ItemTag'
 import useStyles from './ItemCard.styles'
 
@@ -23,6 +23,7 @@ const ItemCard = ({
   date,
   desc,
   owner,
+  email,
   ownerId,
   borrowerId,
   tags,
@@ -42,11 +43,7 @@ const ItemCard = ({
   return (
     <Card className={styles.root} {...props}>
       <CardHeader
-        avatar={
-          <Avatar aria-label={owner} className={styles.avatar}>
-            {owner[0]}
-          </Avatar>
-        }
+        avatar={<Avatar email={email} />}
         title={owner}
         subheader={timeago(date)}
         onClick={() =>

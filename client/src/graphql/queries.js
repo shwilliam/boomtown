@@ -15,6 +15,7 @@ export const ALL_ITEMS_QUERY = gql`
       owner {
         id
         fullname
+        email
       }
       borrower {
         id
@@ -83,6 +84,7 @@ export const USER_QUERY = gql`
         owner {
           id
           fullname
+          email
         }
         borrower {
           id

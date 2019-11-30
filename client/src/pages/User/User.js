@@ -28,12 +28,13 @@ const User = () => {
   if (userDataError) return <p>oops...</p>
   if (!userData || userDataLoading) return <p>loading...</p>
 
-  const {fullname, bio, items, borrowed} = userData.user
+  const {fullname, email, bio, items, borrowed} = userData.user
   return (
     <Layout dark>
       <ProfileCard
         userId={id}
         fullname={fullname}
+        email={email}
         bio={bio}
         items={items}
         borrowed={borrowed}
@@ -63,6 +64,7 @@ const User = () => {
                     desc={desc}
                     date={created_at}
                     owner={fullname}
+                    email={email}
                     borrowerId={borrower && borrower.id}
                     disabled={!!borrower}
                     tags={tags}
@@ -102,6 +104,7 @@ const User = () => {
                       desc={desc}
                       date={created_at}
                       owner={owner.fullname}
+                      email={owner.email}
                       ownerId={owner.id}
                       borrowerId={borrower.id}
                       disabled={!!borrower}

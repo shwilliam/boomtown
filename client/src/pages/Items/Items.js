@@ -35,6 +35,7 @@ const Items = () => {
                 desc={desc}
                 date={created_at}
                 owner={owner.fullname}
+                email={owner.email}
                 ownerId={owner.id}
                 borrowerId={borrower && borrower.id}
                 tags={tags}

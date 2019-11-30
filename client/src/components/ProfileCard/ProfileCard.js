@@ -1,6 +1,5 @@
 import React, {useState, useCallback, useContext} from 'react'
 import {
-  Avatar,
   Button,
   Card,
   CardContent,
@@ -11,17 +10,19 @@ import {
 import {useMutation} from 'react-apollo'
 import {UPDATE_BIO_MUTATION} from '../../graphql'
 import {AuthContext} from '../../context'
+import Avatar from '../Avatar'
 import useStyles from './ProfileCard.styles'
 
 const ProfileCard = ({
   userId,
   fullname,
+  email,
   bio = '',
   items,
   borrowed,
   ...props
 }) => {
-  const {root, avatar, title} = useStyles()
+  const {root, title} = useStyles()
   const {activeUser} = useContext(AuthContext)
   const [bioTouched, setBioTouched] = useState(false)
   const [bioInput, setBioInput] = useState(bio)
@@ -40,11 +41,7 @@ const ProfileCard = ({
   return (
     <Card className={root} {...props}>
       <CardHeader
-        avatar={
-          <Avatar aria-label={fullname} className={avatar}>
-            {fullname[0]}
-          </Avatar>
-        }
+        avatar={<Avatar email={email} />}
         title={
           <Typography
             variant="h2"

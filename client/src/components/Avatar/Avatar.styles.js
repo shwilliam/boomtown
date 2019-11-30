@@ -1,15 +1,10 @@
 import {makeStyles} from '@material-ui/core/styles'
+import {red} from '@material-ui/core/colors'
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 345,
-  },
-  media: {
-    height: 0,
-    paddingTop: '56.25%', // 16:9
-  },
-  title: {
-    fontSize: '1.6rem',
+    borderRadius: '50%',
+    backgroundColor: red[500],
   },
 })
 
