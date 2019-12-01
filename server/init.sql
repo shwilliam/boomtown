@@ -23,3 +23,18 @@ CREATE TABLE public.item_tags (
   "item_id" INTEGER REFERENCES public.items (id),
   "tag_id" INTEGER REFERENCES public.tags (id)
 );
+
+-- example tags
+INSERT INTO public.tags ("id", "title")
+  VALUES (1, 'Household Items');
+INSERT INTO public.tags ("id", "title")
+  VALUES (2, 'Tools');
+INSERT INTO public.tags ("id", "title")
+  VALUES (3, 'Electronics');
+INSERT INTO public.tags ("id", "title")
+  VALUES (4, 'Physical Media');
+INSERT INTO public.tags ("id", "title")
+  VALUES (5, 'Sporting Goods');
+INSERT INTO public.tags ("id", "title")
+  VALUES (6, 'Musical Instruments');
+
