@@ -1,6 +1,7 @@
 import React, {useContext} from 'react'
 import PropTypes from 'prop-types'
 import {
+  Box,
   Card,
   CardContent,
   CardHeader,
@@ -38,8 +39,15 @@ const ProfileCard = ({
         }
       />
       <CardContent>
-        <Typography variant="body1" color="textPrimary" component="p">
-          {items} Items shared {borrowed} Items borrowed
+        <Typography variant="h6" color="textPrimary" component="p">
+          <Box fontWeight="fontWeightBold" component="span">
+            {items}
+          </Box>{' '}
+          Items shared{' '}
+          <Box fontWeight="fontWeightBold" component="span">
+            {borrowed}
+          </Box>{' '}
+          Items borrowed
         </Typography>
         {activeUser.user.id === userId ? (
           <BioInput bio={bio} />
