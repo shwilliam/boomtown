@@ -1,7 +1,9 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import {Typography} from '@material-ui/core'
 import {makeStyles} from '@material-ui/styles'
 
+// TODO: move to new file
 const useHeroTextStyles = makeStyles(theme => ({
   root: {
     fontWeight: 500,
@@ -21,6 +23,13 @@ const HeroText = ({children, ...props}) => {
       {children}
     </Typography>
   )
+}
+
+HeroText.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]).isRequired,
 }
 
 export default HeroText

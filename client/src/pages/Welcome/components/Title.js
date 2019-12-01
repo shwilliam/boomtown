@@ -1,7 +1,9 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import {Typography} from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
 
+// TODO: move to new file
 const useTitleStyles = makeStyles(() => ({
   root: {
     fontWeight: 400,
@@ -23,6 +25,13 @@ const Title = ({children, ...props}) => {
       {children}
     </Typography>
   )
+}
+
+Title.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]).isRequired,
 }
 
 export default Title

@@ -1,4 +1,5 @@
 import React, {useState, useCallback, useContext} from 'react'
+import PropTypes from 'prop-types'
 import {
   Button,
   Card,
@@ -18,8 +19,8 @@ const ProfileCard = ({
   fullname,
   email,
   bio = '',
-  items,
-  borrowed,
+  items = 0,
+  borrowed = 0,
   ...props
 }) => {
   const {root, title} = useStyles()
@@ -54,7 +55,7 @@ const ProfileCard = ({
       />
       <CardContent>
         <Typography variant="body1" color="textPrimary" component="p">
-          {items.length} Items shared {borrowed.length} Items borrowed
+          {items} Items shared {borrowed} Items borrowed
         </Typography>
         {activeUser.user.id === userId ? (
           <form noValidate autoComplete="off" onSubmit={onBioSubmit}>
@@ -85,6 +86,15 @@ const ProfileCard = ({
       </CardContent>
     </Card>
   )
+}
+
+ProfileCard.propTypes = {
+  userId: PropTypes.string.isRequired,
+  fullname: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
+  bio: PropTypes.string,
+  items: PropTypes.number,
+  borrowed: PropTypes.number,
 }
 
 export default ProfileCard

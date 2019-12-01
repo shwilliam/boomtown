@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import {Button} from '@material-ui/core'
 import {useDropzone} from 'react-dropzone'
 
@@ -22,6 +23,11 @@ const Dropzone = ({onUpload, file, ...props}) => {
       </Button>
     </div>
   )
+}
+
+Dropzone.propTypes = {
+  onUpload: PropTypes.func.isRequired,
+  file: PropTypes.shape(), // file upload
 }
 
 export default Dropzone

@@ -1,4 +1,5 @@
 import React, {createContext, useContext} from 'react'
+import PropTypes from 'prop-types'
 import AuthContext from './AuthContext'
 import {useQuery} from 'react-apollo'
 import {ALL_ITEMS_QUERY} from '../graphql'
@@ -28,6 +29,13 @@ const ItemsContextProvider = ({children}) => {
       {children}
     </ItemsContext.Provider>
   )
+}
+
+ItemsContextProvider.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]).isRequired,
 }
 
 export default ItemsContext

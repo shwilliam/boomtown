@@ -1,7 +1,9 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import {Grid as MaterialGrid} from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
 
+// TODO: move to new file
 const useGridStyles = makeStyles(theme => ({
   root: {
     minHeight: '100vh',
@@ -28,6 +30,13 @@ const Grid = ({children, ...props}) => {
       {children}
     </MaterialGrid>
   )
+}
+
+Grid.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]).isRequired,
 }
 
 export default Grid

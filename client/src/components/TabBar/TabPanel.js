@@ -1,4 +1,5 @@
 import React, {useContext} from 'react'
+import PropTypes from 'prop-types'
 import {Box, Typography} from '@material-ui/core/'
 import TabContext from './context'
 
@@ -17,6 +18,14 @@ const TabPanel = ({children, index, ...props}) => {
       <Box p={3}>{children}</Box>
     </Typography>
   )
+}
+
+TabPanel.propTypes = {
+  index: PropTypes.number.isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]).isRequired,
 }
 
 export default TabPanel

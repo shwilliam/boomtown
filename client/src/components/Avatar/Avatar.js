@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Gravatar from 'react-gravatar'
 import useStyles from './Avatar.styles'
 
@@ -14,6 +15,10 @@ const Avatar = ({email, ...props}) => {
       {...props}
     />
   )
+}
+
+Avatar.propTypes = {
+  email: PropTypes.string.isRequired,
 }
 
 export default Avatar

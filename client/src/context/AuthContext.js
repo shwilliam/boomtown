@@ -4,6 +4,7 @@ import React, {
   useEffect,
   useState,
 } from 'react'
+import PropTypes from 'prop-types'
 import {useMutation, useQuery} from 'react-apollo'
 import {LOGOUT_MUTATION, VIEWER_QUERY} from '../graphql'
 
@@ -43,6 +44,13 @@ const AuthContextProvider = ({children}) => {
       {children}
     </AuthContext.Provider>
   )
+}
+
+AuthContextProvider.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]).isRequired,
 }
 
 export default AuthContext

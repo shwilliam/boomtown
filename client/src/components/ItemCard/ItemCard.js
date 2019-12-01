@@ -1,4 +1,5 @@
 import React, {useContext} from 'react'
+import PropTypes from 'prop-types'
 import {useHistory} from 'react-router-dom'
 import {format as timeago} from 'timeago.js'
 import {
@@ -29,7 +30,6 @@ const ItemCard = ({
   tags,
   imageUrl,
   disabled = false,
-  onChange,
   ...props
 }) => {
   const history = useHistory()
@@ -45,7 +45,7 @@ const ItemCard = ({
       <CardHeader
         avatar={<Avatar email={email} />}
         title={owner}
-        subheader={timeago(date)}
+        subheader={date ? timeago(date) : 'Just now'}
         onClick={() =>
           isOwnItem
             ? history.push('/profile')
@@ -99,6 +99,25 @@ const ItemCard = ({
       </CardActions>
     </Card>
   )
+}
+
+ItemCard.propTypes = {
+  id: PropTypes.string,
+  title: PropTypes.string,
+  date: PropTypes.string,
+  desc: PropTypes.string,
+  owner: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
+  ownerId: PropTypes.string,
+  borrowerId: PropTypes.string,
+  tags: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+    }).isRequired,
+  ),
+  imageUrl: PropTypes.string,
+  disabled: PropTypes.bool,
 }
 
 export default ItemCard

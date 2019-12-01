@@ -36,8 +36,8 @@ const User = () => {
         fullname={fullname}
         email={email}
         bio={bio}
-        items={items}
-        borrowed={borrowed}
+        items={items && items.length}
+        borrowed={borrowed && borrowed.length}
       />
       <TabContainer>
         <TabBar label="User items">

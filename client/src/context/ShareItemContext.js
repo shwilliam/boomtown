@@ -1,4 +1,5 @@
 import React, {createContext, useState} from 'react'
+import PropTypes from 'prop-types'
 
 const ShareItemContext = createContext()
 
@@ -23,6 +24,13 @@ const ShareItemContextProvider = ({children}) => {
       {children}
     </ShareItemContext.Provider>
   )
+}
+
+ShareItemContextProvider.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]).isRequired,
 }
 
 export default ShareItemContext

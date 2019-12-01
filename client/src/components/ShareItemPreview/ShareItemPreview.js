@@ -14,7 +14,6 @@ const ShareItemPreview = props => {
       owner={activeUser.user.fullname}
       email={activeUser.user.email}
       imageUrl={formValues.image}
-      date="Just now"
       disabled={true}
       {...props}
     >

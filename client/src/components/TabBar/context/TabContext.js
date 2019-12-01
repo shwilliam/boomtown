@@ -1,4 +1,5 @@
 import React, {createContext} from 'react'
+import PropTypes from 'prop-types'
 
 const TabContext = createContext()
 
@@ -10,6 +11,13 @@ const TabContextProvider = ({children, ...props}) => {
       {children}
     </TabContext.Provider>
   )
+}
+
+TabContextProvider.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]).isRequired,
 }
 
 export default TabContext

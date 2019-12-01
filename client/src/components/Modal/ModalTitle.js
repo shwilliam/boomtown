@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import {Typography} from '@material-ui/core'
 
 const ModalTitle = ({children, ...props}) => (
@@ -6,5 +7,12 @@ const ModalTitle = ({children, ...props}) => (
     {children}
   </Typography>
 )
+
+ModalTitle.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]).isRequired,
+}
 
 export default ModalTitle
