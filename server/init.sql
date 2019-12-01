@@ -12,7 +12,7 @@ CREATE TABLE public.items (
   "image_url" TEXT,
   "owner_id" INTEGER REFERENCES public.users (id),
   "borrower_id" INTEGER REFERENCES public.users (id),
-  "created_at" DATE NOT NULL DEFAULT CURRENT_DATE
+  "created_at" TIMESTAMP NOT NULL DEFAULT NOW()
 );
 CREATE TABLE public.tags (
   "id" SERIAL PRIMARY KEY,
