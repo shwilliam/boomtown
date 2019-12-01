@@ -1,18 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {makeStyles} from '@material-ui/core/styles'
 import {TabContextProvider} from './context'
-
-// TODO: move to new file
-const useTabsStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
-  },
-}))
+import useStyles from './TabContainer.styles'
 
 const TabContainer = ({children, ...props}) => {
-  const {root} = useTabsStyles()
+  const {root} = useStyles()
 
   return (
     <TabContextProvider>

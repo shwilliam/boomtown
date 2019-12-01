@@ -1,18 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Typography} from '@material-ui/core'
-import {makeStyles} from '@material-ui/core/styles'
-
-// TODO: move to new file
-const useTitleStyles = makeStyles(() => ({
-  root: {
-    fontWeight: 400,
-    color: 'white',
-  },
-}))
+import useStyles from './Title.styles'
 
 const Title = ({children, ...props}) => {
-  const {root} = useTitleStyles()
+  const {root} = useStyles()
 
   return (
     <Typography

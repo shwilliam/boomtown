@@ -1,22 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Grid as MaterialGrid} from '@material-ui/core'
-import {makeStyles} from '@material-ui/core/styles'
-
-// TODO: move to new file
-const useGridStyles = makeStyles(theme => ({
-  root: {
-    minHeight: '100vh',
-    background: theme.palette.primary.main,
-    padding: theme.spacing(5),
-    [theme.breakpoints.up('md')]: {
-      padding: theme.spacing(20),
-    },
-  },
-}))
+import useStyles from './Grid.styles'
 
 const Grid = ({children, ...props}) => {
-  const {root} = useGridStyles()
+  const {root} = useStyles()
 
   return (
     <MaterialGrid
