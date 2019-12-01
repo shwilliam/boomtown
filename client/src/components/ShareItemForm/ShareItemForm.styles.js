@@ -3,6 +3,7 @@ import {makeStyles} from '@material-ui/core/styles'
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
+    marginTop: theme.spacing(3),
     [theme.breakpoints.up('sm')]: {
       width: '400px',
     },

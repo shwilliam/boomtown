@@ -1,10 +1,12 @@
 import React, {useContext} from 'react'
 import {AuthContext, ShareItemContext} from '../../context'
 import ItemCard from '../ItemCard'
+import useStyles from './ShareItemPreview.styles'
 
 const ShareItemPreview = props => {
   const {formValues} = useContext(ShareItemContext)
   const {activeUser} = useContext(AuthContext)
+  const {root} = useStyles()
 
   return (
     <ItemCard
@@ -15,6 +17,7 @@ const ShareItemPreview = props => {
       imageUrl={formValues.image}
       tags={formValues.tags}
       disabled={true}
+      className={root}
       {...props}
     />
   )

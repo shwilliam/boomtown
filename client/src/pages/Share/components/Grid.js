@@ -9,7 +9,7 @@ const Grid = ({children, ...props}) => {
   return (
     <MuiGrid
       container
-      spacing={3}
+      spacing={5}
       alignItems="flex-start"
       justify="center"
       className={root}

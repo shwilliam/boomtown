@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Button} from '@material-ui/core'
 import {useDropzone} from 'react-dropzone'
+import useStyles from './Dropzone.styles'
 
 const Dropzone = ({onUpload, file, ...props}) => {
   const onDrop = ([file]) => {
@@ -10,11 +11,17 @@ const Dropzone = ({onUpload, file, ...props}) => {
   const {getRootProps, getInputProps, isDragActive} = useDropzone({
     onDrop,
   })
+  const {button} = useStyles()
 
   return (
     <div {...getRootProps()}>
       <input {...getInputProps()} />
-      <Button variant="outlined" component="span" {...props}>
+      <Button
+        variant="outlined"
+        component="span"
+        className={button}
+        {...props}
+      >
         {file
           ? 'Upload a new image'
           : isDragActive
