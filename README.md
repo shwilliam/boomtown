@@ -12,3 +12,9 @@
 4. Start local development server (`npm run dev`)
 
 Tests can be run with the npm script `test` and started in watch mode with `npm run test:watch`, running only the tests thet reference the part of the codebase you change.
+
+### Client
+
+1. Ensure required environment variables are set (see `client/.env.example`)
+2. Install npm dependencies (`cd client && npm i`)
+3. Start local development server (`npm start`)
