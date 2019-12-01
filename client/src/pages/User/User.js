@@ -68,6 +68,7 @@ const User = () => {
                       desc={desc}
                       date={created_at}
                       owner={fullname}
+                      ownerId={activeUser.user.id}
                       email={email}
                       borrowerId={borrower && borrower.id}
                       disabled={!!borrower}
