@@ -76,10 +76,10 @@ const AccountForm = props => {
             <InputLabel htmlFor="password">Password</InputLabel>
             <Field
               name="password"
+              type="password"
               render={({input, meta}) => (
                 <Input
                   id="password"
-                  type="password"
                   error={meta.touched && !!meta.error}
                   inputProps={{
                     ...input,
