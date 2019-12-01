@@ -3,7 +3,8 @@ CREATE TABLE public.users (
   "id" SERIAL PRIMARY KEY,
   "fullname" TEXT NOT NULL,
   "email" TEXT NOT NULL UNIQUE,
-  "password" TEXT NOT NULL
+  "password" TEXT NOT NULL,
+  "bio" TEXT
 );
 CREATE TABLE public.items (
   "id" SERIAL PRIMARY KEY,
