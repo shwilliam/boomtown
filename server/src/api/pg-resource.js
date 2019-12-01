@@ -57,7 +57,7 @@ module.exports = postgres => ({
     const items = await postgres.query({
       text: `SELECT * FROM items ${
         idToOmit ? 'WHERE owner_id != $1' : ''
-      }`,
+      } ORDER BY created_at DESC`,
       values: idToOmit ? [idToOmit] : [],
     })
 
@@ -66,7 +66,7 @@ module.exports = postgres => ({
 
   getItemsForUser: async id => {
     const items = await postgres.query({
-      text: `SELECT * FROM items WHERE owner_id=$1`,
+      text: `SELECT * FROM items WHERE owner_id=$1 ORDER BY created_at DESC`,
       values: [id],
     })
     return items.rows
@@ -74,7 +74,7 @@ module.exports = postgres => ({
 
   getBorrowedItemsForUser: async id => {
     const items = await postgres.query({
-      text: `SELECT * FROM items WHERE borrower_id=$1`,
+      text: `SELECT * FROM items WHERE borrower_id=$1 ORDER BY created_at DESC`,
       values: [id],
     })
     return items.rows
