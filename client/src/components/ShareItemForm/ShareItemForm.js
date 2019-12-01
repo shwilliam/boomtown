@@ -14,6 +14,7 @@ import {
   Typography,
   Modal,
 } from '@material-ui/core'
+import {CloudDone as CloudDoneIcon} from '@material-ui/icons'
 import {makeStyles} from '@material-ui/styles'
 import {ShareItemContext} from '../../context'
 import {ADD_ITEM_MUTATION, ALL_TAGS_QUERY} from '../../graphql'
@@ -45,6 +46,9 @@ const useModalStyles = makeStyles(theme => ({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  inlineIcon: {
+    verticalAlign: 'text-bottom',
+  },
 }))
 
 const useButtonStyles = makeStyles(theme => ({
@@ -73,7 +77,7 @@ const ShareItemForm = props => {
   )
   const {data: tagsData, error: tagsError} = useQuery(ALL_TAGS_QUERY)
   const {root, formControl, formButton, errorMessage} = useStyles()
-  const {modal, modalContainer} = useModalStyles()
+  const {modal, modalContainer, inlineIcon} = useModalStyles()
   // TODO: refactor modal component
   const {buttonPrimary, buttonSecondary} = useButtonStyles()
   // TODO: refactor button components
@@ -259,14 +263,21 @@ const ShareItemForm = props => {
             >
               <div className={modalContainer}>
                 <div className={modal}>
-                  {/* TODO: use Typography */}
-                  <h2 id="item-share-title">
-                    [TODO: icon] Your item was added!
-                  </h2>
-                  <p id="item-share-description">
+                  <Typography
+                    variant="h6"
+                    component="p"
+                    id="item-share-title"
+                  >
+                    <CloudDoneIcon className={inlineIcon} /> Your item
+                    was added!
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    id="item-share-description"
+                  >
                     Thanks for contributing to Boomtown! Add another
                     item or return to the items page below.
-                  </p>
+                  </Typography>
                   <Button
                     onClick={() => {
                       form.reset()
