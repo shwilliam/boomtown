@@ -102,200 +102,194 @@ const ShareItemForm = props => {
         invalid,
         form,
       }) => (
-        <>
-          <form
-            onSubmit={handleSubmit}
-            className={root}
-            onChange={e =>
-              setFormFieldValue(e.target.name, e.target.value)
-            }
-            {...props}
-          >
-            <Dropzone onUpload={onImageUpload} file={imageData} />
+        <form
+          onSubmit={handleSubmit}
+          className={root}
+          onChange={e =>
+            setFormFieldValue(e.target.name, e.target.value)
+          }
+          {...props}
+        >
+          <Dropzone onUpload={onImageUpload} file={imageData} />
 
-            <FormControl fullWidth className={formControl}>
-              <InputLabel htmlFor="title">Name your item</InputLabel>
-              <Field
-                name="title"
-                render={({input, meta}) => (
-                  <Input
-                    id="title"
-                    type="text"
-                    error={meta.touched && !!meta.error}
-                    inputProps={{
-                      ...input,
-                      autoComplete: 'off',
-                    }}
-                  />
-                )}
-              />
-            </FormControl>
-            <FormControl fullWidth className={formControl}>
-              <InputLabel htmlFor="desc">
-                Describe your item
-              </InputLabel>
-              <Field
-                name="desc"
-                render={({input, meta}) => (
-                  <Input
-                    id="desc"
-                    type="text"
-                    error={meta.touched && !!meta.error}
-                    inputProps={{
-                      ...input,
-                      autoComplete: 'off',
-                    }}
-                  />
-                )}
-              />
-            </FormControl>
-            <FormControl fullWidth className={formControl}>
-              <InputLabel htmlFor="tags">Add some tags</InputLabel>
-              <Field
-                name="tags"
-                render={({input}) => {
-                  const {name, value, onChange, ...inputProps} = input
+          <FormControl fullWidth className={formControl}>
+            <InputLabel htmlFor="title">Name your item</InputLabel>
+            <Field
+              name="title"
+              render={({input, meta}) => (
+                <Input
+                  id="title"
+                  type="text"
+                  error={meta.touched && !!meta.error}
+                  inputProps={{
+                    ...input,
+                    autoComplete: 'off',
+                  }}
+                />
+              )}
+            />
+          </FormControl>
+          <FormControl fullWidth className={formControl}>
+            <InputLabel htmlFor="desc">Describe your item</InputLabel>
+            <Field
+              name="desc"
+              render={({input, meta}) => (
+                <Input
+                  id="desc"
+                  type="text"
+                  error={meta.touched && !!meta.error}
+                  inputProps={{
+                    ...input,
+                    autoComplete: 'off',
+                  }}
+                />
+              )}
+            />
+          </FormControl>
+          <FormControl fullWidth className={formControl}>
+            <InputLabel htmlFor="tags">Add some tags</InputLabel>
+            <Field
+              name="tags"
+              render={({input}) => {
+                const {name, value, onChange, ...inputProps} = input
 
-                  return (
-                    <Select
-                      id="tags"
-                      multiple
-                      MenuProps={{
-                        PaperProps: {
-                          style: {
-                            maxHeight: 48 * 4.5 + 8,
-                            width: 250,
-                          },
+                return (
+                  <Select
+                    id="tags"
+                    multiple
+                    MenuProps={{
+                      PaperProps: {
+                        style: {
+                          maxHeight: 48 * 4.5 + 8,
+                          width: 250,
                         },
-                      }}
-                      inputProps={inputProps}
-                      {...input}
-                      renderValue={values =>
-                        values
-                          .map(val =>
-                            capitalize(
-                              tagsData.tags.find(({id}) => id === val)
-                                .title,
-                            ),
-                          )
-                          .join(', ')
-                      }
-                      value={value || []}
-                      name={name}
-                      onChange={e =>
-                        setFormFieldValue(
-                          'tags',
-                          tagsData
-                            ? tagsData.tags.filter(({id}) =>
-                                e.target.value.includes(String(id)),
-                              )
-                            : [],
-                        ) || onChange(e)
-                      }
-                    >
-                      {tagsData &&
-                        tagsData.tags.map(({id, title}) => (
-                          <MenuItem key={id} value={id}>
-                            <Checkbox
-                              checked={
-                                !!(
-                                  value &&
-                                  value.some(
-                                    selectedId => selectedId === id,
-                                  )
+                      },
+                    }}
+                    inputProps={inputProps}
+                    {...input}
+                    renderValue={values =>
+                      values
+                        .map(val =>
+                          capitalize(
+                            tagsData.tags.find(({id}) => id === val)
+                              .title,
+                          ),
+                        )
+                        .join(', ')
+                    }
+                    value={value || []}
+                    name={name}
+                    onChange={e =>
+                      setFormFieldValue(
+                        'tags',
+                        tagsData
+                          ? tagsData.tags.filter(({id}) =>
+                              e.target.value.includes(String(id)),
+                            )
+                          : [],
+                      ) || onChange(e)
+                    }
+                  >
+                    {tagsData &&
+                      tagsData.tags.map(({id, title}) => (
+                        <MenuItem key={id} value={id}>
+                          <Checkbox
+                            checked={
+                              !!(
+                                value &&
+                                value.some(
+                                  selectedId => selectedId === id,
                                 )
-                              }
-                            />
-                            <ListItemText
-                              primary={capitalize(title)}
-                            />
-                          </MenuItem>
-                        ))}
-                    </Select>
-                  )
-                }}
-              />
-            </FormControl>
-            <Typography className={errorMessage}>
-              {(errors && (touched.title && errors.title)) ||
-                (touched.desc && errors.desc)}
-            </Typography>
-            <FormControl className={formControl}>
-              <Button
-                type="submit"
-                className={formButton}
-                variant="contained"
-                size="large"
-                color="secondary"
-                disabled={pristine || invalid}
-              >
-                Submit
-              </Button>
-            </FormControl>
-            <Modal
-              aria-labelledby="item-share-title"
-              aria-describedby="item-share-description"
-              open={!!newItem && !addingMultipleItems}
+                              )
+                            }
+                          />
+                          <ListItemText primary={capitalize(title)} />
+                        </MenuItem>
+                      ))}
+                  </Select>
+                )
+              }}
+            />
+          </FormControl>
+          <Typography className={errorMessage}>
+            {(errors && (touched.title && errors.title)) ||
+              (touched.desc && errors.desc)}
+          </Typography>
+          <FormControl className={formControl}>
+            <Button
+              type="submit"
+              className={formButton}
+              variant="contained"
+              size="large"
+              color="secondary"
+              disabled={pristine || invalid}
             >
-              <ModalTitle id="item-share-title">
-                <CloudDoneIcon className={inlineIcon} /> Your item was
-                added!
-              </ModalTitle>
-              <ModalBody id="item-share-description">
-                Thanks for contributing to Boomtown! Add another item
-                or return to the items page below.
-              </ModalBody>
-              <Button
-                onClick={() => {
-                  form.reset()
-                  onFormReset()
-                  setAddingMultipleItems(true)
-                }}
-                className={buttonSecondary}
-              >
-                Add another item
-              </Button>
-              <Button
-                onClick={() => {
-                  history.push('/')
-                }}
-                className={buttonPrimary}
-              >
-                Back to items
-              </Button>
-            </Modal>
-            <Modal
-              aria-labelledby="item-share-error-title"
-              aria-describedby="item-share-error-description"
-              open={!!newItemError}
+              Submit
+            </Button>
+          </FormControl>
+          <Modal
+            aria-labelledby="item-share-title"
+            aria-describedby="item-share-description"
+            open={!!newItem && !addingMultipleItems}
+          >
+            <ModalTitle id="item-share-title">
+              <CloudDoneIcon className={inlineIcon} /> Your item was
+              added!
+            </ModalTitle>
+            <ModalBody id="item-share-description">
+              Thanks for contributing to Boomtown! Add another item or
+              return to the items page below.
+            </ModalBody>
+            <Button
+              onClick={() => {
+                form.reset()
+                onFormReset()
+                setAddingMultipleItems(true)
+              }}
+              className={buttonSecondary}
             >
-              <ModalTitle id="item-share-error-title">
-                Something went wrong
-              </ModalTitle>
-              <ModalBody id="item-share-error-description">
-                Unable to share item. If you wish to try again press
-                'Add Another Item', otherwise use 'Back to Items' to
-                navigate back to the items page.
-              </ModalBody>
-              <Button
-                onClick={() => {
-                  history.push('/share')
-                }}
-                className={buttonSecondary}
-              >
-                Try again
-              </Button>
-              <Button
-                onClick={() => {
-                  history.push('/')
-                }}
-                className={buttonPrimary}
-              >
-                Back to items
-              </Button>
-            </Modal>
-          </form>
-        </>
+              Add another item
+            </Button>
+            <Button
+              onClick={() => {
+                history.push('/')
+              }}
+              className={buttonPrimary}
+            >
+              Back to items
+            </Button>
+          </Modal>
+          <Modal
+            aria-labelledby="item-share-error-title"
+            aria-describedby="item-share-error-description"
+            open={!!newItemError}
+          >
+            <ModalTitle id="item-share-error-title">
+              Something went wrong
+            </ModalTitle>
+            <ModalBody id="item-share-error-description">
+              Unable to share item. If you wish to try again press
+              'Add Another Item', otherwise use 'Back to Items' to
+              navigate back to the items page.
+            </ModalBody>
+            <Button
+              onClick={() => {
+                history.push('/share')
+              }}
+              className={buttonSecondary}
+            >
+              Try again
+            </Button>
+            <Button
+              onClick={() => {
+                history.push('/')
+              }}
+              className={buttonPrimary}
+            >
+              Back to items
+            </Button>
+          </Modal>
+        </form>
       )}
     />
   )

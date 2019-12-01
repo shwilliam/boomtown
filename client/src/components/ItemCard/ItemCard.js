@@ -37,7 +37,7 @@ const ItemCard = ({
   const {borrowItem, returnItem, borrowStatus} = useBorrow()
   const styles = useStyles()
 
-  const isOwnItem = String(ownerId) === activeUser.user.id
+  const isOwnItem = !ownerId || String(ownerId) === activeUser.user.id
 
   return (
     <Card {...props}>

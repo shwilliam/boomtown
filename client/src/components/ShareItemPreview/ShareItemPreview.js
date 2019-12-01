@@ -1,7 +1,6 @@
 import React, {useContext} from 'react'
 import {AuthContext, ShareItemContext} from '../../context'
-import {capitalize} from '../../utils'
-import ItemCard, {ItemTag} from '../ItemCard'
+import ItemCard from '../ItemCard'
 
 const ShareItemPreview = props => {
   const {formValues} = useContext(ShareItemContext)
@@ -14,17 +13,10 @@ const ShareItemPreview = props => {
       owner={activeUser.user.fullname}
       email={activeUser.user.email}
       imageUrl={formValues.image}
+      tags={formValues.tags}
       disabled={true}
       {...props}
-    >
-      {formValues.tags && formValues.tags.length
-        ? formValues.tags.map(({id, title}) => (
-            <ItemTag key={id} id={id}>
-              {capitalize(title)}
-            </ItemTag>
-          ))
-        : null}
-    </ItemCard>
+    />
   )
 }
 
