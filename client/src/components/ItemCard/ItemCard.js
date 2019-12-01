@@ -41,7 +41,7 @@ const ItemCard = ({
     activeUser && ownerId && ownerId === activeUser.user.id
 
   return (
-    <Card className={styles.root} {...props}>
+    <Card {...props}>
       <CardHeader
         avatar={<Avatar email={email} />}
         title={owner}

@@ -2,7 +2,10 @@ import React, {useContext} from 'react'
 import {useQuery} from 'react-apollo'
 import {useParams} from 'react-router-dom'
 import {Typography} from '@material-ui/core'
-import ItemCard, {ItemGrid} from '../../components/ItemCard'
+import ItemCard, {
+  ItemGrid,
+  ItemGridCell,
+} from '../../components/ItemCard'
 import Layout from '../../components/Layout'
 import ProfileCard from '../../components/ProfileCard'
 import TabBar, {
@@ -58,23 +61,24 @@ const User = () => {
                   borrower,
                   tags,
                 }) => (
-                  <ItemCard
-                    key={id}
-                    id={id}
-                    title={title}
-                    desc={desc}
-                    date={created_at}
-                    owner={fullname}
-                    email={email}
-                    borrowerId={borrower && borrower.id}
-                    disabled={!!borrower}
-                    tags={tags}
-                    imageUrl={
-                      process.env.NODE_ENV === 'production'
-                        ? `/uploads/${image_url}`
-                        : `http://localhost:8080/uploads/${image_url}`
-                    }
-                  />
+                  <ItemGridCell key={id}>
+                    <ItemCard
+                      id={id}
+                      title={title}
+                      desc={desc}
+                      date={created_at}
+                      owner={fullname}
+                      email={email}
+                      borrowerId={borrower && borrower.id}
+                      disabled={!!borrower}
+                      tags={tags}
+                      imageUrl={
+                        process.env.NODE_ENV === 'production'
+                          ? `/uploads/${image_url}`
+                          : `http://localhost:8080/uploads/${image_url}`
+                      }
+                    />
+                  </ItemGridCell>
                 ),
               )}
             </ItemGrid>
@@ -100,24 +104,26 @@ const User = () => {
                     borrower,
                     tags,
                   }) => (
-                    <ItemCard
-                      key={id}
-                      id={id}
-                      title={title}
-                      desc={desc}
-                      date={created_at}
-                      owner={owner.fullname}
-                      email={owner.email}
-                      ownerId={owner.id}
-                      borrowerId={borrower.id}
-                      disabled={!!borrower}
-                      tags={tags}
-                      imageUrl={
-                        process.env.NODE_ENV === 'production'
-                          ? `/uploads/${image_url}`
-                          : `http://localhost:8080/uploads/${image_url}`
-                      }
-                    />
+                    <ItemGridCell key={id}>
+                      <ItemCard
+                        key={id}
+                        id={id}
+                        title={title}
+                        desc={desc}
+                        date={created_at}
+                        owner={owner.fullname}
+                        email={owner.email}
+                        ownerId={owner.id}
+                        borrowerId={borrower.id}
+                        disabled={!!borrower}
+                        tags={tags}
+                        imageUrl={
+                          process.env.NODE_ENV === 'production'
+                            ? `/uploads/${image_url}`
+                            : `http://localhost:8080/uploads/${image_url}`
+                        }
+                      />
+                    </ItemGridCell>
                   ),
                 )}
             </ItemGrid>

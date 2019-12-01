@@ -3,6 +3,7 @@ import ItemCard, {ItemGrid} from '../../components/ItemCard'
 import Layout from '../../components/Layout'
 import InfoCard from '../../components/InfoCard'
 import {ItemsContext} from '../../context'
+import ItemGridCell from '../../components/ItemCard/ItemGridCell'
 
 const Items = () => {
   const {itemsLoading, itemsError, itemsData} = useContext(
@@ -36,24 +37,25 @@ const Items = () => {
               borrower,
               tags,
             }) => (
-              <ItemCard
-                key={id}
-                id={id}
-                title={title}
-                desc={desc}
-                date={created_at}
-                owner={owner.fullname}
-                email={owner.email}
-                ownerId={owner.id}
-                borrowerId={borrower && borrower.id}
-                tags={tags}
-                disabled={!!borrower}
-                imageUrl={
-                  process.env.NODE_ENV === 'production'
-                    ? `/uploads/${image_url}`
-                    : `http://localhost:8080/uploads/${image_url}`
-                }
-              />
+              <ItemGridCell key={id}>
+                <ItemCard
+                  id={id}
+                  title={title}
+                  desc={desc}
+                  date={created_at}
+                  owner={owner.fullname}
+                  email={owner.email}
+                  ownerId={owner.id}
+                  borrowerId={borrower && borrower.id}
+                  tags={tags}
+                  disabled={!!borrower}
+                  imageUrl={
+                    process.env.NODE_ENV === 'production'
+                      ? `/uploads/${image_url}`
+                      : `http://localhost:8080/uploads/${image_url}`
+                  }
+                />
+              </ItemGridCell>
             ),
           )}
         </ItemGrid>
