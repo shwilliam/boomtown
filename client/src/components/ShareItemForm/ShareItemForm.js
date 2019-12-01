@@ -12,7 +12,6 @@ import {
   MenuItem,
   Select,
   Typography,
-  Modal,
 } from '@material-ui/core'
 import {CloudDone as CloudDoneIcon} from '@material-ui/icons'
 import {makeStyles} from '@material-ui/styles'
@@ -20,37 +19,11 @@ import {ShareItemContext} from '../../context'
 import {ADD_ITEM_MUTATION, ALL_TAGS_QUERY} from '../../graphql'
 import {capitalize} from '../../utils'
 import Dropzone from '../Dropzone'
+import Modal, {ModalTitle, ModalBody} from '../Modal'
 import validate from './helpers/validate'
 import useStyles from './ShareItemForm.styles'
 
-const useModalStyles = makeStyles(theme => ({
-  modal: {
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      width: 'auto',
-    },
-    margin: theme.spacing(2),
-    padding: theme.spacing(2, 4, 3),
-    backgroundColor: theme.palette.background.paper,
-    border: `1px solid ${theme.palette.secondary.main}`,
-    borderRadius: 3,
-    boxShadow: theme.shadows[5],
-  },
-  modalContainer: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  inlineIcon: {
-    verticalAlign: 'text-bottom',
-  },
-}))
-
+// TODO: refactor button components
 const useButtonStyles = makeStyles(theme => ({
   buttonPrimary: {
     borderRadius: 3,
@@ -76,11 +49,14 @@ const ShareItemForm = props => {
     ADD_ITEM_MUTATION,
   )
   const {data: tagsData, error: tagsError} = useQuery(ALL_TAGS_QUERY)
-  const {root, formControl, formButton, errorMessage} = useStyles()
-  const {modal, modalContainer, inlineIcon} = useModalStyles()
-  // TODO: refactor modal component
+  const {
+    root,
+    formControl,
+    formButton,
+    errorMessage,
+    inlineIcon,
+  } = useStyles()
   const {buttonPrimary, buttonSecondary} = useButtonStyles()
-  // TODO: refactor button components
   const history = useHistory()
 
   // TODO: handle error loading tags
@@ -261,76 +237,62 @@ const ShareItemForm = props => {
               aria-describedby="item-share-description"
               open={!!newItem && !addingMultipleItems}
             >
-              <div className={modalContainer}>
-                <div className={modal}>
-                  <Typography
-                    variant="h6"
-                    component="p"
-                    id="item-share-title"
-                  >
-                    <CloudDoneIcon className={inlineIcon} /> Your item
-                    was added!
-                  </Typography>
-                  <Typography
-                    variant="body1"
-                    id="item-share-description"
-                  >
-                    Thanks for contributing to Boomtown! Add another
-                    item or return to the items page below.
-                  </Typography>
-                  <Button
-                    onClick={() => {
-                      form.reset()
-                      onFormReset()
-                      setAddingMultipleItems(true)
-                    }}
-                    className={buttonSecondary}
-                  >
-                    Add another item
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      history.push('/')
-                    }}
-                    className={buttonPrimary}
-                  >
-                    Back to items
-                  </Button>
-                </div>
-              </div>
+              <ModalTitle id="item-share-title">
+                <CloudDoneIcon className={inlineIcon} /> Your item was
+                added!
+              </ModalTitle>
+              <ModalBody id="item-share-description">
+                Thanks for contributing to Boomtown! Add another item
+                or return to the items page below.
+              </ModalBody>
+              <Button
+                onClick={() => {
+                  form.reset()
+                  onFormReset()
+                  setAddingMultipleItems(true)
+                }}
+                className={buttonSecondary}
+              >
+                Add another item
+              </Button>
+              <Button
+                onClick={() => {
+                  history.push('/')
+                }}
+                className={buttonPrimary}
+              >
+                Back to items
+              </Button>
             </Modal>
             <Modal
               aria-labelledby="item-share-error-title"
               aria-describedby="item-share-error-description"
               open={!!newItemError}
-              className={modal}
             >
-              <div>
-                <h2 id="item-share-error-title">
-                  Something went wrong
-                </h2>
-                <p id="item-share-error-description">
-                  Unable to share item. If you wish to try again press
-                  'Add Another Item', otherwise use 'Back to Items' to
-                  navigate back to the items page.
-                </p>
-                <Button
-                  onClick={() => {
-                    history.push('/share')
-                  }}
-                  className={buttonSecondary}
-                >
-                  Try again
-                </Button>
-                <Button
-                  onClick={() => {
-                    history.push('/')
-                  }}
-                  className={buttonPrimary}
-                >
-                  Back to items
-                </Button>
-              </div>
+              <ModalTitle id="item-share-error-title">
+                Something went wrong
+              </ModalTitle>
+              <ModalBody id="item-share-error-description">
+                Unable to share item. If you wish to try again press
+                'Add Another Item', otherwise use 'Back to Items' to
+                navigate back to the items page.
+              </ModalBody>
+              <Button
+                onClick={() => {
+                  history.push('/share')
+                }}
+                className={buttonSecondary}
+              >
+                Try again
+              </Button>
+              <Button
+                onClick={() => {
+                  history.push('/')
+                }}
+                className={buttonPrimary}
+              >
+                Back to items
+              </Button>
             </Modal>
           </form>
         </>

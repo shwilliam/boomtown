@@ -18,6 +18,9 @@ const useStyles = makeStyles(theme => ({
     color: 'firebrick',
     height: '2rem',
   },
+  inlineIcon: {
+    verticalAlign: 'text-bottom',
+  },
 }))
 
 export default useStyles
