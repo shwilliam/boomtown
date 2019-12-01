@@ -2,8 +2,9 @@ import React, {useContext} from 'react'
 import ItemCard, {ItemGrid} from '../../components/ItemCard'
 import Layout from '../../components/Layout'
 import InfoCard from '../../components/InfoCard'
-import {ItemsContext} from '../../context'
 import ItemGridCell from '../../components/ItemCard/ItemGridCell'
+import {ItemsContext} from '../../context'
+import Loading from '../../components/Loading'
 
 const Items = () => {
   const {itemsLoading, itemsError, itemsData} = useContext(
@@ -11,7 +12,11 @@ const Items = () => {
   )
 
   if (itemsLoading)
-    return <Layout dark>TODO: loading indicator</Layout>
+    return (
+      <Layout dark>
+        <Loading />
+      </Layout>
+    )
 
   if (itemsError)
     return (
