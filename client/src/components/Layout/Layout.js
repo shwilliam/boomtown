@@ -5,15 +5,13 @@ import MenuBar from '../../components/MenuBar'
 import useStyles from './Layout.styles'
 
 const Layout = ({dark = false, children, ...props}) => {
-  const {root, rootDark} = useStyles()
+  const {root, rootDark, body} = useStyles()
 
   return (
-    <>
+    <Paper className={dark ? rootDark : root} {...props}>
       <MenuBar />
-      <Paper className={dark ? rootDark : root} {...props}>
-        {children}
-      </Paper>
-    </>
+      <div className={body}>{children}</div>
+    </Paper>
   )
 }
 
