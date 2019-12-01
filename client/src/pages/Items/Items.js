@@ -1,6 +1,7 @@
 import React, {useContext} from 'react'
 import ItemCard, {ItemGrid} from '../../components/ItemCard'
 import Layout from '../../components/Layout'
+import InfoCard from '../../components/InfoCard'
 import {ItemsContext} from '../../context'
 
 const Items = () => {
@@ -8,14 +9,21 @@ const Items = () => {
     ItemsContext,
   )
 
+  if (itemsLoading)
+    return <Layout dark>TODO: loading indicator</Layout>
+
+  if (itemsError)
+    return (
+      <Layout dark>
+        <InfoCard>
+          Unable to load items. Please refresh the page to try again.
+        </InfoCard>
+      </Layout>
+    )
+
   return (
     <Layout dark>
-      {itemsLoading && <p>loading...</p>}
-      {itemsError ? (
-        <p>
-          Unable to load items. Please refresh the page to try again.
-        </p>
-      ) : itemsData && itemsData.items ? (
+      {itemsData && itemsData.items.length ? (
         <ItemGrid>
           {itemsData.items.map(
             ({
@@ -50,7 +58,7 @@ const Items = () => {
           )}
         </ItemGrid>
       ) : (
-        <p>No items found...</p>
+        <InfoCard>No items found...</InfoCard>
       )}
     </Layout>
   )

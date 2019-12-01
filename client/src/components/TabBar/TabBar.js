@@ -14,12 +14,12 @@ const TabBar = ({label, children, ...props}) => {
   )
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" {...props}>
       <Tabs
         value={activeTab}
         onChange={onChange}
         aria-label={label}
-        {...props}
+        variant="fullWidth"
       >
         {children}
       </Tabs>

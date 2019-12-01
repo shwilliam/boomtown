@@ -2,8 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Tab} from '@material-ui/core'
 
+// TODO: fix duplicate ids for multiple TabBar instances
 const a11yProps = i => ({
-  id: `simple-tab-${i}`,
+  id: `tab-${i}`,
   'aria-controls': `simple-tabpanel-${i}`,
 })
 

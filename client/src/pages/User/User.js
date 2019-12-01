@@ -1,6 +1,7 @@
 import React, {useContext} from 'react'
 import {useQuery} from 'react-apollo'
 import {useParams} from 'react-router-dom'
+import {Typography} from '@material-ui/core'
 import ItemCard, {ItemGrid} from '../../components/ItemCard'
 import Layout from '../../components/Layout'
 import ProfileCard from '../../components/ProfileCard'
@@ -45,7 +46,7 @@ const User = () => {
           <TabBarItem index={1}>Borrowed</TabBarItem>
         </TabBar>
         <TabPanel index={0}>
-          {items ? (
+          {items && items.length ? (
             <ItemGrid>
               {items.map(
                 ({
@@ -78,11 +79,13 @@ const User = () => {
               )}
             </ItemGrid>
           ) : (
-            <p>No items shared...</p>
+            <Typography variant="body1" align="center">
+              No items shared...
+            </Typography>
           )}
         </TabPanel>
         <TabPanel index={1}>
-          {borrowed ? (
+          {borrowed && borrowed.length ? (
             <ItemGrid>
               {borrowed
                 .filter(({borrower}) => !!borrower)
@@ -119,7 +122,9 @@ const User = () => {
                 )}
             </ItemGrid>
           ) : (
-            <p>No items borrowed...</p>
+            <Typography variant="body1" align="center">
+              No items borrowed...
+            </Typography>
           )}
         </TabPanel>
       </TabContainer>

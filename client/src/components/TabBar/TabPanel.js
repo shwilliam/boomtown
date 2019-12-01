@@ -12,7 +12,7 @@ const TabPanel = ({children, index, ...props}) => {
       role="tabpanel"
       hidden={activeTab !== index}
       id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
+      aria-labelledby={`tab-${index}`}
       {...props}
     >
       <Box p={3}>{children}</Box>
