@@ -1,18 +1,15 @@
-import React, {useState, useCallback, useContext} from 'react'
+import React, {useContext} from 'react'
 import PropTypes from 'prop-types'
 import {
-  Button,
   Card,
   CardContent,
   CardHeader,
   Typography,
-  TextField,
 } from '@material-ui/core'
-import {useMutation} from 'react-apollo'
-import {UPDATE_BIO_MUTATION} from '../../graphql'
 import {AuthContext} from '../../context'
 import Avatar from '../Avatar'
 import useStyles from './ProfileCard.styles'
+import BioInput from './BioInput'
 
 const ProfileCard = ({
   userId,
@@ -25,19 +22,6 @@ const ProfileCard = ({
 }) => {
   const {root, title} = useStyles()
   const {activeUser} = useContext(AuthContext)
-  const [bioTouched, setBioTouched] = useState(false)
-  const [bioInput, setBioInput] = useState(bio)
-  const [updateBio] = useMutation(UPDATE_BIO_MUTATION, {
-    refetchQueries: ['user'],
-  })
-
-  const onBioSubmit = useCallback(
-    e => {
-      e.preventDefault()
-      updateBio({variables: {bio: bioInput}})
-    },
-    [updateBio, bioInput],
-  )
 
   return (
     <Card className={root} {...props}>
@@ -58,22 +42,7 @@ const ProfileCard = ({
           {items} Items shared {borrowed} Items borrowed
         </Typography>
         {activeUser.user.id === userId ? (
-          <form noValidate autoComplete="off" onSubmit={onBioSubmit}>
-            <TextField
-              value={bioInput || ''}
-              onChange={e => setBioInput(e.target.value)}
-              onFocus={() => setBioTouched(true)}
-              label={bioInput ? 'Bio' : 'No bio provided'}
-              multiline
-              rows="2"
-            />
-            <Button
-              type="submit"
-              disabled={!bioTouched || bio === bioInput}
-            >
-              Save
-            </Button>
-          </form>
+          <BioInput bio={bio} />
         ) : (
           <Typography
             variant="body1"
