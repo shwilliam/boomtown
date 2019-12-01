@@ -1,25 +1,20 @@
 import React from 'react'
-import {Grid} from '@material-ui/core'
+import {ShareItemContextProvider} from '../../context'
 import Layout from '../../components/Layout'
 import ShareItemForm from '../../components/ShareItemForm'
 import ShareItemPreview from '../../components/ShareItemPreview'
-import {ShareItemContextProvider} from '../../context'
+import {Grid, GridItem} from './components'
 
 const Share = () => (
   <Layout>
     <ShareItemContextProvider>
-      <Grid
-        container
-        direction="row"
-        alignItems="center"
-        justify="center"
-      >
-        <Grid item>
+      <Grid>
+        <GridItem>
           <ShareItemPreview />
-        </Grid>
-        <Grid item>
+        </GridItem>
+        <GridItem>
           <ShareItemForm />
-        </Grid>
+        </GridItem>
       </Grid>
     </ShareItemContextProvider>
   </Layout>
