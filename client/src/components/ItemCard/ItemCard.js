@@ -15,7 +15,7 @@ import {AuthContext} from '../../context'
 import {capitalize} from '../../utils'
 import {useBorrow} from '../../hooks'
 import Avatar from '../Avatar'
-import ItemTag from './ItemTag'
+import ItemTags from './ItemTags'
 import useStyles from './ItemCard.styles'
 
 const ItemCard = ({
@@ -67,13 +67,11 @@ const ItemCard = ({
         >
           {title}
         </Typography>
-        {tags && tags.length
-          ? tags.map(({id, title}) => (
-              <ItemTag key={id} id={id}>
-                {capitalize(title)}
-              </ItemTag>
-            ))
-          : null}
+        {tags && tags.length ? (
+          <ItemTags>
+            {tags.map(({title}) => capitalize(title)).join(', ')}
+          </ItemTags>
+        ) : null}
         <Typography variant="body1" color="textPrimary" component="p">
           {desc}
         </Typography>

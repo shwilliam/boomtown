@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Typography} from '@material-ui/core'
 
-const ItemTag = ({children, ...props}) => (
+const ItemTags = ({children, ...props}) => (
   <Typography
     variant="body2"
     color="textSecondary"
@@ -13,11 +13,11 @@ const ItemTag = ({children, ...props}) => (
   </Typography>
 )
 
-ItemTag.propTypes = {
+ItemTags.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
   ]).isRequired,
 }
 
-export default ItemTag
+export default ItemTags
