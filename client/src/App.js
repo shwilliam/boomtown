@@ -8,16 +8,16 @@ import Router from './router'
 import theme from './theme'
 
 const App = () => (
-  <ApolloProvider client={apolloClient}>
-    <AuthContextProvider>
-      <ItemsContextProvider>
-        <MuiThemeProvider theme={theme}>
-          <CssBaseline />
+  <MuiThemeProvider theme={theme}>
+    <CssBaseline />
+    <ApolloProvider client={apolloClient}>
+      <AuthContextProvider>
+        <ItemsContextProvider>
           <Router />
-        </MuiThemeProvider>
-      </ItemsContextProvider>
-    </AuthContextProvider>
-  </ApolloProvider>
+        </ItemsContextProvider>
+      </AuthContextProvider>
+    </ApolloProvider>
+  </MuiThemeProvider>
 )
 
 export default App

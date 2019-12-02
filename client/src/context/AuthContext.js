@@ -7,6 +7,7 @@ import React, {
 import PropTypes from 'prop-types'
 import {useMutation, useQuery} from 'react-apollo'
 import {LOGOUT_MUTATION, VIEWER_QUERY} from '../graphql'
+import Loading from '../components/Loading'
 
 const AuthContext = createContext()
 
@@ -32,7 +33,7 @@ const AuthContextProvider = ({children}) => {
   }, [logoutMutation])
 
   // authenticating
-  if (activeUserLoading) return null
+  if (activeUserLoading) return <Loading />
   return (
     <AuthContext.Provider
       value={{

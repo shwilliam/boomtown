@@ -8,6 +8,7 @@ import ItemCard, {
 } from '../../components/ItemCard'
 import Layout from '../../components/Layout'
 import ProfileCard from '../../components/ProfileCard'
+import Loading from '../../components/Loading'
 import TabBar, {
   TabBarItem,
   TabContainer,
@@ -30,7 +31,12 @@ const User = () => {
   })
 
   if (userDataError) return <p>oops...</p>
-  if (!userData || userDataLoading) return <p>loading...</p>
+  if (!userData || userDataLoading)
+    return (
+      <Layout dark>
+        <Loading />
+      </Layout>
+    )
 
   const {fullname, email, bio, items, borrowed} = userData.user
   return (
