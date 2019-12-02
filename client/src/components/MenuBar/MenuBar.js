@@ -13,7 +13,12 @@ import useStyles from './MenuBar.styles'
 
 const MenuBar = props => {
   const history = useHistory()
-  const {margin, menuButton, menuButtonIcon} = useStyles()
+  const {
+    margin,
+    menuButton,
+    menuButtonIcon,
+    shareButton,
+  } = useStyles()
 
   return (
     <AppBar position="static" {...props}>
@@ -37,6 +42,7 @@ const MenuBar = props => {
             color="primary"
             aria-label="add"
             onClick={() => history.push('/share')}
+            className={shareButton}
           >
             <Icon className={margin}>add_circle</Icon>
             Share something

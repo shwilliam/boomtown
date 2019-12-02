@@ -10,6 +10,12 @@ const useStyles = makeStyles(theme => ({
   menuButtonIcon: {
     height: '50px',
   },
+  shareButton: {
+    boxShadow: 'none',
+    '&:hover': {
+      backgroundColor: `${theme.palette.secondary.main}20`,
+    },
+  },
 }))
 
 export default useStyles
