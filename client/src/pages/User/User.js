@@ -64,6 +64,7 @@ const User = () => {
                   desc,
                   created_at,
                   image_url,
+                  owner,
                   borrower,
                   tags,
                 }) => (
@@ -77,7 +78,9 @@ const User = () => {
                       ownerId={activeUser.user.id}
                       email={email}
                       borrowerId={borrower && borrower.id}
-                      disabled={!!borrower}
+                      disabled={
+                        !!borrower || owner.id === activeUser.user.id
+                      }
                       tags={tags}
                       imageUrl={
                         process.env.NODE_ENV === 'production'

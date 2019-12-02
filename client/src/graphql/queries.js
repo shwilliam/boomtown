@@ -1,5 +1,7 @@
 import gql from 'graphql-tag'
 
+// TODO: refactor item fragment
+
 export const ALL_ITEMS_QUERY = gql`
   query items($filter: ID) {
     items(filter: $filter) {
@@ -66,6 +68,9 @@ export const USER_QUERY = gql`
         tags {
           id
           title
+        }
+        owner {
+          id
         }
         borrower {
           id
