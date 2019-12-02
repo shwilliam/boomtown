@@ -41,6 +41,14 @@ const ItemCard = ({
 
   return (
     <Card {...props}>
+      <CardMedia
+        className={styles.media}
+        image={
+          imageUrl ||
+          'https://via.placeholder.com/420x320/f9a825/333333?text=%20'
+        }
+        title={`Image of ${title}`}
+      />
       <CardHeader
         avatar={<Avatar email={email} />}
         title={owner}
@@ -51,16 +59,12 @@ const ItemCard = ({
             : history.push(`/user/${ownerId}`)
         }
       />
-      <CardMedia
-        className={styles.media}
-        image={
-          imageUrl ||
-          'https://via.placeholder.com/420x320/f9a825/333333?text=%20'
-        }
-        title={imageUrl ? title : ''}
-      />
       <CardContent>
-        <Typography variant="h3" className={styles.titleClasses}>
+        <Typography
+          component="h3"
+          variant="h5"
+          className={styles.titleClasses}
+        >
           {title}
         </Typography>
         {tags && tags.length
