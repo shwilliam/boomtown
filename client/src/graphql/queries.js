@@ -56,6 +56,7 @@ export const VIEWER_QUERY = gql`
 export const USER_QUERY = gql`
   query user($id: ID!) {
     user(id: $id) {
+      id
       fullname
       email
       bio

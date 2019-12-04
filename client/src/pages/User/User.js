@@ -1,53 +1,60 @@
 import React, {useContext} from 'react'
-import {useQuery} from 'react-apollo'
 import {useParams} from 'react-router-dom'
 import {Typography} from '@material-ui/core'
+import InfoCard from '../../components/InfoCard'
 import ItemCard, {
   ItemGrid,
   ItemGridCell,
 } from '../../components/ItemCard'
-import Layout from '../../components/Layout'
-import ProfileCard from '../../components/ProfileCard'
-import Loading from '../../components/Loading'
 import TabBar, {
   TabBarItem,
   TabContainer,
   TabPanel,
 } from '../../components/TabBar'
+import Layout from '../../components/Layout'
+import Loading from '../../components/Loading'
+import ProfileCard from '../../components/ProfileCard'
 import {AuthContext} from '../../context'
-import {USER_QUERY} from '../../graphql'
+import {useUserData} from '../../hooks'
 
 const User = () => {
+  const {id} = useParams()
   const {activeUser} = useContext(AuthContext)
-  let {id} = useParams()
-  if (!id) id = activeUser.user.id
+  const {data, loading, error} = useUserData(id)
 
-  const {
-    data: userData,
-    loading: userDataLoading,
-    error: userDataError,
-  } = useQuery(USER_QUERY, {
-    variables: {id},
-  })
+  if (error)
+    return (
+      <Layout dark>
+        <InfoCard>Unable to find user.</InfoCard>
+      </Layout>
+    )
 
-  if (userDataError) return <p>oops...</p>
-  if (!userData || userDataLoading)
+  if (loading)
     return (
       <Layout dark>
         <Loading />
       </Layout>
     )
 
-  const {fullname, email, bio, items, borrowed} = userData.user
+  const {
+    id: userId,
+    fullname,
+    email,
+    bio,
+    items,
+    amountShared,
+    borrowed,
+    amountBorrowed,
+  } = data
   return (
     <Layout dark>
       <ProfileCard
-        userId={id}
+        userId={userId}
         fullname={fullname}
         email={email}
         bio={bio}
-        items={items && items.length}
-        borrowed={borrowed && borrowed.length}
+        items={amountShared}
+        borrowed={amountBorrowed}
       />
       <TabContainer>
         <TabBar label="User items">
@@ -55,42 +62,32 @@ const User = () => {
           <TabBarItem index={1}>Borrowed</TabBarItem>
         </TabBar>
         <TabPanel index={0}>
-          {items && items.length ? (
+          {!!amountShared ? (
             <ItemGrid>
-              {items.map(
-                ({
-                  id,
-                  title,
-                  desc,
-                  created_at,
-                  image_url,
-                  owner,
-                  borrower,
-                  tags,
-                }) => (
-                  <ItemGridCell key={id}>
-                    <ItemCard
-                      id={id}
-                      title={title}
-                      desc={desc}
-                      date={created_at}
-                      owner={fullname}
-                      ownerId={activeUser.user.id}
-                      email={email}
-                      borrowerId={borrower && borrower.id}
-                      disabled={
-                        !!borrower || owner.id === activeUser.user.id
-                      }
-                      tags={tags}
-                      imageUrl={
-                        process.env.NODE_ENV === 'production'
-                          ? `/uploads/${image_url}`
-                          : `http://localhost:8080/uploads/${image_url}`
-                      }
-                    />
-                  </ItemGridCell>
-                ),
-              )}
+              {items.map(item => (
+                <ItemGridCell key={item.id}>
+                  <ItemCard
+                    id={item.id}
+                    title={item.title}
+                    desc={item.desc}
+                    date={item.created_at}
+                    owner={fullname}
+                    ownerId={item.owner.id}
+                    email={email}
+                    borrowerId={item.borrower && item.borrower.id}
+                    disabled={
+                      !!item.borrower ||
+                      item.owner.id === activeUser.user.id
+                    }
+                    tags={item.tags}
+                    imageUrl={
+                      process.env.NODE_ENV === 'production'
+                        ? `/uploads/${item.image_url}`
+                        : `http://localhost:8080/uploads/${item.image_url}`
+                    }
+                  />
+                </ItemGridCell>
+              ))}
             </ItemGrid>
           ) : (
             <Typography variant="body1" align="center">
@@ -99,43 +96,32 @@ const User = () => {
           )}
         </TabPanel>
         <TabPanel index={1}>
-          {borrowed && borrowed.length ? (
+          {!!amountBorrowed ? (
             <ItemGrid>
               {borrowed
                 .filter(({borrower}) => !!borrower)
-                .map(
-                  ({
-                    id,
-                    title,
-                    desc,
-                    created_at,
-                    image_url,
-                    owner,
-                    borrower,
-                    tags,
-                  }) => (
-                    <ItemGridCell key={id}>
-                      <ItemCard
-                        key={id}
-                        id={id}
-                        title={title}
-                        desc={desc}
-                        date={created_at}
-                        owner={owner.fullname}
-                        email={owner.email}
-                        ownerId={owner.id}
-                        borrowerId={borrower.id}
-                        disabled={!!borrower}
-                        tags={tags}
-                        imageUrl={
-                          process.env.NODE_ENV === 'production'
-                            ? `/uploads/${image_url}`
-                            : `http://localhost:8080/uploads/${image_url}`
-                        }
-                      />
-                    </ItemGridCell>
-                  ),
-                )}
+                .map(item => (
+                  <ItemGridCell key={item.id}>
+                    <ItemCard
+                      key={item.id}
+                      id={item.id}
+                      title={item.title}
+                      desc={item.desc}
+                      date={item.created_at}
+                      owner={item.owner.fullname}
+                      email={item.owner.email}
+                      ownerId={item.owner.id}
+                      borrowerId={item.borrower.id}
+                      disabled={!!item.borrower}
+                      tags={item.tags}
+                      imageUrl={
+                        process.env.NODE_ENV === 'production'
+                          ? `/uploads/${item.image_url}`
+                          : `http://localhost:8080/uploads/${item.image_url}`
+                      }
+                    />
+                  </ItemGridCell>
+                ))}
             </ItemGrid>
           ) : (
             <Typography variant="body1" align="center">

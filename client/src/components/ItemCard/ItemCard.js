@@ -38,6 +38,7 @@ const ItemCard = ({
   const styles = useStyles()
 
   const isOwnItem = !ownerId || String(ownerId) === activeUser.user.id
+  const isBorrower = activeUser.user.id === borrowerId
 
   return (
     <Card {...props}>
@@ -77,26 +78,22 @@ const ItemCard = ({
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        {activeUser.user.id === borrowerId ? (
-          <Button
-            aria-label="Return"
-            variant="outlined"
-            onClick={() => returnItem({variables: {item: id}})}
-          >
-            Return
-          </Button>
-        ) : (
-          <Button
-            aria-label="Borrow"
-            variant="outlined"
-            disabled={
-              disabled || borrowStatus === 0 || borrowStatus === -1
-            }
-            onClick={() => borrowItem({variables: {item: id}})}
-          >
-            Borrow
-          </Button>
-        )}
+        <Button
+          aria-label={isBorrower ? 'Return' : 'Borrow'}
+          variant="outlined"
+          disabled={
+            (!isBorrower && disabled) ||
+            borrowStatus === 0 ||
+            borrowStatus === -1
+          }
+          onClick={() =>
+            isBorrower
+              ? returnItem({variables: {item: id}})
+              : borrowItem({variables: {item: id}})
+          }
+        >
+          {isBorrower ? 'Return' : 'Borrow'}
+        </Button>
       </CardActions>
     </Card>
   )
