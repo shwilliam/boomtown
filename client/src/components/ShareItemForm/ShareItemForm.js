@@ -212,8 +212,9 @@ const ShareItemForm = props => {
             />
           </FormControl>
           <Typography className={errorMessage}>
-            {(errors && (touched.title && errors.title)) ||
-              (touched.desc && errors.desc)}
+            {(errors && touched.title && errors.title) ||
+              (touched.desc && errors.desc) ||
+              (touched.tags && errors.tags)}
           </Typography>
           <FormControl className={formControl}>
             <Button

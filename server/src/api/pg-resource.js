@@ -107,6 +107,8 @@ module.exports = postgres => ({
 
             let newItem
             try {
+              if (!Array.isArray(tags)) throw 'Tags are required'
+
               const queryResult = await postgres.query({
                 text:
                   'INSERT INTO items ("title", "desc", "owner_id", "image_url") VALUES ($1, $2, $3, $4) RETURNING *',
@@ -116,19 +118,16 @@ module.exports = postgres => ({
               if (!newItem) throw 'Error adding new item'
               const newItemId = newItem.id
 
-              if (Array.isArray(tags) && tags.length) {
-                await postgres.query({
-                  text:
-                    tags
-                      .reduce(
-                        (acc, val) =>
-                          `${acc}(${newItemId}, $${val}),`,
-                        'INSERT INTO item_tags ("item_id", "tag_id") VALUES ',
-                      )
-                      .slice(0, -1) + ';',
-                  values: tags,
-                })
-              }
+              await postgres.query({
+                text:
+                  tags
+                    .reduce(
+                      (acc, val) => `${acc}(${newItemId}, $${val}),`,
+                      'INSERT INTO item_tags ("item_id", "tag_id") VALUES ',
+                    )
+                    .slice(0, -1) + ';',
+                values: tags,
+              })
             } catch (e) {
               throw e
             }

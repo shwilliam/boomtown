@@ -8,7 +8,7 @@ module.exports = gql`
   input NewItemInput {
     title: String!
     description: String!
-    tags: [ID]
+    tags: [ID!]!
     image: Upload
   }
 
@@ -29,7 +29,7 @@ module.exports = gql`
     title: String!
     desc: String!
     owner: User!
-    tags: [Tag]
+    tags: [Tag!]!
     image_url: String
     borrower: User
   }
@@ -57,7 +57,7 @@ module.exports = gql`
     user(id: ID!): User
     viewer: User
     items(filter: ID): [Item]
-    tags: [Tag]
+    tags: [Tag!]!
   }
 
   type Mutation @auth {
