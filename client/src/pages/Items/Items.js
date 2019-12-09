@@ -1,13 +1,15 @@
 import React, {useContext} from 'react'
-import ItemCard, {ItemGrid} from '../../components/ItemCard'
-import Layout from '../../components/Layout'
-import InfoCard from '../../components/InfoCard'
-import ItemGridCell from '../../components/ItemCard/ItemGridCell'
 import {ItemsContext} from '../../context'
+import ItemCard, {
+  ItemGrid,
+  ItemGridCell,
+} from '../../components/ItemCard'
+import Layout from '../../components/Layout'
 import Loading from '../../components/Loading'
+import InfoCard from '../../components/InfoCard'
 
 const Items = () => {
-  const {itemsLoading, itemsError, itemsData} = useContext(
+  const {itemsData, itemsLoading, itemsError} = useContext(
     ItemsContext,
   )
 
@@ -31,38 +33,29 @@ const Items = () => {
     <Layout dark>
       {itemsData && itemsData.items.length ? (
         <ItemGrid>
-          {itemsData.items.map(
-            ({
-              id,
-              title,
-              desc,
-              created_at,
-              owner,
-              image_url,
-              borrower,
-              tags,
-            }) => (
-              <ItemGridCell key={id}>
-                <ItemCard
-                  id={id}
-                  title={title}
-                  desc={desc}
-                  date={created_at}
-                  owner={owner.fullname}
-                  email={owner.email}
-                  ownerId={owner.id}
-                  borrowerId={borrower && borrower.id}
-                  tags={tags}
-                  disabled={!!borrower}
-                  imageUrl={
-                    process.env.NODE_ENV === 'production'
-                      ? `/uploads/${image_url}`
-                      : `http://localhost:8080/uploads/${image_url}`
-                  }
-                />
-              </ItemGridCell>
-            ),
-          )}
+          {itemsData.items.map(item => (
+            <ItemGridCell key={item.id}>
+              <ItemCard
+                id={item.id}
+                title={item.title}
+                desc={item.desc}
+                date={item.created_at}
+                owner={item.owner.fullname}
+                email={item.owner.email}
+                ownerId={item.owner.id}
+                borrowerId={item.borrower && item.borrower.id}
+                tags={item.tags}
+                disabled={!!item.borrower}
+                imageUrl={
+                  !!item.image_url
+                    ? process.env.NODE_ENV === 'production'
+                      ? `/uploads/${item.image_url}`
+                      : `http://localhost:8080/uploads/${item.image_url}`
+                    : null
+                }
+              />
+            </ItemGridCell>
+          ))}
         </ItemGrid>
       ) : (
         <InfoCard>No items found...</InfoCard>

@@ -81,9 +81,11 @@ const User = () => {
                     }
                     tags={item.tags}
                     imageUrl={
-                      process.env.NODE_ENV === 'production'
-                        ? `/uploads/${item.image_url}`
-                        : `http://localhost:8080/uploads/${item.image_url}`
+                      item.image_url
+                        ? process.env.NODE_ENV === 'production'
+                          ? `/uploads/${item.image_url}`
+                          : `http://localhost:8080/uploads/${item.image_url}`
+                        : null
                     }
                   />
                 </ItemGridCell>
@@ -115,6 +117,7 @@ const User = () => {
                       disabled={!!item.borrower}
                       tags={item.tags}
                       imageUrl={
+                        item.image_url &&
                         process.env.NODE_ENV === 'production'
                           ? `/uploads/${item.image_url}`
                           : `http://localhost:8080/uploads/${item.image_url}`
