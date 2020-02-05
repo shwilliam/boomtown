@@ -140,8 +140,7 @@ module.exports = postgres => ({
           })
         } catch (e) {
           client.query('ROLLBACK', e => {
-            if (e) throw e
-            done()
+            if (!e) done()
           })
         }
       })
