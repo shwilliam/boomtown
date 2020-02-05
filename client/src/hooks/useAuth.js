@@ -42,8 +42,10 @@ const useAuth = () => {
             email,
             password,
           }),
+        ).catch(console.error) // HACK: avoid throwing
+      : signIn(formatAuthParams({email, password})).catch(
+          console.error, // HACK: avoid throwing
         )
-      : signIn(formatAuthParams({email, password}))
 
   const toggleSignUp = () => setIsSignUp(s => !s)
 
