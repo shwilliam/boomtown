@@ -94,7 +94,7 @@ const AccountForm = props => {
               ? authError.message.includes('ECONNREFUSED')
                 ? 'Unable to establish database connection'
                 : authError.message.replace(/GraphQL error: /, '')
-              : (errors && (touched.fullname && errors.fullname)) ||
+              : (errors && touched.fullname && errors.fullname) ||
                 (touched.email && errors.email) ||
                 (touched.password && errors.password)}
           </Typography>
