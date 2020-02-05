@@ -30,6 +30,7 @@ const MenuBar = props => {
           aria-label="menu"
           onClick={() => history.push('/')}
         >
+          {/* TODO: ensure semantic heading tags */}
           <img
             alt="Boomtown"
             className={menuButtonIcon}

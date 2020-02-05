@@ -7,6 +7,8 @@ import {
 import ProtectedRoute from './ProtectedRoute'
 import {Welcome, Items, User, Share} from '../pages'
 
+// TODO: 404 fallback
+
 export default () => (
   <Router>
     <Switch>
