@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/shwilliam/boomtown#readme",
   "dependencies": {
-    "apollo-server": "^2.9.7",
+    "apollo-server": "^2.14.2",
     "apollo-server-express": "^2.9.7",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.4",
